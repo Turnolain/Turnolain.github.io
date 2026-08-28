@@ -150,7 +150,7 @@
   ol li.io{background:var(--carta);box-shadow:inset 5px 0 0 var(--rossa);padding-left:14px;margin-left:-10px}
   ol li.surrweek .pos{color:var(--rossa)}
   ol li.con-dettaglio{display:block;cursor:pointer}
-  ol li.con-dettaglio .riga-testa{display:flex;align-items:baseline;gap:12px}
+  ol li .riga-testa{display:flex;align-items:baseline;gap:12px;width:100%}
   ol li.con-dettaglio .dettaglio-turno{display:none}
   ol li.con-dettaglio.aperto .dettaglio-turno{display:block}
 
@@ -302,7 +302,7 @@
         ["Rignanese","70420"],["Verzelletti","72957"],["Acquistapace","68626"],["Passavanti","72101"],
         ["Sola","74498"],["Squaratti","68539"],["Battilana","66715"],["Lazzari","73702"],
         ["Borrelli","68481"],["Brusca","68247"],["Garofalo C.","62065"],["Lovino","64568"],
-        ["Lodigiani","69589"],["Trotti","68001"],["Garofalo","70867"],["Marini","67996"],
+        ["Lodigiani Roncali","69589"],["Trotti","68001"],["Garofalo","70867"],["Marini","67996"],
         ["Castellana","67815"],
 
         ["Lucii","67980"],["Grillo","69272"],["Ruscio","66974"],["Iannelli","64834"],
@@ -338,7 +338,7 @@
     BIS: {
       nome:"Bisceglie", sigla:"BIS", gruppi:2,
       ruota:[
-        ["Gigliotti","68248"],["Romeo","62940"],["Hrypachevska Svitlana","74877"],
+        ["Gigliotti","68248"],["Romeo","62940"],["Hrypachevska","74877"],
         ["Brucia","73697"],["Marsala","70626"],["Pichierri","75266"],["Moretti","75279"],
         ["Stamera","68479"],["Di Donato","74486"],["Dammicco","75292"],["Nole","74494"],
         ["Vitale","69572"],null,["Cerami","69570"],["Moneta","72954"],
@@ -347,7 +347,7 @@
         ["Castagnone Prati","67208"],["Iacobellis","70830"],null,["Blasa","69896"],null,
         ["De Gaetano","74862"],["Oliveri","75288"],["Ghirotto","75270"],["Soria","61575"],
         ["De Ponti","67513"],["Rubino","75274"],null,["Ciciarelli","68994"],
-        ["Alario","70549"],["Corneo","74882"],["Scorza","70424"],["Peluso Alessandro","74879"]
+        ["Alario","70549"],["Corneo","74882"],["Scorza","70424"],["Peluso","74879"]
       ]
     }
   };
@@ -655,6 +655,12 @@
 
   function cod(pos){ return U.sigla + pos; }
   function codDi(dep, pos){ return dep.sigla + pos; }
+  function nomePersona(occ){
+    if(!occ) return "";
+    if(/\b[A-Z]\.$/.test(occ[0])) return occ[0];
+    var iniziale=INIZIALI_MATRICOLA && INIZIALI_MATRICOLA[occ[1]];
+    return occ[0]+(iniziale?" "+iniziale+".":"");
+  }
   function posizioneDi(base, lun){
     return U.posizioni[ ((base + settimaneDa(lun)) % U.tot + U.tot) % U.tot ];
   }
@@ -710,7 +716,7 @@
 
     err.textContent = "";
     var pos = posizioniDi(trovato.dep);
-    U = {dep:trovato.dep, sigla:trovato.dep.sigla, nome:trovato.dep.ruota[trovato.i][0],
+    U = {dep:trovato.dep, sigla:trovato.dep.sigla, nome:nomePersona(trovato.dep.ruota[trovato.i]),
          base:trovato.i, mat:v, posizioni:pos, tot:pos.length};
 
     $("saluto").innerHTML = U.nome + " · " + U.dep.nome;
@@ -869,7 +875,7 @@
 
   // Costruisce una riga dell'elenco. mostraDep = mostra il nome del deposito.
   function rigaHTML(dep, p, occ, mostraDep, data){
-    var nome  = occ ? occ[0] : "Turno scoperto";
+    var nome  = occ ? nomePersona(occ) : "Turno scoperto";
     var surr  = SCHEMI[p%100]==="surroga", cl = [];
     if(!occ) cl.push("vuota");
     if(occ && dep===U.dep && occ[1]===U.mat) cl.push("io");
@@ -905,7 +911,7 @@
         var d = DEPOSITI[sig], ps = posizioniDi(d), tot = ps.length;
         for(var i=0;i<ps.length;i++){
           var occ = d.ruota[ ((i - k) % tot + tot) % tot ];
-          var nome = occ ? occ[0] : "turno scoperto o collega non presente in ruota";
+          var nome = occ ? nomePersona(occ) : "turno scoperto o collega non presente in ruota";
           if(nome.toLowerCase().indexOf(filtro)<0 && codDi(d,ps[i]).toLowerCase().indexOf(filtro)<0) continue;
           righe += rigaHTML(d, ps[i], occ, true, mer);
           quanti++;
