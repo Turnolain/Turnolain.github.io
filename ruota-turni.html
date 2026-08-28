@@ -457,13 +457,15 @@
   function foglioPerData(d){
     var t=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime();
     var estDa=new Date(2026,6,4).getTime(), estA=new Date(2026,8,6).getTime();
+    var intDa=new Date(2026,7,31).getTime(), intA=new Date(2026,8,6).getTime();
     var invDa=new Date(2026,8,7).getTime(), invA=new Date(2027,6,3).getTime();
+    if(t>=intDa && t<=intA) return "int";
     if(t>=estDa && t<=estA) return "est";
     if(t>=invDa && t<=invA) return "inv";
     return null;
   }
-  function stagioneDi(d){ return foglioPerData(d)==="est" ? 1 : 0; }
-  function nomeStagione(d){ return stagioneDi(d) ? "foglio estivo" : "foglio invernale"; }
+  function stagioneDi(d){ var f=foglioPerData(d); return (f==="est" || f==="int") ? 1 : 0; }
+  function nomeStagione(d){ var f=foglioPerData(d); return f==="int"?"foglio intermedio":(f==="est"?"foglio estivo":"foglio invernale"); }
 
   /* Il valore indica quale colonna/programma viene realmente adottato in quella data.
      Per future eccezioni si può aggiungere, ad esempio: "2026-10-02":"sab". */
@@ -566,7 +568,7 @@
       }
       else if(g.stato==="riposo") corpo='<div class="tp-servizio">RIPOSO</div>';
       else if(g.stato==="sco") corpo='<div class="tp-servizio">SCOMPUTO</div>';
-      else corpo=servizioHTML(righeTurno(dep,codice,data,variante),codice,true);
+      else corpo=servizioHTML(righeTurno(dep,pos,data,variante),pos,true);
       var chiave=corpo+"|"+(speciale?1:0)+"|"+(g.stato==="surr"?codice:"");
       var ultimo=blocchi[blocchi.length-1];
       if(ultimo && ultimo.chiave===chiave) ultimo.fine=i;
@@ -648,28 +650,9 @@
 
   function indizioHTML(pos, data, contesto){
     if(!foglioPerData(data)) return "";
-    var n = pos % 100, st = stagioneDi(data);
-    var tab = TIPI[U.sigla], voce = tab && tab[pos];
-
-    if(voce){
-      var lettera = voce[st], ruolo = voce[2+st] || null;
-      var titolo = NOMI_TIPO[lettera];
-      var nb;
-      if(lettera === "d"){
-        nb = "Il turno te lo assegna l'ufficio secondo le spettanze. Per la settimana " + n
-           + " lo schema prevede: " + (SPETTANZE[n] ? SPETTANZE[n].join(", ") : "—") + ".";
-      } else {
-        nb = frasesTurno(U.sigla, pos, lettera, ruolo)
-           + " Ricavato dal " + nomeStagione(data) + ", " + contesto + ".";
-      }
-      return '<p class="cap">Indizio</p><p class="val">'+titolo+'</p><p class="nb">'+nb+'</p>';
-    }
-
-    var sp = SPETTANZE[n];
-    if(!sp) return "";
-    return '<p class="cap">Indizio</p><p class="val">'+sp.join(" · ")+'</p>'
-         + '<p class="nb">Tipi previsti dallo schema di rotazione per la settimana '+n
-         + '. Quale ti tocca dipende dal foglio turni della stagione.</p>';
+    var titolo=descrizioneProbabile(U.dep,pos,data);
+    return '<p class="cap">Indicazione</p><p class="val">'+esc(titolo)+'</p>'
+         + '<p class="nb">Ricavata dal '+nomeStagione(data)+', '+contesto+'. Il dettaglio giornaliero sottostante prevale.</p>';
   }
 
   var CASA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/>'
@@ -861,10 +844,11 @@
   // Etichetta breve del tipo di turno, usata nell'elenco.
   function tipoBreve(dep, pos, data){
     if(SCHEMI[pos%100]==="surroga") return "Surrogante";
-    if(!foglioPerData(data)) return "Indicazione: "+indicazioneStorica(dep,pos);
-    if(TURNI_PRECISI && TURNI_PRECISI[stagioneDi(data)?"est":"inv"]
-       && TURNI_PRECISI[stagioneDi(data)?"est":"inv"][dep.sigla]
-       && TURNI_PRECISI[stagioneDi(data)?"est":"inv"][dep.sigla][pos]) return descrizioneProbabile(dep,pos,data);
+    var foglio=foglioPerData(data);
+    if(!foglio) return "Indicazione: "+indicazioneStorica(dep,pos);
+    if(TURNI_PRECISI && TURNI_PRECISI[foglio]
+       && TURNI_PRECISI[foglio][dep.sigla]
+       && TURNI_PRECISI[foglio][dep.sigla][pos]) return descrizioneProbabile(dep,pos,data);
     var tab = TIPI[dep.sigla], v = tab && tab[pos];
     if(v) return NOMI_TIPO[ v[stagioneDi(data)] ];
     var sp = SPETTANZE[pos%100];
