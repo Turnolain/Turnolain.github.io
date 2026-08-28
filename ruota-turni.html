@@ -37,7 +37,7 @@
   h2{font-size:26px;line-height:1.2;margin:0 0 6px;letter-spacing:-.015em;font-weight:800}
   p.guida{margin:0 0 24px;color:var(--soft);font-size:18px;font-weight:500}
 
-  #accesso{padding-top:12px}
+  #accesso{padding-top:12vh}
   .campo{width:100%;font:800 34px/1 inherit;letter-spacing:.08em;text-align:center;color:var(--ink);
          background:var(--carta);border:3px solid var(--ink);border-radius:14px;padding:20px 12px;font-variant-numeric:tabular-nums}
   .campo::placeholder{color:#C4BCA8;font-weight:800}
@@ -153,8 +153,7 @@
 <body>
 
 <div class="schermata attiva" id="accesso">
-  <div class="barra" style="justify-content:flex-end;padding-bottom:0"><button class="chiudi" aria-label="Azzera e cambia matricola"></button></div>
-  <p class="occhiello" style="padding-top:7vh">ATM · Metropolitana 1</p>
+  <p class="occhiello" style="padding-top:8px">ATM · Metropolitana 1</p>
   <h1>Ruota turni</h1>
   <p class="guida">Digita la tua matricola. Il deposito lo riconosco da solo.</p>
   <input class="campo" id="matricola" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="00000" autocomplete="off">
@@ -163,7 +162,7 @@
 </div>
 
 <div class="schermata" id="menu">
-  <div class="barra"><span class="chiIo" id="saluto"></span></div>
+  <div class="barra"><span class="chiIo" id="saluto"></span><button class="chiudi" aria-label="Esci e cambia matricola"></button></div>
   <h2>Cosa vuoi sapere?</h2>
   <p class="guida">Scegli una delle tre.</p>
   <ul class="scelte">
