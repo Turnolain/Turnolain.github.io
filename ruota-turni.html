@@ -289,7 +289,7 @@
   </div>
 </div>
 <img class="gatti-angolo" id="gattiAngolo" src="gatti-chiara.png" alt="" aria-hidden="true">
-<div class="versione-app" aria-label="Versione applicazione">v0.10</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.11</div>
 
 <script src="turni-precisi.js"></script>
 <script>
@@ -596,7 +596,7 @@
   function turniSettimanaHTML(dep,pos,lun){
     var sett=settimanaDiDeposito(dep,pos), blocchi=[], giorniMancanti=[];
     for(var i=0;i<7;i++){
-      var data=new Date(lun.getTime()+i*MS_G), g=sett[i], variante=i<5?"fer":(i===5?"sab":"fes");
+      var data=spostaGiorni(lun,i), g=sett[i], variante=i<5?"fer":(i===5?"sab":"fes");
       var speciale=PROGRAMMI_DATA[isoLocale(data)]==="spec", codice=g.pos||pos;
       /* La surroga feriale copia il servizio della posizione coperta.
          Il sabato, invece, il servizio specifico è stampato sulla riga del surrogante. */
@@ -619,7 +619,7 @@
     if(giorniMancanti.length) html+='<div class="foglio-mancante"><b>Non possiedo ancora il foglio turni di quel periodo.</b><br>'
       +'Indicazione basata sui fogli precedenti: '+esc(indicazioneStorica(dep,pos))+'.</div>';
     blocchi.forEach(function(b){
-      var a=new Date(lun.getTime()+b.inizio*MS_G), z=new Date(lun.getTime()+b.fine*MS_G), etichetta;
+      var a=spostaGiorni(lun,b.inizio), z=spostaGiorni(lun,b.fine), etichetta;
       if(b.inizio===b.fine) etichetta=GIORNI_EST[b.inizio]+" "+a.getDate()+" "+MESI[a.getMonth()];
       else if(b.fine===b.inizio+1) etichetta=GIORNI_EST[b.inizio]+" "+a.getDate()+" e "+GIORNI_EST[b.fine]+" "+z.getDate()+" "+MESI[z.getMonth()];
       else etichetta="Da "+GIORNI_EST[b.inizio]+" "+a.getDate()+" "+(a.getMonth()!==z.getMonth()?MESI[a.getMonth()]+" ":"")
@@ -675,6 +675,15 @@
     x.setDate(x.getDate() - ((x.getDay()+6)%7));
     return x;
   }
+  /* Gli spostamenti usano il calendario locale, non blocchi fissi di 24 ore:
+     così il cambio tra ora legale e ora solare non sposta i giorni. */
+  function spostaGiorni(d,n){
+    var x=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+    x.setDate(x.getDate()+n);
+    return x;
+  }
+  function spostaSettimane(d,n){ return spostaGiorni(d,n*7); }
+  function giornoUTC(d){ return Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()); }
   function daISO(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
   function fmt(d){ return d.getDate()+" "+MESI[d.getMonth()]; }
   function stessoGiorno(a,b){
@@ -682,7 +691,7 @@
   }
 
   var LUN_RIF = lunediDi(daISO(RIFERIMENTO));
-  function settimaneDa(lun){ return Math.round((lun - LUN_RIF)/MS_S); }
+  function settimaneDa(lun){ return Math.round((giornoUTC(lun)-giornoUTC(LUN_RIF))/MS_S); }
 
   /* ==========================================================
      6. INTERFACCIA
@@ -841,7 +850,7 @@
   function disegnaQuesta(){
     var oggi = new Date(), lun = qLun, corrente=lun.getTime()===lunediDi(oggi).getTime();
     var gi = corrente ? (oggi.getDay()+6)%7 : -1;
-    var dom = new Date(lun.getTime()+6*MS_G);
+    var dom = spostaGiorni(lun,6);
     var pos = posizioneDi(U.base, lun), sett = settimanaDiDeposito(U.dep,pos), g = gi>=0 ? sett[gi] : null;
 
     $("qQuando").textContent = fmt(lun)+" – "+fmt(dom)+" "+dom.getFullYear();
@@ -854,13 +863,13 @@
     else $("qNota").textContent = riepilogoSettimana(sett)+".";
 
     var el = $("qIndizio");
-    el.innerHTML = SCHEMI[pos%100]==="surroga" ? "" : indizioHTML(pos, new Date(lun.getTime()+2*MS_G), "dal lunedì al venerdì");
+    el.innerHTML = SCHEMI[pos%100]==="surroga" ? "" : indizioHTML(pos, spostaGiorni(lun,2), "dal lunedì al venerdì");
     el.style.display = el.innerHTML ? "block" : "none";
     $("qTurno").innerHTML = turniSettimanaHTML(U.dep,pos,lun);
     $("qGiorni").innerHTML = strisciaHTML(sett, gi);
   }
-  $("qPrec").onclick=function(){qLun=new Date(qLun.getTime()-MS_S);disegnaQuesta();};
-  $("qSucc").onclick=function(){qLun=new Date(qLun.getTime()+MS_S);disegnaQuesta();};
+  $("qPrec").onclick=function(){qLun=spostaSettimane(qLun,-1);disegnaQuesta();};
+  $("qSucc").onclick=function(){qLun=spostaSettimane(qLun,1);disegnaQuesta();};
 
   function disegnaCalendario(){
     $("mNome").textContent = MESI[calMese.getMonth()].charAt(0).toUpperCase()
@@ -870,13 +879,13 @@
     for(var r=0;r<6;r++){
       html += '<tr class="'+(cur.getTime()===sLun.getTime()?"sel":"")+'" data-lun="'+cur.getTime()+'">';
       for(var d=0;d<7;d++){
-        var g = new Date(cur.getTime()+d*MS_G), cl = [];
+        var g = spostaGiorni(cur,d), cl = [];
         if(g.getMonth() !== calMese.getMonth()) cl.push("fuori");
         if(stessoGiorno(g,oggi)) cl.push("oggi");
         html += '<td class="'+cl.join(" ")+'">'+g.getDate()+'</td>';
       }
       html += '</tr>';
-      cur = new Date(cur.getTime()+MS_S);
+      cur = spostaSettimane(cur,1);
       if(cur.getMonth() !== calMese.getMonth() && cur.getDate() > 7) break;
     }
     $("calBody").innerHTML = html;
@@ -892,7 +901,7 @@
   $("mSucc").onclick = function(){ calMese = new Date(calMese.getFullYear(), calMese.getMonth()+1, 1); disegnaCalendario(); };
 
   function disegnaSettimana(){
-    var dom = new Date(sLun.getTime()+6*MS_G);
+    var dom = spostaGiorni(sLun,6);
     $("sQuando").textContent = "Settimana da lunedì "+fmt(sLun)+" a domenica "+fmt(dom)+" "+dom.getFullYear();
     var pos = posizioneDi(U.base, sLun), sett = settimanaDiDeposito(U.dep,pos);
     $("sCodice").textContent = cod(pos);
@@ -904,7 +913,7 @@
     }
 
     var el = $("sIndizio");
-    el.innerHTML = SCHEMI[pos%100]==="surroga" ? "" : indizioHTML(pos, new Date(sLun.getTime()+2*MS_G), "dal lunedì al venerdì");
+    el.innerHTML = SCHEMI[pos%100]==="surroga" ? "" : indizioHTML(pos, spostaGiorni(sLun,2), "dal lunedì al venerdì");
     el.style.display = el.innerHTML ? "block" : "none";
     $("sTurno").innerHTML = turniSettimanaHTML(U.dep, pos, sLun);
     $("sGiorni").innerHTML = strisciaHTML(sett, -1);
@@ -957,7 +966,7 @@
       : (mostraDep ? dep.nome + " · " : "") + "o collega non presente in ruota";
 
     if(occ) cl.push("con-dettaglio");
-    var lun = new Date(data.getTime()-2*MS_G);
+    var lun = spostaGiorni(data,-2);
     return '<li class="'+cl.join(" ")+'"><div class="riga-testa"><span class="pos">'+codDi(dep,p)+'</span>'
          + '<span class="nome">'+nome+'<em>'+sotto+'</em></span>'
          + '<span class="rip">'+tipoBreve(dep, p, data)+(occ?'<span class="apri">Dettaglio turno</span>':'')+'</span></div>'
@@ -965,12 +974,12 @@
   }
 
   function disegnaRuota(){
-    var dom = new Date(rLun.getTime()+6*MS_G);
+    var dom = spostaGiorni(rLun,6);
     $("rQuando").textContent = "Settimana "+fmt(rLun)+" – "+fmt(dom);
 
     var filtro = $("cerca").value.trim().toLowerCase();
     var k = settimaneDa(rLun);
-    var mer = new Date(rLun.getTime()+2*MS_G);   // mercoledì: giorno di riferimento per la stagione
+    var mer = spostaGiorni(rLun,2);   // mercoledì: giorno di riferimento per la stagione
     var righe = "", quanti = 0;
 
     if(filtro){
@@ -1007,8 +1016,8 @@
     var li=e.target.closest("li.con-dettaglio");
     if(li) li.classList.toggle("aperto");
   };
-  $("rPrec").onclick = function(){ rLun = new Date(rLun.getTime()-MS_S); disegnaRuota(); };
-  $("rSucc").onclick = function(){ rLun = new Date(rLun.getTime()+MS_S); disegnaRuota(); };
+  $("rPrec").onclick = function(){ rLun = spostaSettimane(rLun,-1); disegnaRuota(); };
+  $("rSucc").onclick = function(){ rLun = spostaSettimane(rLun,1); disegnaRuota(); };
   $("cerca").oninput = function(){
     var attivo = !this.value.trim();
     $("depositi").style.opacity = attivo ? "1" : ".4";
