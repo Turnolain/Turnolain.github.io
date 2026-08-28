@@ -82,6 +82,8 @@
   .turno-probabile .tp-variante{margin:12px 0 4px;font:700 11px/1.2 Arial,sans-serif;color:#555;text-transform:uppercase}
   .turno-probabile .tp-servizio{font:700 14px/1.55 "Courier New",monospace;font-variant-numeric:tabular-nums;word-spacing:2px}
   .turno-probabile .tp-speciale{color:var(--rossa)}
+  .foglio-mancante{margin:10px 0 16px;padding:13px 14px;border:2px solid var(--rossa);border-radius:8px;
+                   background:#FFF5EC;font-size:14px;line-height:1.45;color:var(--ink)}
 
   .giorni{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:20px 0 0}
   .g{text-align:center;padding:11px 2px 12px;border-radius:9px;background:var(--carta);border:2px solid var(--linea)}
@@ -426,10 +428,10 @@
 
   // ruoli ricavati dalle legende a piè di pagina dei fogli turni
   var RUOLI = {
-    scorta:    ["una","scorta polifunzione"],          // codice 808
-    scortabad: ["una","scorta polifunzione e badonista"], // codice 838
+    scorta:    ["una","scorta"],                       // codice 808
+    scortabad: ["una","scorta + badonista"],           // codice 838
     badonista: ["un","badonista"],                     // codice 807
-    supporto:  ["un","macchinista di supporto"],       // codice 806
+    supporto:  ["un","AOM"],                           // codice 806
     lavagista: ["un","lavagista"]                      // codice 839
   };
 
@@ -452,10 +454,15 @@
     Disponibile:"Il turno te lo assegna l'ufficio secondo le spettanze."
   };
 
-  function stagioneDi(d){
-    var m = d.getMonth()+1, g = d.getDate();
-    return ((m===7)||(m===8)||(m===9 && g<7)) ? 1 : 0;   // 1 estivo, 0 invernale
+  function foglioPerData(d){
+    var t=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime();
+    var estDa=new Date(2026,6,4).getTime(), estA=new Date(2026,8,6).getTime();
+    var invDa=new Date(2026,8,7).getTime(), invA=new Date(2027,6,3).getTime();
+    if(t>=estDa && t<=estA) return "est";
+    if(t>=invDa && t<=invA) return "inv";
+    return null;
   }
+  function stagioneDi(d){ return foglioPerData(d)==="est" ? 1 : 0; }
   function nomeStagione(d){ return stagioneDi(d) ? "foglio estivo" : "foglio invernale"; }
 
   /* Il valore indica quale colonna/programma viene realmente adottato in quella data.
@@ -471,7 +478,8 @@
   function righeTurno(dep,pos,data,variante){
     var programma = PROGRAMMI_DATA[isoLocale(data)] || variante;
     var speciale = programma==="spec";
-    var stagione = stagioneDi(data) ? "est" : "inv";
+    var stagione = foglioPerData(data);
+    if(!stagione) return null;
     var blocco = speciale ? TURNI_PRECISI.fiera : TURNI_PRECISI[stagione];
     var voce = blocco && blocco[dep.sigla] && blocco[dep.sigla][pos];
     return voce ? (speciale ? voce.spec : voce[programma]) : null;
@@ -494,12 +502,15 @@
     if(/\bRIPOSO\b/.test(testo)) return "Riposo";
     if(/\bSCO\b/.test(testo)) return "Scomputo";
 
+    var codici=(righe||[]).map(function(r){var m=String(r).match(/^\s*(\d+)\b/);return m?+m[1]:null;}).filter(Boolean);
+    var speciali={806:1,807:1,808:1,838:1,839:1};
+    var conServizioNormale=codici.some(function(c){return !speciali[c];});
     var ruolo="";
-    if(/(^|\s)839(\s|$)/.test(testo)) ruolo="lavagista";
-    else if(/(^|\s)838(\s|$)/.test(testo)) ruolo="scorta polifunzione e badonista";
-    else if(/(^|\s)808(\s|$)/.test(testo)) ruolo="scorta polifunzione";
-    else if(/(^|\s)807(\s|$)/.test(testo)) ruolo="badonista";
-    else if(/(^|\s)806(\s|$)/.test(testo)) ruolo="macchinista di supporto";
+    if(codici.indexOf(839)>=0) ruolo="lavagista";
+    else if(codici.indexOf(838)>=0) ruolo="scorta + badonista";
+    else if(codici.indexOf(808)>=0) ruolo="scorta";
+    else if(codici.indexOf(807)>=0) ruolo="badonista";
+    else if(codici.indexOf(806)>=0) ruolo="AOM";
 
     var ore=[], re=/(\d{1,2}):(\d{2})/g, m;
     while((m=re.exec(testo))) ore.push((+m[1])*60+(+m[2]));
@@ -512,11 +523,24 @@
     else if(inizio>=900 && fine<1440 && durata<=390) fascia="ridotta";
     else if(inizio<720) fascia="mattino";
     else fascia="pomeriggio";
-    return ruolo ? ruolo+" di "+fascia : fascia.charAt(0).toUpperCase()+fascia.slice(1);
+    var fasciaTitolo=fascia.charAt(0).toUpperCase()+fascia.slice(1);
+    if(!ruolo) return fasciaTitolo;
+    if(ruolo==="scorta + badonista") return "Scorta + badonista";
+    if(conServizioNormale) return fasciaTitolo+" con "+ruolo;
+    return ruolo.charAt(0).toUpperCase()+ruolo.slice(1)+" di "+fascia;
   }
   function descrizioneProbabile(dep,pos,data){
     var variante=data.getDay()===6?"sab":(data.getDay()===0?"fes":"fer");
     var tipo=fasciaProbabile(righeTurno(dep,pos,data,variante));
+    if(tipo==="Disponibile"){
+      var sp=SPETTANZE[pos%100] || [];
+      return "Disponibile"+(sp.length?" "+sp.join(" · ").toLowerCase():"");
+    }
+    return tipo;
+  }
+  function indicazioneStorica(dep,pos){
+    var voce=TURNI_PRECISI.inv && TURNI_PRECISI.inv[dep.sigla] && TURNI_PRECISI.inv[dep.sigla][pos];
+    var tipo=fasciaProbabile(voce && voce.fer);
     if(tipo==="Disponibile"){
       var sp=SPETTANZE[pos%100] || [];
       return "Disponibile"+(sp.length?" "+sp.join(" · ").toLowerCase():"");
@@ -531,12 +555,16 @@
       +servizioHTML(righeTurno(dep,pos,data,variante),pos,stato==="lavoro"||stato==="surr")+'</div>';
   }
   function turniSettimanaHTML(dep,pos,lun){
-    var sett=settimanaDi(pos), blocchi=[];
+    var sett=settimanaDi(pos), blocchi=[], giorniMancanti=[];
     for(var i=0;i<7;i++){
       var data=new Date(lun.getTime()+i*MS_G), g=sett[i], variante=i<5?"fer":(i===5?"sab":"fes");
       var speciale=PROGRAMMI_DATA[isoLocale(data)]==="spec", codice=g.pos||pos;
       var corpo;
-      if(g.stato==="riposo") corpo='<div class="tp-servizio">RIPOSO</div>';
+      if(!foglioPerData(data)){
+        giorniMancanti.push(i);
+        corpo='<div class="tp-servizio">FOGLIO TURNI NON DISPONIBILE</div>';
+      }
+      else if(g.stato==="riposo") corpo='<div class="tp-servizio">RIPOSO</div>';
       else if(g.stato==="sco") corpo='<div class="tp-servizio">SCOMPUTO</div>';
       else corpo=servizioHTML(righeTurno(dep,codice,data,variante),codice,true);
       var chiave=corpo+"|"+(speciale?1:0)+"|"+(g.stato==="surr"?codice:"");
@@ -545,6 +573,8 @@
       else blocchi.push({inizio:i,fine:i,chiave:chiave,corpo:corpo,speciale:speciale,codice:g.stato==="surr"?codice:null});
     }
     var html='<div class="turno-probabile"><p class="tp-titolo">Turni probabili della settimana</p>';
+    if(giorniMancanti.length) html+='<div class="foglio-mancante"><b>Non possiedo ancora il foglio turni di quel periodo.</b><br>'
+      +'Indicazione basata sui fogli precedenti: '+esc(indicazioneStorica(dep,pos))+'.</div>';
     blocchi.forEach(function(b){
       var a=new Date(lun.getTime()+b.inizio*MS_G), z=new Date(lun.getTime()+b.fine*MS_G), etichetta;
       if(b.inizio===b.fine) etichetta=GIORNI_EST[b.inizio]+" "+a.getDate()+" "+MESI[a.getMonth()];
@@ -617,6 +647,7 @@
   }
 
   function indizioHTML(pos, data, contesto){
+    if(!foglioPerData(data)) return "";
     var n = pos % 100, st = stagioneDi(data);
     var tab = TIPI[U.sigla], voce = tab && tab[pos];
 
@@ -830,6 +861,7 @@
   // Etichetta breve del tipo di turno, usata nell'elenco.
   function tipoBreve(dep, pos, data){
     if(SCHEMI[pos%100]==="surroga") return "Surrogante";
+    if(!foglioPerData(data)) return "Indicazione: "+indicazioneStorica(dep,pos);
     if(TURNI_PRECISI && TURNI_PRECISI[stagioneDi(data)?"est":"inv"]
        && TURNI_PRECISI[stagioneDi(data)?"est":"inv"][dep.sigla]
        && TURNI_PRECISI[stagioneDi(data)?"est":"inv"][dep.sigla][pos]) return descrizioneProbabile(dep,pos,data);
