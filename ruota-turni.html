@@ -163,6 +163,9 @@
   .grazie.on .grazie-card{transform:scale(1)}
   .grazie-cuore{color:var(--rossa);font-size:48px;line-height:1;animation:battito .7s ease-in-out 2}
   .grazie-testo{margin:12px 0 0;font-size:20px;font-weight:800;line-height:1.3}
+  .versione-app{position:fixed;right:8px;bottom:6px;z-index:90;padding:3px 7px;border-radius:6px;
+                background:rgba(35,35,35,.82);color:#fff;font:800 10px/1.2 Arial,sans-serif;
+                letter-spacing:.08em;pointer-events:none}
   @keyframes battito{0%,100%{transform:scale(1)}45%{transform:scale(1.25)}}
 </style>
 </head>
@@ -273,6 +276,7 @@
 <div class="grazie" id="grazie" aria-hidden="true">
   <div class="grazie-card"><div class="grazie-cuore">♥</div><p class="grazie-testo">Grazie per l'aiuto che mi dai!</p></div>
 </div>
+<div class="versione-app" aria-label="Versione applicazione">v0.1</div>
 
 <script src="turni-precisi.js"></script>
 <script>
