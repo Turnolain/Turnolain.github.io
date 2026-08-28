@@ -300,7 +300,7 @@
   </div>
 </div>
 <img class="gatti-angolo" id="gattiAngolo" src="gatti-chiara.png" alt="" aria-hidden="true">
-<div class="versione-app" aria-label="Versione applicazione">v0.12</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.13</div>
 
 <script src="turni-precisi.js"></script>
 <script>
@@ -536,7 +536,7 @@
   }
   function disponibileHTML(pos){
     var sp=SPETTANZE[pos%100] || [];
-    return '<div class="tp-servizio"><b>DISPONIBILE'+(sp.length?' '+sp.map(esc).join(' · ').toUpperCase():'')+'</b></div>';
+    return '<div class="tp-servizio"><b>DISPONIBILE'+(sp.length?' '+sp.map(esc).join(', ').toUpperCase():'')+'</b></div>';
   }
   function servizioHTML(righe,pos,convertiInDisponibile){
     var testo=(righe||[]).join(" ").toUpperCase();
@@ -579,6 +579,18 @@
     if(conServizioNormale) return fasciaTitolo+" con "+ruolo;
     return ruolo.charAt(0).toUpperCase()+ruolo.slice(1)+" di "+fascia;
   }
+  function sintesiTurnoGenerica(righe){
+    var testo=(righe||[]).join(" ").toUpperCase();
+    var ore=[], re=/(\d{1,2}):(\d{2})/g, m;
+    while((m=re.exec(testo))) ore.push((+m[1])*60+(+m[2]));
+    if(ore.length<2) return fasciaProbabile(righe);
+    var inizio=ore[0], fine=ore[ore.length-1], fineAssoluta=fine;
+    if(fineAssoluta<inizio) fineAssoluta+=1440;
+    var durata=fineAssoluta-inizio;
+    if(fine<inizio || fine<300) return "Notte";
+    if(inizio>=900 && fine<1440 && durata<=390) return "Ridotta";
+    return inizio<720 ? "Mattino" : "Pomeriggio";
+  }
   function servizioEtichettatoHTML(dep,codiceTurno,righe,pos,convertiInDisponibile){
     var corpo=servizioHTML(righe,pos,convertiInDisponibile);
     var testo=(righe||[]).join(" ").toUpperCase();
@@ -587,7 +599,7 @@
     return '<div class="tp-turno-dettaglio">'
       +'<span class="tp-codice-turno">'+esc(codDi(dep,codiceTurno))+'</span>'
       +'<div class="tp-orari">'+corpo+'</div>'
-      +'<span class="tp-sintesi-turno">'+esc(fasciaProbabile(righe))+'</span>'
+      +'<span class="tp-sintesi-turno">'+esc(sintesiTurnoGenerica(righe))+'</span>'
       +'</div>';
   }
   function descrizioneProbabile(dep,pos,data){
