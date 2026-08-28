@@ -285,11 +285,11 @@
   <div class="grazie-card">
     <div class="grazie-cuore">♥</div>
     <img class="grazie-gatti" src="gatti-chiara.png" alt="Un gatto arancione e un gatto bianco e nero con gli occhi a cuore">
-    <p class="grazie-testo">Grazie per l'aiuto che mi dai!</p>
+    <p class="grazie-testo" id="grazieTesto">Grazie per l'aiuto che mi dai!</p>
   </div>
 </div>
 <img class="gatti-angolo" id="gattiAngolo" src="gatti-chiara.png" alt="" aria-hidden="true">
-<div class="versione-app" aria-label="Versione applicazione">v0.9</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.10</div>
 
 <script src="turni-precisi.js"></script>
 <script>
@@ -756,6 +756,9 @@
     $("gattiAngolo").classList.remove("on");
     if(!amici[mat]) return;
     var el=$("grazie");
+    $("grazieTesto").textContent = mat === "73703"
+      ? "Ciao Fra! Grazie per l'aiuto!"
+      : "Grazie per l'aiuto che mi dai!";
     el.classList.toggle("chiara",chiara);
     el.classList.add("on"); el.setAttribute("aria-hidden","false");
     grazieTimer=setTimeout(function(){
