@@ -162,7 +162,15 @@
                border-radius:20px;box-shadow:7px 7px 0 var(--rossa);transform:scale(.82);transition:transform .25s ease}
   .grazie.on .grazie-card{transform:scale(1)}
   .grazie-cuore{color:var(--rossa);font-size:48px;line-height:1;animation:battito .7s ease-in-out 2}
+  .grazie-gatti{display:none;width:220px;max-width:78vw;height:auto;margin:0 auto;animation:battito .7s ease-in-out 2}
+  .grazie.chiara .grazie-cuore{display:none}
+  .grazie.chiara .grazie-gatti{display:block}
   .grazie-testo{margin:12px 0 0;font-size:20px;font-weight:800;line-height:1.3}
+  .gatti-angolo{position:fixed;left:10px;bottom:7px;z-index:80;width:92px;height:auto;
+                opacity:0;transform:translateY(18px) scale(.82);pointer-events:none;
+                filter:drop-shadow(0 3px 4px rgba(35,35,35,.22));
+                transition:opacity .35s ease,transform .45s cubic-bezier(.2,.8,.2,1.25)}
+  .gatti-angolo.on{opacity:1;transform:translateY(0) scale(1)}
   .versione-app{position:fixed;right:8px;bottom:6px;z-index:90;padding:3px 7px;border-radius:6px;
                 background:rgba(35,35,35,.82);color:#fff;font:800 10px/1.2 Arial,sans-serif;
                 letter-spacing:.08em;pointer-events:none}
@@ -274,9 +282,14 @@
 </div>
 
 <div class="grazie" id="grazie" aria-hidden="true">
-  <div class="grazie-card"><div class="grazie-cuore">♥</div><p class="grazie-testo">Grazie per l'aiuto che mi dai!</p></div>
+  <div class="grazie-card">
+    <div class="grazie-cuore">♥</div>
+    <img class="grazie-gatti" src="gatti-chiara.png" alt="Un gatto arancione e un gatto bianco e nero con gli occhi a cuore">
+    <p class="grazie-testo">Grazie per l'aiuto che mi dai!</p>
+  </div>
 </div>
-<div class="versione-app" aria-label="Versione applicazione">v0.7</div>
+<img class="gatti-angolo" id="gattiAngolo" src="gatti-chiara.png" alt="" aria-hidden="true">
+<div class="versione-app" aria-label="Versione applicazione">v0.9</div>
 
 <script src="turni-precisi.js"></script>
 <script>
@@ -594,7 +607,7 @@
         corpo='<div class="tp-servizio">FOGLIO TURNI NON DISPONIBILE</div>';
       }
       else if(g.stato==="riposo") corpo='<div class="tp-servizio">RIPOSO</div>';
-      else if(g.stato==="matto") corpo='<div class="riposo-matto">RIPOSO MATTO<br>Verifica il turno di lavoro</div>';
+      else if(g.stato==="matto") corpo='<div class="riposo-matto">Possibile RIPOSO MATTO<br>Verifica il turno su Attilio</div>';
       else if(g.stato==="sco") corpo='<div class="tp-servizio">SCOMPUTO</div>';
       else corpo=servizioHTML(righeTurno(dep,rigaFonte,data,variante),rigaFonte,true);
       var chiave=corpo+"|"+(speciale?1:0)+"|"+(g.stato==="surr"?codice:"");
@@ -649,9 +662,7 @@
   }
 
   function haRiposoMatto(dep,pos){
-    if(dep.sigla==="PR" && pos%100===14) return true;
-    if(dep.sigla==="BIS" && pos===214) return true;
-    return false;
+    return pos%100===14;
   }
   function settimanaDiDeposito(dep,pos){
     var sett=settimanaDi(pos);
@@ -708,6 +719,8 @@
     xs[x].innerHTML = CHIUDI_SVG;
     xs[x].onclick = function(){
       U = null;
+      nascondiGrazie();
+      $("gattiAngolo").classList.remove("on");
       $("matricola").value = "";
       $("erroreMatricola").textContent = "";
       mostra("accesso");
@@ -728,12 +741,27 @@
     window.scrollTo(0,0);
   }
 
+  var grazieTimer = null, gattiTimer = null;
+
+  function nascondiGrazie(){
+    clearTimeout(grazieTimer); clearTimeout(gattiTimer);
+    var el=$("grazie");
+    el.classList.remove("on","chiara");
+    el.setAttribute("aria-hidden","true");
+  }
+
   function mostraGrazie(mat){
     var amici={"73703":1,"70549":1,"74483":1,"72700":1};
+    var chiara = mat === "70549";
+    $("gattiAngolo").classList.remove("on");
     if(!amici[mat]) return;
     var el=$("grazie");
+    el.classList.toggle("chiara",chiara);
     el.classList.add("on"); el.setAttribute("aria-hidden","false");
-    setTimeout(function(){el.classList.remove("on");el.setAttribute("aria-hidden","true");},1900);
+    grazieTimer=setTimeout(function(){
+      el.classList.remove("on"); el.setAttribute("aria-hidden","true");
+      if(chiara) $("gattiAngolo").classList.add("on");
+    },1900);
   }
 
   function entra(){
@@ -800,7 +828,7 @@
     var voci=[];
     sett.forEach(function(g,i){
       if(g.stato==="sco") voci.push(GIORNI_EST[i]+" scomputo");
-      else if(g.stato==="matto") voci.push(GIORNI_EST[i]+" riposo matto: verifica il turno di lavoro");
+      else if(g.stato==="matto") voci.push(GIORNI_EST[i]+" possibile riposo matto: verifica il turno su Attilio");
       else if(g.stato==="riposo") voci.push("riposo "+GIORNI_EST[i]);
     });
     var testo=unisciEventi(voci);
@@ -816,7 +844,7 @@
     $("qQuando").textContent = fmt(lun)+" – "+fmt(dom)+" "+dom.getFullYear();
     $("qCodice").textContent = cod(pos);
 
-    var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surr:"Oggi surroga", matto:"Riposo matto"};
+    var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surr:"Oggi surroga", matto:"Possibile riposo matto"};
     $("qBollo").innerHTML = corrente ? '<span class="bollo '+g.stato+'">'+et[g.stato]+'</span>' : '';
 
     if(SCHEMI[pos%100]==="surroga") $("qNota").innerHTML = "Surroga da martedì a sabato · riposo <b>lunedì e domenica</b>.";
