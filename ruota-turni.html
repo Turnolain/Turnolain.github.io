@@ -722,6 +722,22 @@
     }).join("");
   }
 
+  function unisciEventi(voci){
+    if(!voci.length) return "";
+    if(voci.length===1) return voci[0];
+    if(voci.length===2) return voci[0]+" e "+voci[1];
+    return voci.slice(0,-1).join(", ")+" e "+voci[voci.length-1];
+  }
+  function riepilogoSettimana(sett){
+    var voci=[];
+    sett.forEach(function(g,i){
+      if(g.stato==="sco") voci.push(GIORNI_EST[i]+" scomputo");
+      else if(g.stato==="riposo") voci.push("riposo "+GIORNI_EST[i]);
+    });
+    var testo=unisciEventi(voci);
+    return testo ? testo.charAt(0).toUpperCase()+testo.slice(1) : "Nessun riposo indicato";
+  }
+
   function disegnaQuesta(){
     var oggi = new Date(), lun = qLun, corrente=lun.getTime()===lunediDi(oggi).getTime();
     var gi = corrente ? (oggi.getDay()+6)%7 : -1;
@@ -734,9 +750,8 @@
     var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surr:"Oggi surroga"};
     $("qBollo").innerHTML = corrente ? '<span class="bollo '+g.stato+'">'+et[g.stato]+'</span>' : '';
 
-    var rip = sett.map(function(x,i){return x.stato==="riposo"?GIORNI_EST[i]:null;}).filter(Boolean);
     if(SCHEMI[pos%100]==="surroga") $("qNota").innerHTML = "Surroga da martedì a sabato · riposo <b>lunedì e domenica</b>.";
-    else $("qNota").innerHTML = "Riposo <b>"+rip.join(" e ")+"</b>"+(sett.some(function(x){return x.stato==="sco";})?" · uno scomputo":"")+".";
+    else $("qNota").textContent = riepilogoSettimana(sett)+".";
 
     var el = $("qIndizio");
     el.innerHTML = SCHEMI[pos%100]==="surroga" ? "" : indizioHTML(pos, new Date(lun.getTime()+2*MS_G), "dal lunedì al venerdì");
@@ -785,9 +800,7 @@
     if(SCHEMI[pos%100]==="surroga"){
       $("sNota").innerHTML = "Settimana di <b>surroga</b>: da martedì a sabato si scala da "+cod(pos-1)+" a "+cod(pos-5)+".";
     } else {
-      var rip = sett.map(function(g,i){ return g.stato==="riposo" ? GIORNI_EST[i] : null; }).filter(Boolean);
-      var sco = sett.some(function(g){ return g.stato==="sco"; });
-      $("sNota").innerHTML = "Riposo <b>"+rip.join(" e ")+"</b>"+(sco?" · uno scomputo in settimana":"")+".";
+      $("sNota").textContent = riepilogoSettimana(sett)+".";
     }
 
     var el = $("sIndizio");
@@ -834,10 +847,8 @@
     if(occ && dep===U.dep && occ[1]===U.mat) cl.push("io");
     if(surr) cl.push("surrweek");
 
-    var rip = surr ? "surroga da martedì a sabato"
-      : "riposo " + settimanaDi(p)
-          .map(function(g,j){ return g.stato==="riposo" ? GIORNI[j].toLowerCase() : null; })
-          .filter(Boolean).join(" e ");
+    var rip = surr ? "surroga da martedì a sabato · riposo lunedì e domenica"
+      : riepilogoSettimana(settimanaDi(p)).toLowerCase();
 
     var sotto = (mostraDep ? dep.nome + " · " : "") + rip;
 
