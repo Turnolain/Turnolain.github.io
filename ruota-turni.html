@@ -144,7 +144,9 @@
               letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
   .avviso{margin:16px 0 0;padding:13px 16px;border-radius:12px;background:var(--carta);
           border:2px dashed var(--ink);font-size:15px;font-weight:600;color:var(--soft)}
-  ol li.vuota .nome{color:var(--soft);font-style:italic;font-weight:500}
+  ol li.vuota{margin:6px 0;padding:14px 12px;background:#FFF5EC;border:2px dashed var(--rossa);border-radius:10px}
+  ol li.vuota .nome{color:var(--ink);font-style:normal;font-weight:800}
+  ol li.vuota .nome em{color:var(--rossa);font-weight:800}
   ol li.io{background:var(--carta);box-shadow:inset 5px 0 0 var(--rossa);padding-left:14px;margin-left:-10px}
   ol li.surrweek .pos{color:var(--rossa)}
   ol li.con-dettaglio{display:block;cursor:pointer}
@@ -322,7 +324,7 @@
       ruota:[
         ["Giannitto","66969"],["Cosoleto","72112"],["Remigi","72955"],["Riso","71029"],
         ["Manzoni","60916"],["Rivolta","68181"],["Costa","68303"],["Condello","67335"],
-        ["Stillittano","70834"],["Migliozzi","68486"],["Bellomo","67936"],["Motta","66264"],
+        null,["Migliozzi","68486"],["Bellomo","67936"],null,
         ["Spensierato","70858"],["Mongiello","69003"],["Pinos","70303"],["Mangione","68197"],
         ["Lentini","68533"],
 
@@ -867,7 +869,7 @@
 
   // Costruisce una riga dell'elenco. mostraDep = mostra il nome del deposito.
   function rigaHTML(dep, p, occ, mostraDep, data){
-    var nome  = occ ? occ[0] : "non in ruota";
+    var nome  = occ ? occ[0] : "Turno scoperto";
     var surr  = SCHEMI[p%100]==="surroga", cl = [];
     if(!occ) cl.push("vuota");
     if(occ && dep===U.dep && occ[1]===U.mat) cl.push("io");
@@ -876,7 +878,9 @@
     var rip = surr ? "surroga da martedì a sabato · riposo lunedì e domenica"
       : riepilogoSettimana(settimanaDi(p)).toLowerCase();
 
-    var sotto = (mostraDep ? dep.nome + " · " : "") + rip;
+    var sotto = occ
+      ? (mostraDep ? dep.nome + " · " : "") + rip
+      : (mostraDep ? dep.nome + " · " : "") + "o collega non presente in ruota";
 
     if(occ) cl.push("con-dettaglio");
     var lun = new Date(data.getTime()-2*MS_G);
@@ -901,7 +905,7 @@
         var d = DEPOSITI[sig], ps = posizioniDi(d), tot = ps.length;
         for(var i=0;i<ps.length;i++){
           var occ = d.ruota[ ((i - k) % tot + tot) % tot ];
-          var nome = occ ? occ[0] : "non in ruota";
+          var nome = occ ? occ[0] : "turno scoperto o collega non presente in ruota";
           if(nome.toLowerCase().indexOf(filtro)<0 && codDi(d,ps[i]).toLowerCase().indexOf(filtro)<0) continue;
           righe += rigaHTML(d, ps[i], occ, true, mer);
           quanti++;
