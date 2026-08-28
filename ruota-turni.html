@@ -71,6 +71,7 @@
   .bollo.riposo{background:var(--carta);color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink)}
   .bollo.sco{background:var(--ottone);color:#fff}
   .bollo.surr{background:var(--rossa);color:#fff}
+  .bollo.matto{background:#FFF5EC;color:var(--rossa);box-shadow:inset 0 0 0 3px var(--rossa)}
 
   .indizio{margin:16px 0 0;padding:16px 18px;border-radius:14px;background:var(--carta);border:2px dashed var(--ink)}
   .indizio .cap{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin:0 0 4px}
@@ -84,6 +85,8 @@
   .turno-probabile .tp-speciale{color:var(--rossa)}
   .foglio-mancante{margin:10px 0 16px;padding:13px 14px;border:2px solid var(--rossa);border-radius:8px;
                    background:#FFF5EC;font-size:14px;line-height:1.45;color:var(--ink)}
+  .riposo-matto{padding:12px 14px;border:2px solid var(--rossa);border-radius:8px;background:#FFF5EC;
+                color:var(--rossa);font:800 14px/1.4 Arial,sans-serif;letter-spacing:.03em}
 
   .giorni{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:20px 0 0}
   .g{text-align:center;padding:11px 2px 12px;border-radius:9px;background:var(--carta);border:2px solid var(--linea)}
@@ -95,6 +98,8 @@
   .g.sco .d,.g.sco .v{color:#fff}
   .g.surr{background:var(--rossa);border-color:var(--rossa)}
   .g.surr .d,.g.surr .v{color:#fff}
+  .g.matto{background:#FFF5EC;border-color:var(--rossa)}
+  .g.matto .d,.g.matto .v{color:var(--rossa)}
   .legenda{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 0;font-size:15px;color:var(--soft);font-weight:600}
   .legenda i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 
@@ -348,13 +353,13 @@
   /* ==========================================================
      2. SCHEMA DEI SETTE GIORNI (uguale per tutti i depositi)
      ========================================================== */
-  var L="lavoro", R="riposo", S="sco";
+  var L="lavoro", R="riposo", S="sco", M="matto";
   var SCHEMI = {
      1:[L,L,L,L,L,R,L],  2:[L,L,L,L,R,L,L],  3:[L,L,L,R,L,L,L],
      4:[L,L,R,L,L,L,L],  5:[L,R,L,L,L,L,L],  6:"surroga",
      7:[L,L,L,L,L,S,R],  8:[L,L,L,L,L,R,S],  9:[L,L,L,L,R,L,L],
     10:[L,L,L,R,L,L,L], 11:[L,L,R,L,L,L,L], 12:[L,R,L,L,L,L,L],
-    13:"surroga",       14:[L,L,L,L,L,R,R], 15:[L,L,L,L,L,S,R],
+    13:"surroga",       14:[L,L,L,L,L,M,R], 15:[L,L,L,L,L,S,R],
     16:[L,L,L,L,L,R,S], 17:[L,L,L,L,L,R,R]
   };
 
@@ -561,14 +566,18 @@
     for(var i=0;i<7;i++){
       var data=new Date(lun.getTime()+i*MS_G), g=sett[i], variante=i<5?"fer":(i===5?"sab":"fes");
       var speciale=PROGRAMMI_DATA[isoLocale(data)]==="spec", codice=g.pos||pos;
+      /* La surroga feriale copia il servizio della posizione coperta.
+         Il sabato, invece, il servizio specifico è stampato sulla riga del surrogante. */
+      var rigaFonte=(g.stato==="surr" && i>=1 && i<=4) ? codice : pos;
       var corpo;
       if(!foglioPerData(data)){
         giorniMancanti.push(i);
         corpo='<div class="tp-servizio">FOGLIO TURNI NON DISPONIBILE</div>';
       }
       else if(g.stato==="riposo") corpo='<div class="tp-servizio">RIPOSO</div>';
+      else if(g.stato==="matto") corpo='<div class="riposo-matto">RIPOSO MATTO<br>Verifica il turno di lavoro</div>';
       else if(g.stato==="sco") corpo='<div class="tp-servizio">SCOMPUTO</div>';
-      else corpo=servizioHTML(righeTurno(dep,pos,data,variante),pos,true);
+      else corpo=servizioHTML(righeTurno(dep,rigaFonte,data,variante),rigaFonte,true);
       var chiave=corpo+"|"+(speciale?1:0)+"|"+(g.stato==="surr"?codice:"");
       var ultimo=blocchi[blocchi.length-1];
       if(ultimo && ultimo.chiave===chiave) ultimo.fine=i;
@@ -616,7 +625,7 @@
       return out;
     }
     return sch.map(function(s){
-      return {stato:s, testo:(s===R?"—":(s===S?"SCO":String(pos))), pos:(s===L?pos:null)};
+      return {stato:s, testo:(s===R?"—":(s===S?"SCO":(s===M?"?":String(pos)))), pos:(s===L?pos:null)};
     });
   }
 
@@ -746,6 +755,7 @@
     var voci=[];
     sett.forEach(function(g,i){
       if(g.stato==="sco") voci.push(GIORNI_EST[i]+" scomputo");
+      else if(g.stato==="matto") voci.push(GIORNI_EST[i]+" riposo matto: verifica il turno di lavoro");
       else if(g.stato==="riposo") voci.push("riposo "+GIORNI_EST[i]);
     });
     var testo=unisciEventi(voci);
@@ -761,7 +771,7 @@
     $("qQuando").textContent = fmt(lun)+" – "+fmt(dom)+" "+dom.getFullYear();
     $("qCodice").textContent = cod(pos);
 
-    var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surr:"Oggi surroga"};
+    var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surr:"Oggi surroga", matto:"Riposo matto"};
     $("qBollo").innerHTML = corrente ? '<span class="bollo '+g.stato+'">'+et[g.stato]+'</span>' : '';
 
     if(SCHEMI[pos%100]==="surroga") $("qNota").innerHTML = "Surroga da martedì a sabato · riposo <b>lunedì e domenica</b>.";
