@@ -374,7 +374,7 @@
      4:[L,L,R,L,L,L,L],  5:[L,R,L,L,L,L,L],  6:"surroga",
      7:[L,L,L,L,L,S,R],  8:[L,L,L,L,L,R,S],  9:[L,L,L,L,R,L,L],
     10:[L,L,L,R,L,L,L], 11:[L,L,R,L,L,L,L], 12:[L,R,L,L,L,L,L],
-    13:"surroga",       14:[L,L,L,L,L,M,R], 15:[L,L,L,L,L,S,R],
+    13:"surroga",       14:[L,L,L,L,L,R,R], 15:[L,L,L,L,L,S,R],
     16:[L,L,L,L,L,R,S], 17:[L,L,L,L,L,R,R]
   };
 
@@ -577,7 +577,7 @@
       +servizioHTML(righeTurno(dep,pos,data,variante),pos,stato==="lavoro"||stato==="surr")+'</div>';
   }
   function turniSettimanaHTML(dep,pos,lun){
-    var sett=settimanaDi(pos), blocchi=[], giorniMancanti=[];
+    var sett=settimanaDiDeposito(dep,pos), blocchi=[], giorniMancanti=[];
     for(var i=0;i<7;i++){
       var data=new Date(lun.getTime()+i*MS_G), g=sett[i], variante=i<5?"fer":(i===5?"sab":"fes");
       var speciale=PROGRAMMI_DATA[isoLocale(data)]==="spec", codice=g.pos||pos;
@@ -642,6 +642,17 @@
     return sch.map(function(s){
       return {stato:s, testo:(s===R?"—":(s===S?"SCO":(s===M?"?":String(pos)))), pos:(s===L?pos:null)};
     });
+  }
+
+  function haRiposoMatto(dep,pos){
+    if(dep.sigla==="PR" && pos%100===14) return true;
+    if(dep.sigla==="BIS" && pos===214) return true;
+    return false;
+  }
+  function settimanaDiDeposito(dep,pos){
+    var sett=settimanaDi(pos);
+    if(haRiposoMatto(dep,pos)) sett[5]={stato:M,testo:"?",pos:null};
+    return sett;
   }
 
   function lunediDi(d){
@@ -796,7 +807,7 @@
     var oggi = new Date(), lun = qLun, corrente=lun.getTime()===lunediDi(oggi).getTime();
     var gi = corrente ? (oggi.getDay()+6)%7 : -1;
     var dom = new Date(lun.getTime()+6*MS_G);
-    var pos = posizioneDi(U.base, lun), sett = settimanaDi(pos), g = gi>=0 ? sett[gi] : null;
+    var pos = posizioneDi(U.base, lun), sett = settimanaDiDeposito(U.dep,pos), g = gi>=0 ? sett[gi] : null;
 
     $("qQuando").textContent = fmt(lun)+" – "+fmt(dom)+" "+dom.getFullYear();
     $("qCodice").textContent = cod(pos);
@@ -848,7 +859,7 @@
   function disegnaSettimana(){
     var dom = new Date(sLun.getTime()+6*MS_G);
     $("sQuando").textContent = "Settimana da lunedì "+fmt(sLun)+" a domenica "+fmt(dom)+" "+dom.getFullYear();
-    var pos = posizioneDi(U.base, sLun), sett = settimanaDi(pos);
+    var pos = posizioneDi(U.base, sLun), sett = settimanaDiDeposito(U.dep,pos);
     $("sCodice").textContent = cod(pos);
 
     if(SCHEMI[pos%100]==="surroga"){
@@ -904,7 +915,7 @@
     if(surr) cl.push("surrweek");
 
     var rip = surr ? "surroga da martedì a sabato · riposo lunedì e domenica"
-      : riepilogoSettimana(settimanaDi(p)).toLowerCase();
+      : riepilogoSettimana(settimanaDiDeposito(dep,p)).toLowerCase();
 
     var sotto = occ
       ? (mostraDep ? dep.nome + " · " : "") + rip
