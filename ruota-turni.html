@@ -155,6 +155,15 @@
   ol li.con-dettaglio.aperto .dettaglio-turno{display:block}
 
   footer{margin-top:34px;padding-top:20px;border-top:3px solid var(--ink);font-size:15px;line-height:1.6;color:var(--soft);font-weight:500}
+  .grazie{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;
+          background:rgba(35,35,35,.34);opacity:0;pointer-events:none;transition:opacity .2s ease}
+  .grazie.on{opacity:1}
+  .grazie-card{max-width:330px;padding:26px 24px;text-align:center;background:#fff;border:3px solid var(--ink);
+               border-radius:20px;box-shadow:7px 7px 0 var(--rossa);transform:scale(.82);transition:transform .25s ease}
+  .grazie.on .grazie-card{transform:scale(1)}
+  .grazie-cuore{color:var(--rossa);font-size:48px;line-height:1;animation:battito .7s ease-in-out 2}
+  .grazie-testo{margin:12px 0 0;font-size:20px;font-weight:800;line-height:1.3}
+  @keyframes battito{0%,100%{transform:scale(1)}45%{transform:scale(1.25)}}
 </style>
 </head>
 <body>
@@ -261,6 +270,10 @@
   </footer>
 </div>
 
+<div class="grazie" id="grazie" aria-hidden="true">
+  <div class="grazie-card"><div class="grazie-cuore">♥</div><p class="grazie-testo">Grazie per l'aiuto che mi dai!</p></div>
+</div>
+
 <script src="turni-precisi.js"></script>
 <script>
 (function(){
@@ -299,8 +312,8 @@
     GAL: {
       nome:"Gallaratese", sigla:"GAL", gruppi:3,
       ruota:[
-        ["Rignanese","70420"],["Verzelletti","72957"],["Acquistapace","68626"],["Passavanti","72101"],
-        ["Sola","74498"],["Squaratti","68539"],["Battilana","66715"],["Lazzari","73702"],
+        ["Verzelletti","72957"],["Acquistapace","68626"],["Passavanti","72101"],["Sola","74498"],
+        ["Squaratti","68539"],null,["Battilana","66715"],["Lazzari","73702"],
         ["Borrelli","68481"],["Brusca","68247"],["Garofalo C.","62065"],["Lovino","64568"],
         ["Lodigiani Roncali","69589"],["Trotti","68001"],["Garofalo","70867"],["Marini","67996"],
         ["Castellana","67815"],
@@ -309,13 +322,13 @@
         ["Lo Bosco","68214"],["Adamo","66967"],["Risotto","60908"],["Deiana","63264"],
         ["D'Angelo","68198"],["Bonavetti","68027"],["Alfarano","73696"],["Fontana","67023"],
         ["Garghetti","66999"],["Santambrogio","64951"],["Passiatore","68305"],["Bergami","72950"],
-        null,
+        ["Paradiso","65081"],
 
-        ["Paradiso","65081"],["Malangone","60915"],["Cicala","71017"],["Ronchi","60281"],
-        ["Croci","72692"],["Polito","67003"],["Aliperta","74477"],["India","67672"],
-        ["Amodeo","72406"],["Fadda","67809"],["Staffoni","62934"],["Inzaina","68200"],
-        ["Berlinghieri","70367"],["Zanetello","72835"],["Argento","72461"],["Colantuono","69885"],
-        ["Niosi","72697"]
+        ["Malangone","60915"],["Cicala","71017"],["Ronchi","60281"],["Croci","72692"],
+        ["Polito","67003"],["Aliperta","74477"],["India","67672"],["Amodeo","72406"],
+        ["Fadda","67809"],["Staffoni","62934"],["Inzaina","68200"],["Berlinghieri","70367"],
+        ["Zanetello","72835"],["Argento","72461"],["Colantuono","69885"],["Niosi","72697"],
+        ["Rignanese","70420"]
       ]
     },
 
@@ -700,6 +713,14 @@
     window.scrollTo(0,0);
   }
 
+  function mostraGrazie(mat){
+    var amici={"73703":1,"70549":1,"74483":1,"72700":1};
+    if(!amici[mat]) return;
+    var el=$("grazie");
+    el.classList.add("on"); el.setAttribute("aria-hidden","false");
+    setTimeout(function(){el.classList.remove("on");el.setAttribute("aria-hidden","true");},1900);
+  }
+
   function entra(){
     var v = $("matricola").value.replace(/\D/g,""), err = $("erroreMatricola");
     if(v.length < 4){ err.textContent = "Servono almeno quattro cifre."; return; }
@@ -725,6 +746,7 @@
     $("guidaCerca").textContent =
       "Digita un cognome: lo cerco in tutti i depositi. A campo vuoto scorri la ruota del deposito scelto.";
     mostra("menu");
+    mostraGrazie(v);
   }
   $("entra").onclick = entra;
   $("matricola").addEventListener("keydown", function(e){ if(e.key==="Enter") entra(); });
