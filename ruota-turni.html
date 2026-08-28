@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#F58220">
+<title>Ruota turni</title>
+<style>
+  :root{
+    --bone:#F1F2F2; --carta:#FFFFFF; --ink:#232323; --soft:#666666;
+    --rossa:#F58220; --ottone:#6D6E71; --linea:rgba(35,35,35,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:linear-gradient(#F58220 0 10px,var(--bone) 10px 100%);color:var(--ink);
+    font:500 18px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    max-width:540px;margin:0 auto;-webkit-text-size-adjust:100%;
+  }
+  .schermata{display:none;padding:0 20px 60px}
+  .schermata.attiva{display:block}
+
+  .barra{display:flex;align-items:center;gap:14px;padding:16px 0 20px}
+  .casa{flex:0 0 54px;height:54px;display:flex;align-items:center;justify-content:center;
+        background:var(--carta);border:3px solid var(--ink);border-radius:14px;cursor:pointer;padding:0}
+  .casa:active{transform:translateY(2px)}
+  .chiudi{margin-left:auto;flex:0 0 54px;height:54px;display:flex;align-items:center;justify-content:center;
+          background:var(--rossa);border:3px solid var(--ink);border-radius:14px;cursor:pointer;padding:0}
+  .chiudi:active{transform:translateY(2px)}
+  .chiudi svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round}
+  .casa svg{width:26px;height:26px;fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .barra .chiIo{font-size:15px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);line-height:1.3}
+
+  .occhiello{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);font-weight:800;margin:0 0 10px}
+  h1{font-size:34px;line-height:1.1;margin:0 0 12px;letter-spacing:-.02em;font-weight:800}
+  h2{font-size:26px;line-height:1.2;margin:0 0 6px;letter-spacing:-.015em;font-weight:800}
+  p.guida{margin:0 0 24px;color:var(--soft);font-size:18px;font-weight:500}
+
+  #accesso{padding-top:12vh}
+  .campo{width:100%;font:800 34px/1 inherit;letter-spacing:.08em;text-align:center;color:var(--ink);
+         background:var(--carta);border:3px solid var(--ink);border-radius:14px;padding:20px 12px;font-variant-numeric:tabular-nums}
+  .campo::placeholder{color:#C4BCA8;font-weight:800}
+  .campo:focus{outline:4px solid var(--rossa);outline-offset:2px}
+  .errore{margin:16px 0 0;color:var(--rossa);font-size:17px;font-weight:700;min-height:24px}
+  .bottone{display:block;width:100%;margin-top:16px;font:800 20px/1 inherit;color:#fff;
+           background:var(--rossa);border:3px solid var(--ink);border-radius:14px;padding:20px;cursor:pointer;
+           box-shadow:4px 4px 0 var(--ink)}
+  .bottone:active{transform:translateY(2px)}
+
+  .scelte{list-style:none;margin:0;padding:0}
+  .scelte li{margin-bottom:16px}
+  .scelta{display:block;width:100%;text-align:left;cursor:pointer;background:var(--carta);
+          border:3px solid var(--ink);border-radius:16px;padding:22px;font:inherit;color:var(--ink);
+          box-shadow:5px 5px 0 var(--rossa)}
+  .scelta:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+  .scelta b{display:block;font-size:23px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+  .scelta span{display:block;margin-top:6px;font-size:17px;color:var(--soft);font-weight:500}
+
+  .quando{font-size:17px;font-weight:700;color:var(--soft);margin:0 0 14px}
+  .riquadro{background:var(--carta);border:3px solid var(--ink);border-radius:18px;padding:26px 20px;
+            box-shadow:5px 5px 0 var(--ink);text-align:center}
+  .riquadro .chi{font-size:16px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin:0 0 10px}
+  .grande{font-size:60px;line-height:.95;font-weight:800;letter-spacing:-.035em;margin:0;font-variant-numeric:tabular-nums}
+  .grande.parola{font-size:44px;letter-spacing:-.02em}
+  .sotto{margin:16px 0 0;font-size:18px;color:var(--soft);font-weight:500}
+  .sotto b{color:var(--ink);font-weight:800}
+  .bollo{display:inline-block;margin:16px 0 0;padding:10px 20px;border-radius:999px;font-size:15px;
+         font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+  .bollo.lavoro{background:var(--ink);color:var(--bone)}
+  .bollo.riposo{background:var(--carta);color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink)}
+  .bollo.sco{background:var(--ottone);color:#fff}
+  .bollo.surr{background:var(--rossa);color:#fff}
+
+  .indizio{margin:16px 0 0;padding:16px 18px;border-radius:14px;background:var(--carta);border:2px dashed var(--ink)}
+  .indizio .cap{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin:0 0 4px}
+  .indizio .val{font-size:21px;font-weight:800;margin:0;line-height:1.25}
+  .indizio .nb{font-size:14px;color:var(--soft);margin:6px 0 0;font-weight:500;line-height:1.45}
+  .turno-probabile{margin:16px 0 0;background:#fff;color:#111;border:1px solid #777;border-radius:4px;
+                   padding:15px 16px;text-align:left;box-shadow:0 2px 7px rgba(0,0,0,.12)}
+  .turno-probabile .tp-titolo{margin:0 0 9px;font:800 12px/1.2 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+  .turno-probabile .tp-variante{margin:12px 0 4px;font:700 11px/1.2 Arial,sans-serif;color:#555;text-transform:uppercase}
+  .turno-probabile .tp-servizio{font:700 14px/1.55 "Courier New",monospace;font-variant-numeric:tabular-nums;word-spacing:2px}
+  .turno-probabile .tp-speciale{color:var(--rossa)}
+
+  .giorni{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:20px 0 0}
+  .g{text-align:center;padding:11px 2px 12px;border-radius:9px;background:var(--carta);border:2px solid var(--linea)}
+  .g .d{font-size:12px;letter-spacing:.06em;font-weight:800;color:var(--soft)}
+  .g .v{font-size:15px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}
+  .g.riposo{background:var(--ink);border-color:var(--ink)}
+  .g.riposo .d,.g.riposo .v{color:var(--bone)}
+  .g.sco{background:var(--ottone);border-color:var(--ottone)}
+  .g.sco .d,.g.sco .v{color:#fff}
+  .g.surr{background:var(--rossa);border-color:var(--rossa)}
+  .g.surr .d,.g.surr .v{color:#fff}
+  .legenda{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 0;font-size:15px;color:var(--soft);font-weight:600}
+  .legenda i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+  .mese{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}
+  .mese .nome{font-size:21px;font-weight:800;letter-spacing:-.01em}
+  .mese button{width:52px;height:52px;font:800 24px/1 inherit;color:var(--ink);background:var(--carta);
+               border:3px solid var(--ink);border-radius:12px;cursor:pointer}
+  table.cal{width:100%;border-collapse:separate;border-spacing:4px}
+  table.cal th{font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--soft);padding:0 0 6px;text-transform:uppercase}
+  table.cal td{text-align:center;font-size:17px;font-weight:700;padding:11px 0;border-radius:9px;cursor:pointer;
+               background:var(--carta);border:2px solid transparent;font-variant-numeric:tabular-nums}
+  table.cal td.fuori{color:#BEB6A3;background:transparent}
+  table.cal tr.sel td{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+  table.cal tr.sel td.fuori{color:#9C9484}
+  table.cal td.oggi{border-color:var(--rossa)}
+
+  #cerca{width:100%;font:700 22px/1 inherit;color:var(--ink);background:var(--carta);
+         border:3px solid var(--ink);border-radius:14px;padding:19px}
+  #cerca::placeholder{color:#BEB6A3;font-weight:600;font-size:19px}
+  #cerca:focus{outline:4px solid var(--rossa);outline-offset:2px}
+  .depositi{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+  .depositi button{flex:1 1 auto;min-width:96px;font:800 16px/1 inherit;color:var(--ink);
+                   background:var(--carta);border:3px solid var(--ink);border-radius:12px;
+                   padding:14px 10px;cursor:pointer}
+  .depositi button:active{transform:translateY(2px)}
+  .depositi button.on{background:var(--rossa);color:#fff;border-color:var(--ink)}
+  .depositi button .mio{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;
+                        text-transform:uppercase;opacity:.7;margin-top:3px}
+  .settNav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 0;padding:12px 14px;
+           background:var(--carta);border:3px solid var(--ink);border-radius:14px}
+  .settNav .testo{font-size:16px;font-weight:800;text-align:center;flex:1;line-height:1.25}
+  .settNav button{flex:0 0 44px;height:44px;font:800 22px/1 inherit;color:var(--ink);background:var(--bone);
+                  border:2px solid var(--ink);border-radius:10px;cursor:pointer}
+
+  ol{list-style:none;margin:18px 0 0;padding:0;border-top:2px solid var(--linea)}
+  ol li{display:flex;align-items:baseline;gap:12px;padding:15px 4px;border-bottom:2px solid var(--linea)}
+  ol .pos{flex:0 0 84px;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  ol .nome{flex:1;font-size:19px;font-weight:700}
+  ol .rip{flex:0 0 92px;font-size:14px;letter-spacing:.02em;color:var(--ink);font-weight:800;text-align:right;line-height:1.25}
+  ol .rip .apri{display:block;margin-top:5px;color:var(--rossa);font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+  ol .nome em{display:block;font-style:normal;font-size:13px;font-weight:800;color:var(--soft);
+              letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+  .avviso{margin:16px 0 0;padding:13px 16px;border-radius:12px;background:var(--carta);
+          border:2px dashed var(--ink);font-size:15px;font-weight:600;color:var(--soft)}
+  ol li.vuota .nome{color:var(--soft);font-style:italic;font-weight:500}
+  ol li.io{background:var(--carta);box-shadow:inset 5px 0 0 var(--rossa);padding-left:14px;margin-left:-10px}
+  ol li.surrweek .pos{color:var(--rossa)}
+  ol li.con-dettaglio{display:block;cursor:pointer}
+  ol li.con-dettaglio .riga-testa{display:flex;align-items:baseline;gap:12px}
+  ol li.con-dettaglio .dettaglio-turno{display:none}
+  ol li.con-dettaglio.aperto .dettaglio-turno{display:block}
+
+  footer{margin-top:34px;padding-top:20px;border-top:3px solid var(--ink);font-size:15px;line-height:1.6;color:var(--soft);font-weight:500}
+</style>
+</head>
+<body>
+
+<div class="schermata attiva" id="accesso">
+  <p class="occhiello" style="padding-top:8px">ATM · Metropolitana 1</p>
+  <h1>Ruota turni</h1>
+  <p class="guida">Digita la tua matricola. Il deposito lo riconosco da solo.</p>
+  <input class="campo" id="matricola" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="00000" autocomplete="off">
+  <p class="errore" id="erroreMatricola"></p>
+  <button class="bottone" id="entra">Entra</button>
+</div>
+
+<div class="schermata" id="menu">
+  <div class="barra"><span class="chiIo" id="saluto"></span></div>
+  <h2>Cosa vuoi sapere?</h2>
+  <p class="guida">Scegli una delle tre.</p>
+  <ul class="scelte">
+    <li><button class="scelta" data-vai="questa">
+      <b>Che turno faccio questa settimana</b>
+      <span>La tua posizione adesso, giorno per giorno</span>
+    </button></li>
+    <li><button class="scelta" data-vai="settimana">
+      <b>Che turno faccio in una settimana</b>
+      <span>Apri il calendario e tocca la settimana</span>
+    </button></li>
+    <li><button class="scelta" data-vai="ruota">
+      <b>Cerca un collega o una posizione</b>
+      <span>Digita un cognome o un numero e vedi dove si trova</span>
+    </button></li>
+  </ul>
+</div>
+
+<div class="schermata" id="questa">
+  <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button></div>
+  <div class="settNav" style="margin:0 0 18px">
+    <button id="qPrec" aria-label="Settimana precedente">‹</button>
+    <span class="testo" id="qQuando"></span>
+    <button id="qSucc" aria-label="Settimana successiva">›</button>
+  </div>
+  <div class="riquadro">
+    <p class="chi">Questa settimana ricopri</p>
+    <p class="grande" id="qCodice"></p>
+    <div id="qBollo"></div>
+    <p class="sotto" id="qNota"></p>
+  </div>
+  <div class="indizio" id="qIndizio"></div>
+  <div id="qTurno"></div>
+  <div class="giorni" id="qGiorni"></div>
+  <div class="legenda">
+    <span><i style="background:var(--carta);box-shadow:inset 0 0 0 2px var(--linea)"></i>Lavoro</span>
+    <span><i style="background:var(--ink)"></i>Riposo</span>
+    <span><i style="background:var(--ottone)"></i>Scomputo</span>
+    <span><i style="background:var(--rossa)"></i>Surroga</span>
+  </div>
+</div>
+
+<div class="schermata" id="settimana">
+  <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button></div>
+  <h2>Quale settimana?</h2>
+  <p class="guida">Tocca un giorno qualsiasi della settimana che ti interessa.</p>
+  <div class="mese">
+    <button id="mPrec" aria-label="Mese precedente">‹</button>
+    <span class="nome" id="mNome"></span>
+    <button id="mSucc" aria-label="Mese successivo">›</button>
+  </div>
+  <table class="cal">
+    <thead><tr><th>Lun</th><th>Mar</th><th>Mer</th><th>Gio</th><th>Ven</th><th>Sab</th><th>Dom</th></tr></thead>
+    <tbody id="calBody"></tbody>
+  </table>
+  <p class="quando" id="sQuando" style="margin-top:24px"></p>
+  <div class="riquadro">
+    <p class="chi">In quella settimana ricopri</p>
+    <p class="grande" id="sCodice"></p>
+    <p class="sotto" id="sNota"></p>
+  </div>
+  <div class="indizio" id="sIndizio"></div>
+  <div id="sTurno"></div>
+  <div class="giorni" id="sGiorni"></div>
+  <div class="legenda">
+    <span><i style="background:var(--carta);box-shadow:inset 0 0 0 2px var(--linea)"></i>Lavoro</span>
+    <span><i style="background:var(--ink)"></i>Riposo</span>
+    <span><i style="background:var(--ottone)"></i>Scomputo</span>
+    <span><i style="background:var(--rossa)"></i>Surroga</span>
+  </div>
+</div>
+
+<div class="schermata" id="ruota">
+  <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button></div>
+  <h2>Chi stai cercando?</h2>
+  <p class="guida" id="guidaCerca">Digita il cognome del collega, oppure il numero della posizione.</p>
+  <input id="cerca" type="search" placeholder="Es. Pigoli · oppure 305" autocomplete="off">
+  <div class="depositi" id="depositi"></div>
+  <p class="avviso" id="avviso" style="display:none"></p>
+  <div class="settNav">
+    <button id="rPrec" aria-label="Settimana precedente">‹</button>
+    <span class="testo" id="rQuando"></span>
+    <button id="rSucc" aria-label="Settimana successiva">›</button>
+  </div>
+  <ol id="elenco"></ol>
+  <footer>
+    <p id="notaRuota"></p>
+    <p>La descrizione probabile e il dettaglio sono ricavati dai fogli turni attivi e dallo schema di rotazione. Le comunicazioni speciali prevalgono sul programma ordinario.</p>
+  </footer>
+</div>
+
+<script src="turni-precisi.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* ==========================================================
+     1. DEPOSITI E RUOTE
+     Ogni voce: [cognome, matricola]. null = casella libera.
+     L'indice 0 è la posizione 101 nella settimana di riferimento.
+     ========================================================== */
+
+  var RIFERIMENTO = "2026-09-07";
+
+  var DEPOSITI = {
+    PR: {
+      nome:"Precotto", sigla:"PR", gruppi:3,
+      ruota:[
+        ["Zambrano","71037"],["Moschetti","72454"],["Rizzo","70441"],["Russo","69594"],
+        ["Ligas","66972"],["Nocera","72459"],["Inneguale","67619"],["D'Aspromonte","72453"],
+        ["Fiorentino","69588"],["Paratore","66152"],null,["Arioli","71013"],
+        ["Cicalese","73699"],null,["Rovida","72701"],["Franzolin","70162"],["Boccasile","70411"],
+
+        ["Caruso","74483"],["Passarella","71025"],["Signorelli","72086"],["Carnevale","75272"],
+        ["Falsaperna","69587"],["Lo Presti","72102"],["Barbaro","69470"],["Trentini","72703"],
+        ["Rivieccio","72700"],["Pastorino","69520"],["Surace","72421"],["La Penna","72696"],
+        ["Boccaccio","60891"],["Schiavone","72093"],["Stombellini","69483"],["Bisogni","74858"],
+        ["Pigoli","73703"],
+
+        ["Violante","71036"],["Saponara","73704"],["Caiazza","74873"],null,["Gati","68167"],
+        ["Buoso","72096"],["Fiorelli","74876"],["Ferone","75282"],["Petrone","67983"],
+        ["Donatelli","75275"],["Polizzotti","75276"],["Canzoneri","74874"],null,null,
+        ["Pisani","70856"],["Arcerito","70539"],null
+      ]
+    },
+
+    GAL: {
+      nome:"Gallaratese", sigla:"GAL", gruppi:3,
+      ruota:[
+        ["Rignanese","70420"],["Verzelletti","72957"],["Acquistapace","68626"],["Passavanti","72101"],
+        ["Sola","74498"],["Squaratti","68539"],["Battilana","66715"],["Lazzari","73702"],
+        ["Borrelli","68481"],["Brusca","68247"],["Garofalo C.","62065"],["Lovino","64568"],
+        ["Lodigiani","69589"],["Trotti","68001"],["Garofalo","70867"],["Marini","67996"],
+        ["Castellana","67815"],
+
+        ["Lucii","67980"],["Grillo","69272"],["Ruscio","66974"],["Iannelli","64834"],
+        ["Lo Bosco","68214"],["Adamo","66967"],["Risotto","60908"],["Deiana","63264"],
+        ["D'Angelo","68198"],["Bonavetti","68027"],["Alfarano","73696"],["Fontana","67023"],
+        ["Garghetti","66999"],["Santambrogio","64951"],["Passiatore","68305"],["Bergami","72950"],
+        null,
+
+        ["Paradiso","65081"],["Malangone","60915"],["Cicala","71017"],["Ronchi","60281"],
+        ["Croci","72692"],["Polito","67003"],["Aliperta","74477"],["India","67672"],
+        ["Amodeo","72406"],["Fadda","67809"],["Staffoni","62934"],["Inzaina","68200"],
+        ["Berlinghieri","70367"],["Zanetello","72835"],["Argento","72461"],["Colantuono","69885"],
+        ["Niosi","72697"]
+      ]
+    },
+
+    SFS: {
+      nome:"Sesto", sigla:"SFS", gruppi:2,
+      ruota:[
+        ["Giannitto","66969"],["Cosoleto","72112"],["Remigi","72955"],["Riso","71029"],
+        ["Manzoni","60916"],["Rivolta","68181"],["Costa","68303"],["Condello","67335"],
+        ["Stillittano","70834"],["Migliozzi","68486"],["Bellomo","67936"],["Motta","66264"],
+        ["Spensierato","70858"],["Mongiello","69003"],["Pinos","70303"],["Mangione","68197"],
+        ["Lentini","68533"],
+
+        null,null,["Muci","68536"],["Barbera","70195"],null,["Lorusso","70832"],
+        ["Cicco","71018"],["Simeoli","70868"],["Esposito","61336"],["Cantore","60994"],
+        ["Ciotola","70414"],["Fumagalli","68532"],["Cirillo","60912"],["Corea","67978"],
+        ["Figurelli","68484"],["Pascuzzi","72699"],null
+      ]
+    },
+
+    BIS: {
+      nome:"Bisceglie", sigla:"BIS", gruppi:2,
+      ruota:[
+        ["Gigliotti","68248"],["Romeo","62940"],["Hrypachevska Svitlana","74877"],
+        ["Brucia","73697"],["Marsala","70626"],["Pichierri","75266"],["Moretti","75279"],
+        ["Stamera","68479"],["Di Donato","74486"],["Dammicco","75292"],["Nole","74494"],
+        ["Vitale","69572"],null,["Cerami","69570"],["Moneta","72954"],
+        ["Incoronato","75289"],["Foti","68531"],
+
+        ["Castagnone Prati","67208"],["Iacobellis","70830"],null,["Blasa","69896"],null,
+        ["De Gaetano","74862"],["Oliveri","75288"],["Ghirotto","75270"],["Soria","61575"],
+        ["De Ponti","67513"],["Rubino","75274"],null,["Ciciarelli","68994"],
+        ["Alario","70549"],["Corneo","74882"],["Scorza","70424"],["Peluso Alessandro","74879"]
+      ]
+    }
+  };
+
+  /* ==========================================================
+     2. SCHEMA DEI SETTE GIORNI (uguale per tutti i depositi)
+     ========================================================== */
+  var L="lavoro", R="riposo", S="sco";
+  var SCHEMI = {
+     1:[L,L,L,L,L,R,L],  2:[L,L,L,L,R,L,L],  3:[L,L,L,R,L,L,L],
+     4:[L,L,R,L,L,L,L],  5:[L,R,L,L,L,L,L],  6:"surroga",
+     7:[L,L,L,L,L,S,R],  8:[L,L,L,L,L,R,S],  9:[L,L,L,L,R,L,L],
+    10:[L,L,L,R,L,L,L], 11:[L,L,R,L,L,L,L], 12:[L,R,L,L,L,L,L],
+    13:"surroga",       14:[L,L,L,L,L,R,R], 15:[L,L,L,L,L,S,R],
+    16:[L,L,L,L,L,R,S], 17:[L,L,L,L,L,R,R]
+  };
+
+  /* ==========================================================
+     3. SPETTANZE — schema di rotazione, tipi previsti per settimana
+     ========================================================== */
+  var SPETTANZE = {
+     1:["Mattinale"],
+     2:["Pomeridiano","Mattinale"],
+     3:["Ridotta","Serale","Pomeridiano","Mattinale"],
+     4:["Pomeridiano"],
+     5:["Serale","Ridotta","Pomeridiano","Mattinale"],
+     7:["Mattinale","Pomeridiano"],
+     8:["Mattinale"],
+     9:["Pomeridiano","Mattinale"],
+    10:["Ridotta","Serale","Pomeridiano","Mattinale"],
+    11:["Pomeridiano"],
+    12:["Serale","Ridotta","Pomeridiano","Mattinale"],
+    14:["Pomeridiano","Mattinale"],
+    15:["Mattinale","Pomeridiano"],
+    16:["Ridotta","Serale","Pomeridiano","Mattinale"],
+    17:["Mattinale"]
+  };
+
+  /* ==========================================================
+     4. TIPI EFFETTIVI dai fogli stagionali (per ora solo Precotto)
+     Ridotta = inizio dalle 15, durata fino a 6h30, fine entro mezzanotte.
+     m mattinale · p pomeridiano · r ridotta · s serale · n notte · d disponibile
+     ========================================================== */
+  var TIPI = {
+    PR:{
+      101:["m","m","scortabad","scortabad"], 102:["d","d"], 103:["r","r"], 104:["p","p"],
+      105:["r","r"], 107:["m","d"], 108:["m","m","scorta","scorta"], 109:["r","p"],
+      110:["d","d"], 111:["p","p"], 112:["r","s"], 114:["p","p"],
+      115:["m","m","lavagista","lavagista"], 116:["r","d"], 117:["m","m"],
+
+      201:["m","m"], 202:["d","p"], 203:["r","r"], 204:["p","p","badonista","badonista"],
+      205:["r","d"], 207:["m","m"], 208:["m","m"], 209:["d","d"],
+      210:["r","r","badonista",null], 211:["p","p"], 212:["n","n","badonista","badonista"],
+      214:["p","p",null,"scorta"], 215:["d","d"], 216:["r","r"], 217:["m","d"],
+
+      301:["m","m"], 302:["p","p"], 303:["p","r"], 304:["p","p","supporto","supporto"],
+      305:["n","n"], 307:["m","d"], 308:["m","m"], 309:["d","d"], 310:["r","s"],
+      311:["p","p","scorta","scorta"], 312:["r","d"], 314:["p","p"],
+      315:["m","m","supporto","supporto"], 316:["d","d"], 317:["m","m"]
+    },
+
+    GAL:{
+      101:["m","m","scortabad","scortabad"], 102:["d","d"], 103:["r","r"], 104:["p","d"],
+      105:["r","r","scorta",null], 107:["m","m"], 108:["m","m"], 109:["m","m"],
+      110:["p","d"], 111:["p","p","badonista","badonista"], 112:["n","n"], 114:["d","d"],
+      115:["m","m"], 116:["p","r"], 117:["m","m"],
+
+      201:["m","m","badonista","badonista"], 202:["d","d"], 203:["r","r"], 204:["p","d"],
+      205:["n","n","badonista","badonista"], 207:["m","m"], 208:["m","p"], 209:["p","d"],
+      210:["r","r"], 211:["p","p"], 212:["n","n"], 214:["m","m"], 215:["m","d"],
+      216:["r","r"], 217:["m","m"],
+
+      301:["m","m","scorta","scorta"], 302:["p","d"], 303:["r","r"], 304:["d","p"],
+      305:["p","p","badonista","badonista"], 307:["m","m"], 308:["m","m"], 309:["d","d"],
+      310:["p","r"], 311:["p","p"], 312:["n","n"], 314:["p","m"], 315:["m","d"],
+      316:["p","p"], 317:["m","m"]
+    }
+  };
+
+  var NOMI_TIPO = {m:"Mattinale", p:"Pomeridiano", r:"Ridotta", s:"Serale", n:"Notte", d:"Disponibile"};
+
+  // parola usata nella frase "è generalmente ..."
+  var FASCIA = {m:["un","mattino"], p:["un","pomeriggio"], r:["una","ridotta"],
+                s:["un","serale"], n:["una","notte"]};
+
+  // ruoli ricavati dalle legende a piè di pagina dei fogli turni
+  var RUOLI = {
+    scorta:    ["una","scorta polifunzione"],          // codice 808
+    scortabad: ["una","scorta polifunzione e badonista"], // codice 838
+    badonista: ["un","badonista"],                     // codice 807
+    supporto:  ["un","macchinista di supporto"],       // codice 806
+    lavagista: ["un","lavagista"]                      // codice 839
+  };
+
+  // Costruisce "Il turno PR204 è generalmente un badonista di pomeriggio."
+  function frasesTurno(sigla, pos, lettera, ruolo){
+    var f = FASCIA[lettera];
+    if(!f) return "";
+    if(ruolo && RUOLI[ruolo]){
+      var r = RUOLI[ruolo];
+      return "Il turno " + sigla + pos + " è generalmente " + r[0] + " " + r[1] + " di " + f[1] + ".";
+    }
+    return "Il turno " + sigla + pos + " è generalmente " + f[0] + " " + f[1] + ".";
+  }
+  var SPIEGA = {
+    Mattinale:  "Si attacca presto.",
+    Pomeridiano:"Si attacca a metà giornata.",
+    Ridotta:    "Turno corto: si parte dalle 15 in poi, fino a 6 ore e mezza, e si chiude entro mezzanotte.",
+    Serale:     "Si comincia nel pomeriggio inoltrato e si finisce in serata.",
+    Notte:      "Si sfora la mezzanotte.",
+    Disponibile:"Il turno te lo assegna l'ufficio secondo le spettanze."
+  };
+
+  function stagioneDi(d){
+    var m = d.getMonth()+1, g = d.getDate();
+    return ((m===7)||(m===8)||(m===9 && g<7)) ? 1 : 0;   // 1 estivo, 0 invernale
+  }
+  function nomeStagione(d){ return stagioneDi(d) ? "foglio estivo" : "foglio invernale"; }
+
+  /* Il valore indica quale colonna/programma viene realmente adottato in quella data.
+     Per future eccezioni si può aggiungere, ad esempio: "2026-10-02":"sab". */
+  var PROGRAMMI_DATA = {
+    "2026-09-13":"spec","2026-11-07":"spec","2026-11-08":"spec",
+    "2026-11-28":"spec","2026-11-29":"spec"
+  };
+  function isoLocale(d){
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+  function esc(s){ return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+  function righeTurno(dep,pos,data,variante){
+    var programma = PROGRAMMI_DATA[isoLocale(data)] || variante;
+    var speciale = programma==="spec";
+    var stagione = stagioneDi(data) ? "est" : "inv";
+    var blocco = speciale ? TURNI_PRECISI.fiera : TURNI_PRECISI[stagione];
+    var voce = blocco && blocco[dep.sigla] && blocco[dep.sigla][pos];
+    return voce ? (speciale ? voce.spec : voce[programma]) : null;
+  }
+  function disponibileHTML(pos){
+    var sp=SPETTANZE[pos%100] || [];
+    return '<div class="tp-servizio"><b>DISPONIBILE'+(sp.length?' '+sp.map(esc).join(' · ').toUpperCase():'')+'</b></div>';
+  }
+  function servizioHTML(righe,pos,convertiInDisponibile){
+    var testo=(righe||[]).join(" ").toUpperCase();
+    if(/\bDISP(?:ONIBILE)?\b/.test(testo)) return disponibileHTML(pos);
+    if(convertiInDisponibile && (!righe || !righe.length || /\bRIPOSO\b|\bSCO\b/.test(testo))) return disponibileHTML(pos);
+    if(!righe || !righe.length) return '<div class="tp-servizio">Nessun servizio indicato</div>';
+    return '<div class="tp-servizio">'+righe.map(esc).join('<br>')+'</div>';
+  }
+  function fasciaProbabile(righe){
+    var testo=(righe||[]).join(" ").toUpperCase();
+    if(/\bDISP(?:ONIBILE)?\b/.test(testo)) return "Disponibile";
+    if(/\bSURR\b/.test(testo)) return "Surrogante";
+    if(/\bRIPOSO\b/.test(testo)) return "Riposo";
+    if(/\bSCO\b/.test(testo)) return "Scomputo";
+
+    var ruolo="";
+    if(/(^|\s)839(\s|$)/.test(testo)) ruolo="lavagista";
+    else if(/(^|\s)838(\s|$)/.test(testo)) ruolo="scorta polifunzione e badonista";
+    else if(/(^|\s)808(\s|$)/.test(testo)) ruolo="scorta polifunzione";
+    else if(/(^|\s)807(\s|$)/.test(testo)) ruolo="badonista";
+    else if(/(^|\s)806(\s|$)/.test(testo)) ruolo="macchinista di supporto";
+
+    var ore=[], re=/(\d{1,2}):(\d{2})/g, m;
+    while((m=re.exec(testo))) ore.push((+m[1])*60+(+m[2]));
+    if(ore.length<2) return ruolo ? ruolo : "Turno da verificare";
+    var inizio=ore[0], fine=ore[ore.length-1], fineAssoluta=fine;
+    if(fineAssoluta<inizio) fineAssoluta+=1440;
+    var durata=fineAssoluta-inizio;
+    var fascia;
+    if(fine<inizio || fine<300) fascia="notte";
+    else if(inizio>=900 && fine<1440 && durata<=390) fascia="ridotta";
+    else if(inizio<720) fascia="mattino";
+    else fascia="pomeriggio";
+    return ruolo ? ruolo+" di "+fascia : fascia.charAt(0).toUpperCase()+fascia.slice(1);
+  }
+  function descrizioneProbabile(dep,pos,data){
+    var variante=data.getDay()===6?"sab":(data.getDay()===0?"fes":"fer");
+    var tipo=fasciaProbabile(righeTurno(dep,pos,data,variante));
+    if(tipo==="Disponibile"){
+      var sp=SPETTANZE[pos%100] || [];
+      return "Disponibile"+(sp.length?" "+sp.join(" · ").toLowerCase():"");
+    }
+    return tipo;
+  }
+  function turnoGiornoHTML(dep,pos,data,stato){
+    var gi=(data.getDay()+6)%7, variante=gi<5?"fer":(gi===5?"sab":"fes");
+    var speciale=PROGRAMMI_DATA[isoLocale(data)]==="spec";
+    return '<div class="turno-probabile"><p class="tp-titolo'+(speciale?' tp-speciale':'')+'">Turno probabile'+(speciale?' · speciale Fiera':'')+'</p>'
+      +'<p class="tp-variante">'+GIORNI_EST[gi]+' '+data.getDate()+' '+MESI[data.getMonth()]+'</p>'
+      +servizioHTML(righeTurno(dep,pos,data,variante),pos,stato==="lavoro"||stato==="surr")+'</div>';
+  }
+  function turniSettimanaHTML(dep,pos,lun){
+    var sett=settimanaDi(pos), blocchi=[];
+    for(var i=0;i<7;i++){
+      var data=new Date(lun.getTime()+i*MS_G), g=sett[i], variante=i<5?"fer":(i===5?"sab":"fes");
+      var speciale=PROGRAMMI_DATA[isoLocale(data)]==="spec", codice=g.pos||pos;
+      var corpo;
+      if(g.stato==="riposo") corpo='<div class="tp-servizio">RIPOSO</div>';
+      else if(g.stato==="sco") corpo='<div class="tp-servizio">SCOMPUTO</div>';
+      else corpo=servizioHTML(righeTurno(dep,codice,data,variante),codice,true);
+      var chiave=corpo+"|"+(speciale?1:0)+"|"+(g.stato==="surr"?codice:"");
+      var ultimo=blocchi[blocchi.length-1];
+      if(ultimo && ultimo.chiave===chiave) ultimo.fine=i;
+      else blocchi.push({inizio:i,fine:i,chiave:chiave,corpo:corpo,speciale:speciale,codice:g.stato==="surr"?codice:null});
+    }
+    var html='<div class="turno-probabile"><p class="tp-titolo">Turni probabili della settimana</p>';
+    blocchi.forEach(function(b){
+      var a=new Date(lun.getTime()+b.inizio*MS_G), z=new Date(lun.getTime()+b.fine*MS_G), etichetta;
+      if(b.inizio===b.fine) etichetta=GIORNI_EST[b.inizio]+" "+a.getDate()+" "+MESI[a.getMonth()];
+      else if(b.fine===b.inizio+1) etichetta=GIORNI_EST[b.inizio]+" "+a.getDate()+" e "+GIORNI_EST[b.fine]+" "+z.getDate()+" "+MESI[z.getMonth()];
+      else etichetta="Da "+GIORNI_EST[b.inizio]+" "+a.getDate()+" "+(a.getMonth()!==z.getMonth()?MESI[a.getMonth()]+" ":"")
+        +"a "+GIORNI_EST[b.fine]+" "+z.getDate()+" "+MESI[z.getMonth()];
+      html+='<p class="tp-variante'+(b.speciale?' tp-speciale':'')+'">'+etichetta
+        +(b.codice?' · '+codDi(dep,b.codice):'')+(b.speciale?' · speciale Fiera':'')+'</p>'+b.corpo;
+    });
+    return html+'</div>';
+  }
+
+  /* ==========================================================
+     5. CALCOLI
+     ========================================================== */
+  var MS_G = 86400000, MS_S = 7*MS_G;
+  var GIORNI = ["LUN","MAR","MER","GIO","VEN","SAB","DOM"];
+  var GIORNI_EST = ["lunedì","martedì","mercoledì","giovedì","venerdì","sabato","domenica"];
+  var MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno",
+              "luglio","agosto","settembre","ottobre","novembre","dicembre"];
+
+  function posizioniDi(dep){
+    var out = [];
+    for(var g=1; g<=dep.gruppi; g++) for(var n=1;n<=17;n++) out.push(g*100+n);
+    return out;
+  }
+
+  function settimanaDi(pos){
+    var n = pos%100, gruppo = Math.floor(pos/100), sch = SCHEMI[n];
+    if(sch === "surroga"){
+      var out = [{stato:"riposo",testo:"—",pos:null}];
+      for(var i=1;i<=5;i++){
+        var p = gruppo*100+(n-i);
+        out.push({stato:"surr",testo:String(p),pos:p});
+      }
+      out.push({stato:"riposo",testo:"—",pos:null});
+      return out;
+    }
+    return sch.map(function(s){
+      return {stato:s, testo:(s===R?"—":(s===S?"SCO":String(pos))), pos:(s===L?pos:null)};
+    });
+  }
+
+  function lunediDi(d){
+    var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    x.setDate(x.getDate() - ((x.getDay()+6)%7));
+    return x;
+  }
+  function daISO(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function fmt(d){ return d.getDate()+" "+MESI[d.getMonth()]; }
+  function stessoGiorno(a,b){
+    return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+  }
+
+  var LUN_RIF = lunediDi(daISO(RIFERIMENTO));
+  function settimaneDa(lun){ return Math.round((lun - LUN_RIF)/MS_S); }
+
+  /* ==========================================================
+     6. INTERFACCIA
+     ========================================================== */
+  var $ = function(id){ return document.getElementById(id); };
+  var U = null;   // {dep, sigla, nome, base, mat, posizioni, tot}
+  var qLun = lunediDi(new Date()), sLun = lunediDi(new Date()), calMese = new Date(), rLun = lunediDi(new Date());
+  var rDep = null;   // deposito mostrato nella schermata di ricerca
+
+  function cod(pos){ return U.sigla + pos; }
+  function codDi(dep, pos){ return dep.sigla + pos; }
+  function posizioneDi(base, lun){
+    return U.posizioni[ ((base + settimaneDa(lun)) % U.tot + U.tot) % U.tot ];
+  }
+
+  function indizioHTML(pos, data, contesto){
+    var n = pos % 100, st = stagioneDi(data);
+    var tab = TIPI[U.sigla], voce = tab && tab[pos];
+
+    if(voce){
+      var lettera = voce[st], ruolo = voce[2+st] || null;
+      var titolo = NOMI_TIPO[lettera];
+      var nb;
+      if(lettera === "d"){
+        nb = "Il turno te lo assegna l'ufficio secondo le spettanze. Per la settimana " + n
+           + " lo schema prevede: " + (SPETTANZE[n] ? SPETTANZE[n].join(", ") : "—") + ".";
+      } else {
+        nb = frasesTurno(U.sigla, pos, lettera, ruolo)
+           + " Ricavato dal " + nomeStagione(data) + ", " + contesto + ".";
+      }
+      return '<p class="cap">Indizio</p><p class="val">'+titolo+'</p><p class="nb">'+nb+'</p>';
+    }
+
+    var sp = SPETTANZE[n];
+    if(!sp) return "";
+    return '<p class="cap">Indizio</p><p class="val">'+sp.join(" · ")+'</p>'
+         + '<p class="nb">Tipi previsti dallo schema di rotazione per la settimana '+n
+         + '. Quale ti tocca dipende dal foglio turni della stagione.</p>';
+  }
+
+  var CASA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/>'
+               + '<path d="M5.5 9.5V20h13V9.5"/><path d="M9.75 20v-5.5h4.5V20"/></svg>';
+  var CHIUDI_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  var xs = document.querySelectorAll(".chiudi");
+  for(var x=0;x<xs.length;x++){
+    xs[x].innerHTML = CHIUDI_SVG;
+    xs[x].onclick = function(){
+      U = null;
+      $("matricola").value = "";
+      $("erroreMatricola").textContent = "";
+      mostra("accesso");
+      $("matricola").focus();
+    };
+  }
+
+  var case_ = document.querySelectorAll(".casa");
+  for(var c=0;c<case_.length;c++){
+    case_[c].innerHTML = CASA_SVG;
+    case_[c].onclick = function(){ mostra("menu"); };
+  }
+
+  function mostra(id){
+    var t = document.querySelectorAll(".schermata");
+    for(var i=0;i<t.length;i++) t[i].classList.remove("attiva");
+    $(id).classList.add("attiva");
+    window.scrollTo(0,0);
+  }
+
+  function entra(){
+    var v = $("matricola").value.replace(/\D/g,""), err = $("erroreMatricola");
+    if(v.length < 4){ err.textContent = "Servono almeno quattro cifre."; return; }
+
+    var trovato = null;
+    for(var sig in DEPOSITI){
+      var dep = DEPOSITI[sig];
+      for(var i=0;i<dep.ruota.length;i++){
+        if(dep.ruota[i] && dep.ruota[i][1]===v){ trovato = {sig:sig, dep:dep, i:i}; break; }
+      }
+      if(trovato) break;
+    }
+    if(!trovato){ err.textContent = "Matricola non trovata nelle ruote caricate."; return; }
+
+    err.textContent = "";
+    var pos = posizioniDi(trovato.dep);
+    U = {dep:trovato.dep, sigla:trovato.dep.sigla, nome:trovato.dep.ruota[trovato.i][0],
+         base:trovato.i, mat:v, posizioni:pos, tot:pos.length};
+
+    $("saluto").innerHTML = U.nome + " · " + U.dep.nome;
+    $("cerca").placeholder = "Es. un cognome · oppure " + U.posizioni[20];
+    rDep = U.dep;
+    $("guidaCerca").textContent =
+      "Digita un cognome: lo cerco in tutti i depositi. A campo vuoto scorri la ruota del deposito scelto.";
+    mostra("menu");
+  }
+  $("entra").onclick = entra;
+  $("matricola").addEventListener("keydown", function(e){ if(e.key==="Enter") entra(); });
+
+  var scelte = document.querySelectorAll(".scelta");
+  for(var s=0;s<scelte.length;s++){
+    scelte[s].onclick = function(){
+      var v = this.getAttribute("data-vai");
+      if(v==="questa"){ qLun=lunediDi(new Date()); disegnaQuesta(); mostra("questa"); }
+      if(v==="settimana"){
+        sLun = lunediDi(new Date()); calMese = new Date();
+        disegnaCalendario(); disegnaSettimana(); mostra("settimana");
+      }
+      if(v==="ruota"){
+        rLun = lunediDi(new Date()); $("cerca").value = ""; rDep = U.dep;
+        $("depositi").style.opacity = "1"; $("depositi").style.pointerEvents = "auto";
+        disegnaDepositi(); disegnaRuota(); mostra("ruota"); $("cerca").focus();
+      }
+    };
+  }
+
+  function strisciaHTML(sett, evidenzia){
+    return sett.map(function(g,i){
+      var b = (i===evidenzia) ? ' style="outline:3px solid var(--rossa);outline-offset:2px"' : '';
+      return '<div class="g '+g.stato+'"'+b+'><div class="d">'+GIORNI[i][0]+'</div><div class="v">'+g.testo+'</div></div>';
+    }).join("");
+  }
+
+  function disegnaQuesta(){
+    var oggi = new Date(), lun = qLun, corrente=lun.getTime()===lunediDi(oggi).getTime();
+    var gi = corrente ? (oggi.getDay()+6)%7 : -1;
+    var dom = new Date(lun.getTime()+6*MS_G);
+    var pos = posizioneDi(U.base, lun), sett = settimanaDi(pos), g = gi>=0 ? sett[gi] : null;
+
+    $("qQuando").textContent = fmt(lun)+" – "+fmt(dom)+" "+dom.getFullYear();
+    $("qCodice").textContent = cod(pos);
+
+    var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surr:"Oggi surroga"};
+    $("qBollo").innerHTML = corrente ? '<span class="bollo '+g.stato+'">'+et[g.stato]+'</span>' : '';
+
+    var rip = sett.map(function(x,i){return x.stato==="riposo"?GIORNI_EST[i]:null;}).filter(Boolean);
+    if(SCHEMI[pos%100]==="surroga") $("qNota").innerHTML = "Surroga da martedì a sabato · riposo <b>lunedì e domenica</b>.";
+    else $("qNota").innerHTML = "Riposo <b>"+rip.join(" e ")+"</b>"+(sett.some(function(x){return x.stato==="sco";})?" · uno scomputo":"")+".";
+
+    var el = $("qIndizio");
+    el.innerHTML = SCHEMI[pos%100]==="surroga" ? "" : indizioHTML(pos, new Date(lun.getTime()+2*MS_G), "dal lunedì al venerdì");
+    el.style.display = el.innerHTML ? "block" : "none";
+    $("qTurno").innerHTML = turniSettimanaHTML(U.dep,pos,lun);
+    $("qGiorni").innerHTML = strisciaHTML(sett, gi);
+  }
+  $("qPrec").onclick=function(){qLun=new Date(qLun.getTime()-MS_S);disegnaQuesta();};
+  $("qSucc").onclick=function(){qLun=new Date(qLun.getTime()+MS_S);disegnaQuesta();};
+
+  function disegnaCalendario(){
+    $("mNome").textContent = MESI[calMese.getMonth()].charAt(0).toUpperCase()
+                           + MESI[calMese.getMonth()].slice(1)+" "+calMese.getFullYear();
+    var primo = new Date(calMese.getFullYear(), calMese.getMonth(), 1);
+    var cur = lunediDi(primo), oggi = new Date(), html = "";
+    for(var r=0;r<6;r++){
+      html += '<tr class="'+(cur.getTime()===sLun.getTime()?"sel":"")+'" data-lun="'+cur.getTime()+'">';
+      for(var d=0;d<7;d++){
+        var g = new Date(cur.getTime()+d*MS_G), cl = [];
+        if(g.getMonth() !== calMese.getMonth()) cl.push("fuori");
+        if(stessoGiorno(g,oggi)) cl.push("oggi");
+        html += '<td class="'+cl.join(" ")+'">'+g.getDate()+'</td>';
+      }
+      html += '</tr>';
+      cur = new Date(cur.getTime()+MS_S);
+      if(cur.getMonth() !== calMese.getMonth() && cur.getDate() > 7) break;
+    }
+    $("calBody").innerHTML = html;
+    var righe = $("calBody").querySelectorAll("tr");
+    for(var i=0;i<righe.length;i++){
+      righe[i].onclick = function(){
+        sLun = new Date(+this.getAttribute("data-lun"));
+        disegnaCalendario(); disegnaSettimana();
+      };
+    }
+  }
+  $("mPrec").onclick = function(){ calMese = new Date(calMese.getFullYear(), calMese.getMonth()-1, 1); disegnaCalendario(); };
+  $("mSucc").onclick = function(){ calMese = new Date(calMese.getFullYear(), calMese.getMonth()+1, 1); disegnaCalendario(); };
+
+  function disegnaSettimana(){
+    var dom = new Date(sLun.getTime()+6*MS_G);
+    $("sQuando").textContent = "Settimana da lunedì "+fmt(sLun)+" a domenica "+fmt(dom)+" "+dom.getFullYear();
+    var pos = posizioneDi(U.base, sLun), sett = settimanaDi(pos);
+    $("sCodice").textContent = cod(pos);
+
+    if(SCHEMI[pos%100]==="surroga"){
+      $("sNota").innerHTML = "Settimana di <b>surroga</b>: da martedì a sabato si scala da "+cod(pos-1)+" a "+cod(pos-5)+".";
+    } else {
+      var rip = sett.map(function(g,i){ return g.stato==="riposo" ? GIORNI_EST[i] : null; }).filter(Boolean);
+      var sco = sett.some(function(g){ return g.stato==="sco"; });
+      $("sNota").innerHTML = "Riposo <b>"+rip.join(" e ")+"</b>"+(sco?" · uno scomputo in settimana":"")+".";
+    }
+
+    var el = $("sIndizio");
+    el.innerHTML = SCHEMI[pos%100]==="surroga" ? "" : indizioHTML(pos, new Date(sLun.getTime()+2*MS_G), "dal lunedì al venerdì");
+    el.style.display = el.innerHTML ? "block" : "none";
+    $("sTurno").innerHTML = turniSettimanaHTML(U.dep, pos, sLun);
+    $("sGiorni").innerHTML = strisciaHTML(sett, -1);
+  }
+
+  function disegnaDepositi(){
+    var html = "";
+    for(var sig in DEPOSITI){
+      var d = DEPOSITI[sig];
+      html += '<button data-dep="'+sig+'" class="'+(d===rDep?"on":"")+'">'+d.nome
+           +  (d===U.dep ? '<span class="mio">il tuo</span>' : '')+'</button>';
+    }
+    $("depositi").innerHTML = html;
+    var bs = $("depositi").querySelectorAll("button");
+    for(var i=0;i<bs.length;i++){
+      bs[i].onclick = function(){
+        rDep = DEPOSITI[this.getAttribute("data-dep")];
+        disegnaDepositi(); disegnaRuota();
+      };
+    }
+  }
+
+  // Etichetta breve del tipo di turno, usata nell'elenco.
+  function tipoBreve(dep, pos, data){
+    if(SCHEMI[pos%100]==="surroga") return "Surrogante";
+    if(TURNI_PRECISI && TURNI_PRECISI[stagioneDi(data)?"est":"inv"]
+       && TURNI_PRECISI[stagioneDi(data)?"est":"inv"][dep.sigla]
+       && TURNI_PRECISI[stagioneDi(data)?"est":"inv"][dep.sigla][pos]) return descrizioneProbabile(dep,pos,data);
+    var tab = TIPI[dep.sigla], v = tab && tab[pos];
+    if(v) return NOMI_TIPO[ v[stagioneDi(data)] ];
+    var sp = SPETTANZE[pos%100];
+    return sp ? (sp.length>1 ? "Variabile" : sp[0]) : "—";
+  }
+
+  // Costruisce una riga dell'elenco. mostraDep = mostra il nome del deposito.
+  function rigaHTML(dep, p, occ, mostraDep, data){
+    var nome  = occ ? occ[0] : "non in ruota";
+    var surr  = SCHEMI[p%100]==="surroga", cl = [];
+    if(!occ) cl.push("vuota");
+    if(occ && dep===U.dep && occ[1]===U.mat) cl.push("io");
+    if(surr) cl.push("surrweek");
+
+    var rip = surr ? "surroga da martedì a sabato"
+      : "riposo " + settimanaDi(p)
+          .map(function(g,j){ return g.stato==="riposo" ? GIORNI[j].toLowerCase() : null; })
+          .filter(Boolean).join(" e ");
+
+    var sotto = (mostraDep ? dep.nome + " · " : "") + rip;
+
+    if(occ) cl.push("con-dettaglio");
+    var lun = new Date(data.getTime()-2*MS_G);
+    return '<li class="'+cl.join(" ")+'"><div class="riga-testa"><span class="pos">'+codDi(dep,p)+'</span>'
+         + '<span class="nome">'+nome+'<em>'+sotto+'</em></span>'
+         + '<span class="rip">'+tipoBreve(dep, p, data)+(occ?'<span class="apri">Dettaglio turno</span>':'')+'</span></div>'
+         + (occ ? '<div class="dettaglio-turno">'+turniSettimanaHTML(dep,p,lun)+'</div>' : '')+'</li>';
+  }
+
+  function disegnaRuota(){
+    var dom = new Date(rLun.getTime()+6*MS_G);
+    $("rQuando").textContent = "Settimana "+fmt(rLun)+" – "+fmt(dom);
+
+    var filtro = $("cerca").value.trim().toLowerCase();
+    var k = settimaneDa(rLun);
+    var mer = new Date(rLun.getTime()+2*MS_G);   // mercoledì: giorno di riferimento per la stagione
+    var righe = "", quanti = 0;
+
+    if(filtro){
+      // Con il campo pieno cerco ovunque: non devi sapere il deposito.
+      for(var sig in DEPOSITI){
+        var d = DEPOSITI[sig], ps = posizioniDi(d), tot = ps.length;
+        for(var i=0;i<ps.length;i++){
+          var occ = d.ruota[ ((i - k) % tot + tot) % tot ];
+          var nome = occ ? occ[0] : "non in ruota";
+          if(nome.toLowerCase().indexOf(filtro)<0 && codDi(d,ps[i]).toLowerCase().indexOf(filtro)<0) continue;
+          righe += rigaHTML(d, ps[i], occ, true, mer);
+          quanti++;
+        }
+      }
+      $("avviso").style.display = "block";
+      $("avviso").textContent = quanti
+        ? "Trovati "+quanti+(quanti===1?" risultato":" risultati")+" in tutti i depositi."
+        : "Nessun risultato in nessun deposito.";
+      $("notaRuota").textContent = "La ricerca guarda in tutte le ruote caricate.";
+    } else {
+      // Campo vuoto: scorro la ruota del deposito scelto.
+      var dep = rDep, pos = posizioniDi(dep), n = pos.length;
+      for(var j=0;j<pos.length;j++){
+        righe += rigaHTML(dep, pos[j], dep.ruota[ ((j - k) % n + n) % n ], false, mer);
+      }
+      $("avviso").style.display = "none";
+      $("notaRuota").textContent = "Ruota di "+dep.nome+": "+n
+        + " posizioni. Ogni settimana tutti avanzano di una.";
+    }
+
+    $("elenco").innerHTML = righe || '<li class="vuota"><span class="nome">Nessun risultato</span></li>';
+  }
+  $("elenco").onclick = function(e){
+    var li=e.target.closest("li.con-dettaglio");
+    if(li) li.classList.toggle("aperto");
+  };
+  $("rPrec").onclick = function(){ rLun = new Date(rLun.getTime()-MS_S); disegnaRuota(); };
+  $("rSucc").onclick = function(){ rLun = new Date(rLun.getTime()+MS_S); disegnaRuota(); };
+  $("cerca").oninput = function(){
+    var attivo = !this.value.trim();
+    $("depositi").style.opacity = attivo ? "1" : ".4";
+    $("depositi").style.pointerEvents = attivo ? "auto" : "none";
+    disegnaRuota();
+  };
+  $("cerca").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ e.preventDefault(); this.blur(); }
+  });
+  $("cerca").addEventListener("search", function(){ this.blur(); });
+
+  $("matricola").focus();
+})();
+</script>
+</body>
+</html>
