@@ -18,8 +18,12 @@
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0;overscroll-behavior-y:none}
+  html{
+    min-height:100%;background:linear-gradient(#F58220 0 10px,var(--bone) 10px) no-repeat;
+    background-color:var(--bone)
+  }
   body{
-    background:linear-gradient(#F58220 0 10px,var(--bone) 10px 100%);color:var(--ink);
+    min-height:100vh;min-height:100dvh;background:transparent;color:var(--ink);
     font:500 18px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     max-width:540px;margin:0 auto;-webkit-text-size-adjust:100%;
   }
@@ -375,12 +379,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.23</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.24</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.23", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.24", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -395,8 +399,8 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="turni-precisi.js?v=0.23"></script>
-<script src="alias-nomi.js?v=0.23"></script>
+<script src="turni-precisi.js?v=0.24"></script>
+<script src="alias-nomi.js?v=0.24"></script>
 <script>
 (function(){
   "use strict";
@@ -1151,7 +1155,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.23");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.24");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -1209,10 +1213,10 @@
     $("guidaCerca").textContent =
       "Digita un cognome: lo cerco in tutti i depositi. A campo vuoto scorri la ruota del deposito scelto.";
     mostra("menu");
-    if(!silenzioso)mostraGrazie(v);
+    if(silenzioso!==true) mostraGrazie(v);
     salvaStato();
   }
-  $("entra").onclick = entra;
+  $("entra").onclick = function(){ entra(false); };
   $("segnalaMatricola").onclick=function(){apriModulo("matricola",{matricola:matricolaNonTrovata});};
   $("matricola").addEventListener("input",function(){$("segnalaMatricola").style.display="none";$("erroreMatricola").textContent="";salvaStato();});
   $("matricola").addEventListener("keydown", function(e){ if(e.key==="Enter") entra(); });
