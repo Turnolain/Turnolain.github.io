@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# L'indicizzazione è esclusa tramite meta robots nelle pagine HTML.
+# Il crawler deve poter leggere la pagina per vedere il noindex.

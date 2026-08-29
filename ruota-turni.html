@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#F58220">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Ruota Virtuale</title>
 <style>
   :root{
@@ -12,7 +17,7 @@
     --rossa:#E97822; --ottone:#6D7277; --linea:rgba(37,41,45,.2);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;padding:0}
+  html,body{margin:0;padding:0;overscroll-behavior-y:none}
   body{
     background:linear-gradient(#F58220 0 10px,var(--bone) 10px 100%);color:var(--ink);
     font:500 18px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -30,7 +35,7 @@
   .chiudi:active{transform:translateY(2px)}
   .chiudi svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round}
   .casa svg{width:26px;height:26px;fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-  .barra .chiIo{font-size:15px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);line-height:1.3}
+  .barra .chiIo{max-width:calc(100% - 180px);font-size:15px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);line-height:1.3}
 
   .occhiello{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);font-weight:800;margin:0 0 10px}
   h1{font-size:34px;line-height:1.1;margin:0 0 12px;letter-spacing:-.02em;font-weight:800}
@@ -206,8 +211,26 @@
   .versione-app{position:fixed;right:8px;bottom:6px;z-index:90;padding:3px 7px;border-radius:6px;
                 background:rgba(35,35,35,.82);color:#fff;font:800 10px/1.2 Arial,sans-serif;
                 letter-spacing:.08em;pointer-events:none}
+  .segnala{height:46px;display:flex;align-items:center;justify-content:center;gap:7px;padding:0 14px;background:var(--ink);color:var(--carta);border:3px solid var(--ink);border-radius:14px;box-shadow:none;cursor:pointer;font:900 14px/1 Arial,sans-serif;letter-spacing:.08em}
+  .segnala::before{content:"?";display:grid;place-items:center;width:22px;height:22px;border:2px solid currentColor;border-radius:50%;font:900 15px/1 Arial,sans-serif}.aiuto-globale{position:fixed;z-index:95;top:24px;right:max(20px,calc((100vw - 1060px)/2 + 20px))}.segnala svg{display:none}
+  #accesso{padding-top:76px}.barra .chiudi{position:fixed;z-index:96;top:24px;right:max(142px,calc((100vw - 1060px)/2 + 142px));width:46px;height:46px;margin:0;border-radius:14px}
+  .segnala-matricola{margin-top:8px;background:var(--carta);color:var(--ink);box-shadow:2px 2px 0 var(--linea);font-size:16px;padding:14px}
+  .segnala-overlay{position:fixed;inset:0;z-index:120;display:flex;align-items:flex-start;justify-content:center;padding:78px 20px 24px;background:rgba(35,35,35,.34);opacity:0;pointer-events:none;transition:opacity .2s ease}
+  .segnala-overlay.on{opacity:1;pointer-events:auto}
+  .segnala-card{position:relative;width:min(100%,420px);padding:24px 20px;background:var(--carta);border:3px solid var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--rossa)}
+  .segnala-card h2{margin-bottom:16px}
+  .segnala-chiudi{position:absolute;right:12px;top:12px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:0;background:var(--bone);border:2px solid var(--ink);border-radius:10px;cursor:pointer}
+  .segnala-chiudi svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round}
+  .segnala-scelta{display:block;width:100%;margin:10px 0;padding:15px;text-align:left;background:var(--bone);color:var(--ink);border:2px solid var(--ink);border-radius:12px;cursor:pointer}
+  .segnala-scelta b{display:block;font-size:18px}.segnala-scelta span{display:block;margin-top:3px;color:var(--soft);font-size:14px}
+  .messaggio-overlay{position:fixed;inset:0;z-index:130;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(35,35,35,.34);opacity:0;pointer-events:none;transition:opacity .2s ease}
+  .messaggio-overlay.on{opacity:1;pointer-events:auto}.messaggio-card{position:relative;width:min(100%,580px);max-height:calc(100dvh - 32px);overflow-y:auto;padding:18px;background:var(--carta);border:3px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink)}
+  .messaggio-card h2{margin:0 46px 2px 0;font-size:28px}.messaggio-card .occhiello{margin-bottom:4px}.messaggio-card p{color:var(--soft);margin:0 42px 8px 0;font-size:15px;line-height:1.35}.assistenza-email{display:block;margin:7px 0 10px;padding:7px 9px;background:var(--bone);border:2px solid var(--linea);border-radius:8px;color:var(--ink);font-size:14px;font-weight:900;text-align:center;word-break:break-all}.campi-segnalazione{display:grid;grid-template-columns:1fr 1fr;gap:8px}.campo-segnalazione label{display:block;margin-bottom:2px;color:var(--soft);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}.campo-segnalazione input,.campo-segnalazione select,.campo-segnalazione textarea{width:100%;min-height:38px;padding:7px 9px;background:var(--bone);color:var(--ink);border:2px solid var(--linea);border-radius:8px;font:14px/1.25 Arial,sans-serif}.campo-segnalazione textarea{min-height:62px;resize:vertical}.messaggio-testo{width:100%;height:90px;min-height:90px;margin-top:9px;resize:vertical;padding:8px 9px;background:var(--bone);color:var(--ink);border:2px solid var(--linea);border-radius:8px;font:13px/1.3 Arial,sans-serif}.messaggio-azioni{position:sticky;bottom:-18px;display:flex;gap:10px;margin:0 -18px -18px;padding:8px 18px 14px;background:var(--carta)}.messaggio-azioni .bottone{margin-top:0;padding:11px}.messaggio-copia{background:var(--ink);color:var(--carta)}
+  .copia-conferma{position:fixed;z-index:160;left:50%;bottom:20px;width:min(calc(100% - 24px),560px);padding:15px 18px;transform:translate(-50%,24px);opacity:0;pointer-events:none;background:var(--ink);color:var(--carta);border-radius:12px;box-shadow:0 5px 18px rgba(0,0,0,.28);font-size:15px;font-weight:700;line-height:1.4;text-align:center;transition:opacity .2s ease,transform .2s ease}.copia-conferma.on{opacity:1;transform:translate(-50%,0)}.copia-conferma b{color:#fff;word-break:break-all}
   @keyframes battito{0%,100%{transform:scale(1)}45%{transform:scale(1.25)}}
   @media(max-width:620px){
+    .aiuto-globale{top:20px;right:12px;height:42px;padding:0 11px}.barra .chiudi{top:20px;right:132px;width:42px;height:42px}#accesso{padding-top:68px}
+    .messaggio-overlay{padding:8px}.messaggio-card{max-height:calc(100dvh - 16px);padding:14px}.messaggio-card h2{font-size:23px}.campi-segnalazione{grid-template-columns:1fr;gap:6px}.messaggio-testo{height:76px;min-height:76px}.messaggio-azioni{bottom:-14px;margin:0 -14px -14px;padding:7px 14px 11px}
     .tp-turno-dettaglio{grid-template-columns:1fr auto;gap:3px 12px;margin-top:5px}
     .tp-orari{grid-column:1/-1;grid-row:2}
     .tp-sintesi-turno{max-width:190px}
@@ -216,12 +239,15 @@
 </head>
 <body>
 
+<button class="segnala aiuto-globale" data-apri-segnala aria-label="Aiuto e assistenza">AIUTO</button>
+
 <div class="schermata attiva" id="accesso">
   <p class="occhiello" style="padding-top:8px">ATM · Metropolitana 1</p>
   <h1>Ruota Virtuale</h1>
   <p class="guida">Digita la tua matricola. Il deposito lo riconosco da solo.</p>
   <input class="campo" id="matricola" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="00000" autocomplete="off">
   <p class="errore" id="erroreMatricola"></p>
+  <button class="bottone segnala-matricola" id="segnalaMatricola" style="display:none">Segnala la tua matricola</button>
   <div class="foglio-mancante" id="avvisoDati" style="display:none">
     <b>Dati dei turni non caricati.</b><br>
     Apri l’app dalla cartella completa oppure estrai tutto il contenuto del pacchetto ZIP.
@@ -346,9 +372,31 @@
   </div>
 </div>
 <img class="gatti-angolo" id="gattiAngolo" src="gatti-chiara-ottimizzati.webp" alt="" aria-hidden="true">
-<div class="versione-app" aria-label="Versione applicazione">v0.21</div>
+<div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
+<div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
+<div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.23</div>
 
-<script src="turni-precisi.js"></script>
+<script>
+(function(){
+  if(location.protocol!=="http:" && location.protocol!=="https:") return;
+  var versioneLocale="0.23", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  function usaApp(){interazione=true;}
+  addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
+  var limite=setTimeout(function(){if(controller)controller.abort();},4000);
+  function numeroVersione(v){return String(v).split(".").reduce(function(n,p){return n*1000+(parseInt(p,10)||0);},0);}
+  fetch("version.json?t="+Date.now(),{cache:"no-store",signal:controller?controller.signal:undefined}).then(function(r){return r.ok?r.json():null;}).then(function(v){
+    clearTimeout(limite);
+    if(interazione || !v || !v.version || numeroVersione(v.version)<=numeroVersione(versioneLocale)) return;
+    var chiave="rv-reload-"+v.version;
+    if(sessionStorage.getItem(chiave)) return;
+    sessionStorage.setItem(chiave,"1");
+    location.replace(location.pathname+"?v="+encodeURIComponent(v.version));
+  }).catch(function(){clearTimeout(limite);});
+})();
+</script>
+<script src="turni-precisi.js?v=0.23"></script>
+<script src="alias-nomi.js?v=0.23"></script>
 <script>
 (function(){
   "use strict";
@@ -359,6 +407,8 @@
     globalThis.TURNI_PRECISI = {};
     globalThis.INIZIALI_MATRICOLA = {};
   }
+  if(typeof NOMI_COMPLETI_MATRICOLA==="undefined") globalThis.NOMI_COMPLETI_MATRICOLA={};
+  if(!NOMI_COMPLETI_MATRICOLA["73704"]) NOMI_COMPLETI_MATRICOLA["73704"]="Saponara I.";
 
   /* ==========================================================
      1. DEPOSITI E RUOTE
@@ -895,11 +945,13 @@
   }
 
   function haRiposoMatto(dep,pos){
-    return pos%100===14;
+    return pos%100===14 && (dep.sigla==="PR" || dep.sigla==="GAL");
   }
   function settimanaDiDeposito(dep,pos){
     var sett=settimanaDi(pos);
     if(haRiposoMatto(dep,pos)) sett[5]={stato:M,testo:"?",pos:null};
+    if((dep.sigla==="SFS" || dep.sigla==="BIS") && pos===214)
+      sett[5]={stato:L,testo:String(pos),pos:pos};
     return sett;
   }
 
@@ -937,8 +989,50 @@
      ========================================================== */
   var $ = function(id){ return document.getElementById(id); };
   var U = null;   // {dep, sigla, nome, base, mat, posizioni, tot}
+  var matricolaNonTrovata = "";
+  var EMAIL_ASSISTENZA = "assistenzaruotavirtuale"+"@"+"gmail.com";
   var qLun = lunediDi(new Date()), sLun = lunediDi(new Date()), calMese = new Date(), rLun = lunediDi(new Date());
   var rDep = null;   // deposito mostrato nella schermata di ricerca
+  var STATO_SESSIONE="ruota-virtuale-stato-v1", ripristinoInCorso=false;
+
+  function salvaStato(){
+    if(ripristinoInCorso || typeof sessionStorage==="undefined") return;
+    try{
+      var att=document.querySelector(".schermata.attiva"), campi={}, nodi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
+      for(var i=0;i<nodi.length;i++) campi[nodi[i].id]=nodi[i].value;
+      sessionStorage.setItem(STATO_SESSIONE,JSON.stringify({
+        matricola:U?U.mat:$("matricola").value.replace(/\D/g,""),accesso:!!U,
+        schermata:att?att.id:"accesso",q:isoLocale(qLun),s:isoLocale(sLun),r:isoLocale(rLun),
+        mese:calMese.getFullYear()+"-"+(calMese.getMonth()+1),deposito:rDep?rDep.sigla:"",
+        ricerca:$("cerca").value,tipoAiuto:tipoSegnalazione,campiAiuto:campi,
+        moduloAperto:$("messaggioOverlay").classList.contains("on")
+      }));
+    }catch(e){}
+  }
+  function cancellaStato(){try{if(typeof sessionStorage!=="undefined")sessionStorage.removeItem(STATO_SESSIONE);}catch(e){}}
+  function ripristinaStato(){
+    if(typeof sessionStorage==="undefined") return false;
+    var st; try{st=JSON.parse(sessionStorage.getItem(STATO_SESSIONE)||"null");}catch(e){return false;}
+    if(!st) return false; ripristinoInCorso=true;
+    try{
+      if(st.q)qLun=daISO(st.q); if(st.s)sLun=daISO(st.s); if(st.r)rLun=daISO(st.r);
+      if(st.mese){var mp=st.mese.split("-");calMese=new Date(+mp[0],+mp[1]-1,1);}
+      $("matricola").value=st.matricola||"";
+      if(st.accesso && st.matricola){entra(true);if(!U)throw new Error("matricola non valida");}
+      if(!U){mostra("accesso");return true;}
+      rDep=DEPOSITI[st.deposito]||U.dep;$("cerca").value=st.ricerca||"";
+      if(st.schermata==="questa"){disegnaQuesta();mostra("questa");}
+      else if(st.schermata==="settimana"){disegnaCalendario();disegnaSettimana();mostra("settimana");}
+      else if(st.schermata==="ruota"){disegnaDepositi();disegnaRuota();mostra("ruota");}
+      else mostra("menu");
+      if(st.moduloAperto){
+        apriModulo(st.tipoAiuto||"errore");var vals=st.campiAiuto||{};
+        for(var id in vals)if($(id))$(id).value=vals[id];aggiornaMessaggio();
+      }
+      return true;
+    }catch(e){cancellaStato();return false;}
+    finally{ripristinoInCorso=false;}
+  }
 
   function cod(pos){ return U.sigla + pos; }
   function codDi(dep, pos){ return dep.sigla + pos; }
@@ -962,6 +1056,27 @@
   var CASA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/>'
                + '<path d="M5.5 9.5V20h13V9.5"/><path d="M9.75 20v-5.5h4.5V20"/></svg>';
   var CHIUDI_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  var segBtns=document.querySelectorAll("[data-apri-segnala]");
+  for(var sb=0;sb<segBtns.length;sb++){ segBtns[sb].onclick=function(){apriSegnala();}; }
+  $("chiudiSegnala").innerHTML=CHIUDI_SVG;
+  $("chiudiSegnala").onclick=chiudiSegnala;
+  $("segnalaOverlay").onclick=function(e){if(e.target===this)chiudiSegnala();};
+  $("chiudiMessaggio").innerHTML=CHIUDI_SVG;
+  $("chiudiMessaggio").onclick=chiudiMessaggio;
+  $("messaggioOverlay").onclick=function(e){if(e.target===this)chiudiMessaggio();};
+  var copiaTimer=null;
+  $("copiaMessaggio").onclick=function(){
+    aggiornaMessaggio(); var t=$("messaggioTesto"), bottone=this;
+    function fatto(){
+      bottone.textContent="Messaggio copiato";clearTimeout(copiaTimer);
+      $("copiaConferma").classList.add("on");
+      copiaTimer=setTimeout(function(){$("copiaConferma").classList.remove("on");},7000);
+    }
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t.value).then(fatto).catch(function(){t.select();document.execCommand("copy");fatto();});
+    else{t.select();document.execCommand("copy");fatto();}
+  };
+  var segScelte=document.querySelectorAll("[data-segnala-tipo]");
+  for(var st=0;st<segScelte.length;st++) segScelte[st].onclick=function(){chiudiSegnala();apriModulo(this.getAttribute("data-segnala-tipo"));};
   var xs = document.querySelectorAll(".chiudi");
   for(var x=0;x<xs.length;x++){
     xs[x].innerHTML = CHIUDI_SVG;
@@ -971,7 +1086,9 @@
       $("gattiAngolo").classList.remove("on");
       $("matricola").value = "";
       $("erroreMatricola").textContent = "";
+      $("segnalaMatricola").style.display="none";
       mostra("accesso");
+      cancellaStato();
       $("matricola").focus();
     };
   }
@@ -987,7 +1104,59 @@
     for(var i=0;i<t.length;i++) t[i].classList.remove("attiva");
     $(id).classList.add("attiva");
     window.scrollTo(0,0);
+    salvaStato();
   }
+
+  function contestoSettimana(){
+    var att=document.querySelector(".schermata.attiva"), lun=(att&&att.id==="questa")?qLun:(att&&att.id==="settimana"?sLun:rLun);
+    return fmtIntervalloSettimana(lun,spostaGiorni(lun,6));
+  }
+  function mittente(){ return U ? U.nome+" · "+U.dep.nome+" · matricola "+U.mat : ""; }
+  var tipoSegnalazione="errore";
+  var etichetteSegnalazione={matricola:"Matricola mancante",errore:"Segnalazione errore",scoperta:"Posizione scoperta"};
+  function campoSegnalazione(id,label,tipo,valore){
+    valore=valore||"";
+    if(tipo==="deposito") return '<div class="campo-segnalazione"><label for="seg-'+id+'">'+label+'</label><select id="seg-'+id+'" data-seg-label="'+label+'"><option value="">Seleziona se lo sai</option><option>Precotto</option><option>Gallaratese</option><option>Sesto</option><option>Bisceglie</option></select></div>';
+    var tag=tipo==="textarea"?"textarea":"input", attr=tipo==="textarea"?'':' type="text" value="'+esc(valore)+'"';
+    return '<div class="campo-segnalazione"><label for="seg-'+id+'">'+label+'</label><'+tag+' id="seg-'+id+'" data-seg-label="'+label+'"'+attr+'>'+(tipo==="textarea"?esc(valore):'')+'</'+tag+'></div>';
+  }
+  function apriModulo(tipo,extra){
+    extra=extra||{}; tipoSegnalazione=tipo; var html="", guida="Compila ciò che sai: nessun campo è obbligatorio.";
+    clearTimeout(copiaTimer);$("copiaConferma").classList.remove("on");
+    if(tipo==="matricola"){
+      guida="Matricola mancante? Scrivi matricola e deposito: provvederemo ad aggiungerti.";
+      html+=campoSegnalazione("matricola","Matricola","text",extra.matricola||matricolaNonTrovata||"");
+      html+=campoSegnalazione("deposito","Deposito","deposito");
+      html+=campoSegnalazione("nome","Nome e cognome","text");
+      html+=campoSegnalazione("posizione","Posizione in ruota","text");
+    }else if(tipo==="scoperta"){
+      guida="Segnala chi occupa una posizione scoperta, anche per conto di un collega.";
+      html+=campoSegnalazione("deposito","Deposito","deposito");
+      html+=campoSegnalazione("posizione","Posizione scoperta","text");
+      html+=campoSegnalazione("nome","Nome e cognome del collega","text");
+      html+=campoSegnalazione("matricola","Matricola del collega","text");
+    }else{
+      guida="Descrivi la problematica riscontrata. Anche una segnalazione parziale è utile.";
+      html+=campoSegnalazione("matricola","La tua matricola","text",U?U.mat:"");
+      html+=campoSegnalazione("problema","Problematica riscontrata","textarea");
+      html+=campoSegnalazione("riferimento","Posizione, collega o turno coinvolto","text");
+    }
+    $("messaggioTitolo").textContent=etichetteSegnalazione[tipo]; $("messaggioGuida").textContent=guida;
+    $("campiSegnalazione").innerHTML=html; $("copiaMessaggio").textContent="Copia messaggio";
+    $("campiSegnalazione").oninput=function(){aggiornaMessaggio();salvaStato();}; aggiornaMessaggio();
+    $("messaggioOverlay").classList.add("on"); $("messaggioOverlay").setAttribute("aria-hidden","false");
+  }
+  function aggiornaMessaggio(){
+    var righe=["Oggetto: Ruota Virtuale - "+etichetteSegnalazione[tipoSegnalazione],"Tipo: "+etichetteSegnalazione[tipoSegnalazione]];
+    var da=mittente(); if(da) righe.push("Segnalato da: "+da);
+    var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
+    for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.23");
+    $("messaggioTesto").value=righe.join("\n");
+  }
+  function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
+  function chiudiSegnala(){ $("segnalaOverlay").classList.remove("on"); $("segnalaOverlay").setAttribute("aria-hidden","true");salvaStato(); }
+  function chiudiMessaggio(){ $("messaggioOverlay").classList.remove("on"); $("messaggioOverlay").setAttribute("aria-hidden","true");salvaStato(); }
 
   var grazieTimer = null, gattiTimer = null;
 
@@ -1015,9 +1184,9 @@
     },1900);
   }
 
-  function entra(){
+  function entra(silenzioso){
     var v = $("matricola").value.replace(/\D/g,""), err = $("erroreMatricola");
-    if(v.length < 4){ err.textContent = "Servono almeno quattro cifre."; return; }
+    if(v.length < 4){ err.textContent = "Servono almeno quattro cifre."; $("segnalaMatricola").style.display="none"; return; }
 
     var trovato = null;
     for(var sig in DEPOSITI){
@@ -1027,9 +1196,9 @@
       }
       if(trovato) break;
     }
-    if(!trovato){ err.textContent = "Matricola non trovata nelle ruote caricate."; return; }
+    if(!trovato){ matricolaNonTrovata=v; err.textContent = "Matricola non trovata nelle ruote caricate."; $("segnalaMatricola").style.display="block"; return; }
 
-    err.textContent = "";
+    matricolaNonTrovata=""; $("segnalaMatricola").style.display="none"; err.textContent = "";
     var pos = posizioniDi(trovato.dep);
     U = {dep:trovato.dep, sigla:trovato.dep.sigla, nome:nomePersona(trovato.dep.ruota[trovato.i]),
          base:trovato.i, mat:v, posizioni:pos, tot:pos.length};
@@ -1040,9 +1209,12 @@
     $("guidaCerca").textContent =
       "Digita un cognome: lo cerco in tutti i depositi. A campo vuoto scorri la ruota del deposito scelto.";
     mostra("menu");
-    mostraGrazie(v);
+    if(!silenzioso)mostraGrazie(v);
+    salvaStato();
   }
   $("entra").onclick = entra;
+  $("segnalaMatricola").onclick=function(){apriModulo("matricola",{matricola:matricolaNonTrovata});};
+  $("matricola").addEventListener("input",function(){$("segnalaMatricola").style.display="none";$("erroreMatricola").textContent="";salvaStato();});
   $("matricola").addEventListener("keydown", function(e){ if(e.key==="Enter") entra(); });
 
   var scelte = document.querySelectorAll(".scelta");
@@ -1216,7 +1388,8 @@
     var dom = spostaGiorni(rLun,6);
     $("rQuando").textContent = "Settimana "+fmtIntervalloSettimana(rLun,dom);
 
-    var filtro = $("cerca").value.trim().toLowerCase();
+    var normalizzaRicerca=function(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();};
+    var filtro = normalizzaRicerca($("cerca").value);
     var k = settimaneDa(rLun);
     var mer = spostaGiorni(rLun,2);   // mercoledì: giorno di riferimento per la stagione
     var righe = "", quanti = 0;
@@ -1228,7 +1401,9 @@
         for(var i=0;i<ps.length;i++){
           var occ = d.ruota[ ((i - k) % tot + tot) % tot ];
           var nome = occ ? nomePersona(occ) : "turno scoperto o collega non presente in ruota";
-          if(nome.toLowerCase().indexOf(filtro)<0 && codDi(d,ps[i]).toLowerCase().indexOf(filtro)<0) continue;
+          var alias=occ && NOMI_COMPLETI_MATRICOLA[occ[1]] ? NOMI_COMPLETI_MATRICOLA[occ[1]] : "";
+          var testoRicerca=normalizzaRicerca(nome+" "+alias+" "+(occ?occ[1]:"")+" "+codDi(d,ps[i]));
+          if(testoRicerca.indexOf(filtro)<0) continue;
           righe += rigaHTML(d, ps[i], occ, true, mer);
           quanti++;
         }
@@ -1273,7 +1448,11 @@
     $("entra").disabled=true;
     $("matricola").disabled=true;
   } else {
-    $("matricola").focus();
+    if(!ripristinaStato())$("matricola").focus();
+  }
+  if(window.addEventListener){
+    window.addEventListener("pagehide",salvaStato);
+    document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")salvaStato();});
   }
 })();
 </script>
