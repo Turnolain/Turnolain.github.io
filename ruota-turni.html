@@ -157,6 +157,10 @@
   table.cal tr.sel td.fuori{color:#9C9484}
   table.cal td.oggi{border-color:var(--rossa)}
 
+  .apri-calendario{width:100%;margin:16px 0 0;padding:16px;background:var(--rossa);color:#fff;
+                    border:3px solid var(--ink);border-radius:12px;box-shadow:4px 4px 0 var(--ink);
+                    font:900 17px/1.2 inherit;letter-spacing:.03em;cursor:pointer}
+
   #cerca{width:100%;font:700 22px/1 inherit;color:var(--ink);background:var(--carta);
          border:3px solid var(--ink);border-radius:14px;padding:19px}
   #cerca::placeholder{color:#BEB6A3;font-weight:600;font-size:19px}
@@ -191,7 +195,12 @@
   ol li.io{background:var(--carta);box-shadow:inset 5px 0 0 var(--rossa);padding-left:14px;margin-left:-10px}
   ol li.surrweek .pos{color:var(--rossa)}
   ol li.con-dettaglio{display:block;cursor:pointer}
+  ol li.con-giorno{display:block}
   ol li .riga-testa{display:flex;align-items:baseline;gap:12px;width:100%}
+  ol li.risultato-surrogante{display:block;margin:10px 0 18px;padding:14px 16px;background:#FFF0E5;
+                    border:3px solid var(--rossa);border-radius:12px;box-shadow:3px 3px 0 var(--ink);
+                    color:var(--ink);font-size:15px;font-weight:700;line-height:1.45}
+  ol li.risultato-surrogante strong{font-weight:900}
   ol li.con-dettaglio .dettaglio-turno{display:none}
   ol li.con-dettaglio.aperto .dettaglio-turno{display:block}
 
@@ -249,7 +258,7 @@
   <p class="occhiello" style="padding-top:8px">ATM · Metropolitana 1</p>
   <h1>Ruota Virtuale</h1>
   <p class="guida">Digita la tua matricola. Il deposito lo riconosco da solo.</p>
-  <input class="campo" id="matricola" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="00000" autocomplete="off">
+  <input class="campo" id="matricola" name="matricola" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="00000" autocomplete="username" autocapitalize="none" spellcheck="false">
   <p class="errore" id="erroreMatricola"></p>
   <button class="bottone segnala-matricola" id="segnalaMatricola" style="display:none">Segnala la tua matricola</button>
   <div class="foglio-mancante" id="avvisoDati" style="display:none">
@@ -261,7 +270,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.27" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -278,15 +287,11 @@
 <div class="schermata" id="menu">
   <div class="barra"><span class="chiIo" id="saluto"></span><button class="chiudi" aria-label="Esci e cambia matricola"></button></div>
   <h2>Cosa vuoi sapere?</h2>
-  <p class="guida">Scegli una delle tre.</p>
+  <p class="guida">Scegli una delle due.</p>
   <ul class="scelte">
     <li><button class="scelta" data-vai="questa">
-      <b>Che turno faccio questa settimana</b>
-      <span>La tua posizione adesso, giorno per giorno</span>
-    </button></li>
-    <li><button class="scelta" data-vai="settimana">
-      <b>Che turno faccio in una settimana</b>
-      <span>Apri il calendario e tocca la settimana</span>
+      <b>Visualizza i miei turni</b>
+      <span>Settimana corrente, settimane future e calendario</span>
     </button></li>
     <li><button class="scelta" data-vai="ruota">
       <b>Cerca un collega o una posizione</b>
@@ -302,6 +307,7 @@
     <span class="testo" id="qQuando"></span>
     <button id="qSucc" aria-label="Settimana successiva">›</button>
   </div>
+  <button class="apri-calendario" id="qApriCalendario">📅 Visualizza calendario</button>
   <div class="riquadro">
     <p class="chi">Questa settimana ricopri</p>
     <p class="grande" id="qCodice"></p>
@@ -315,13 +321,13 @@
     <span><i style="background:var(--carta);box-shadow:inset 0 0 0 2px var(--linea)"></i>Lavoro</span>
     <span><i style="background:var(--ink)"></i>Riposo</span>
     <span><i style="background:var(--ottone)"></i>Scomputo</span>
-    <span><i style="background:var(--rossa)"></i>Surroga</span>
+    <span><i style="background:var(--rossa)"></i>Surrogante</span>
   </div>
 </div>
 
 <div class="schermata" id="settimana">
   <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button></div>
-  <h2>Quale settimana?</h2>
+  <h2>Calendario dei miei turni</h2>
   <p class="guida">Tocca un giorno qualsiasi della settimana che ti interessa.</p>
   <div class="mese">
     <button id="mPrec" aria-label="Mese precedente">‹</button>
@@ -345,14 +351,14 @@
     <span><i style="background:var(--carta);box-shadow:inset 0 0 0 2px var(--linea)"></i>Lavoro</span>
     <span><i style="background:var(--ink)"></i>Riposo</span>
     <span><i style="background:var(--ottone)"></i>Scomputo</span>
-    <span><i style="background:var(--rossa)"></i>Surroga</span>
+    <span><i style="background:var(--rossa)"></i>Surrogante</span>
   </div>
 </div>
 
 <div class="schermata" id="ruota">
   <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button></div>
   <h2>Chi stai cercando?</h2>
-  <p class="guida" id="guidaCerca">Digita il cognome del collega, oppure il numero della posizione.</p>
+  <p class="guida" id="guidaCerca">Digita un collega o una posizione. A campo vuoto scorri la ruota del deposito scelto.</p>
   <input id="cerca" type="search" placeholder="Es. Pigoli · oppure 305" autocomplete="off">
   <div class="depositi" id="depositi"></div>
   <p class="avviso" id="avviso" style="display:none"></p>
@@ -371,20 +377,20 @@
 <div class="grazie" id="grazie" aria-hidden="true">
   <div class="grazie-card">
     <div class="grazie-cuore">♥</div>
-    <img class="grazie-gatti" src="gatti-chiara-ottimizzati.webp" alt="Un gatto arancione e un gatto bianco e nero con gli occhi a cuore">
+    <img class="grazie-gatti" src="gatti-chiara-ottimizzati.webp?v=0.27" alt="Un gatto arancione e un gatto bianco e nero con gli occhi a cuore">
     <p class="grazie-testo" id="grazieTesto">Grazie per l'aiuto che mi dai!</p>
   </div>
 </div>
-<img class="gatti-angolo" id="gattiAngolo" src="gatti-chiara-ottimizzati.webp" alt="" aria-hidden="true">
+<img class="gatti-angolo" id="gattiAngolo" src="gatti-chiara-ottimizzati.webp?v=0.27" alt="" aria-hidden="true">
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.25</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.27</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.25", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.27", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -399,8 +405,10 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="turni-precisi.js?v=0.25"></script>
-<script src="alias-nomi.js?v=0.25"></script>
+<script src="schedule-config.js?v=0.27"></script>
+<script src="turni-precisi.js?v=0.27"></script>
+<script src="alias-nomi.js?v=0.27"></script>
+<script src="gestore-config.js?v=0.27"></script>
 <script>
 (function(){
   "use strict";
@@ -413,6 +421,7 @@
   }
   if(typeof NOMI_COMPLETI_MATRICOLA==="undefined") globalThis.NOMI_COMPLETI_MATRICOLA={};
   if(!NOMI_COMPLETI_MATRICOLA["73704"]) NOMI_COMPLETI_MATRICOLA["73704"]="Saponara I.";
+  if(window.RUOTA_M1_NAMES) Object.keys(window.RUOTA_M1_NAMES).forEach(function(mat){NOMI_COMPLETI_MATRICOLA[mat]=window.RUOTA_M1_NAMES[mat]});
 
   /* ==========================================================
      1. DEPOSITI E RUOTE
@@ -499,6 +508,14 @@
       ]
     }
   };
+
+  /* Il Gestore mantiene l'elenco colleghi in un file separato. Se presente,
+     questo elenco sostituisce quello incorporato senza alterare la logica dei turni. */
+  if(window.RUOTA_M1_ROSTERS){
+    Object.keys(DEPOSITI).forEach(function(sigla){
+      if(Array.isArray(window.RUOTA_M1_ROSTERS[sigla])) DEPOSITI[sigla].ruota=window.RUOTA_M1_ROSTERS[sigla];
+    });
+  }
 
   /* ==========================================================
      2. SCHEMA DEI SETTE GIORNI (uguale per tutti i depositi)
@@ -611,6 +628,14 @@
 
   function foglioPerData(d){
     var t=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime();
+    var testPeriod=periodoTestPerData(d);
+    if(testPeriod) return testPeriod.chiave;
+    var testCfg=window.RUOTA_M1_TEST_CONFIG;
+    if(testCfg && testCfg.dal){
+      var testDa=new Date(testCfg.dal+"T00:00:00").getTime();
+      var testA=testCfg.al?new Date(testCfg.al+"T00:00:00").getTime():Infinity;
+      if(t>=testDa && t<=testA) return testCfg.chiave;
+    }
     var estDa=new Date(2026,6,4).getTime(), estA=new Date(2026,8,6).getTime();
     var intDa=new Date(2026,7,31).getTime(), intA=new Date(2026,8,6).getTime();
     /* Il foglio invernale resta certo fino alla vigilia del cambio stagionale previsto.
@@ -621,8 +646,20 @@
     if(t>=invDa && t<=invA) return "inv";
     return null;
   }
-  function stagioneDi(d){ var f=foglioPerData(d); return (f==="est" || f==="int") ? 1 : 0; }
-  function nomeStagione(d){ var f=foglioPerData(d); return f==="int"?"foglio intermedio":(f==="est"?"foglio estivo":"foglio invernale"); }
+  function periodoTestPerData(d){
+    var iso=isoLocale(d),periods=window.RUOTA_M1_TEST_PERIODS||[];
+    var matches=periods.filter(function(p){return p.dal&&iso>=p.dal&&(!p.al||iso<=p.al);});
+    /* Se due fogli si sovrappongono, prevale quello entrato in vigore più
+       recentemente. La data di caricamento serve solo a parità di decorrenza. */
+    matches.sort(function(a,b){
+      var byStart=String(a.dal||"").localeCompare(String(b.dal||""));
+      return byStart || String(a.applicatoIl||"").localeCompare(String(b.applicatoIl||""));
+    });
+    return matches.length?matches[matches.length-1]:null;
+  }
+  function tipoBaseFoglio(f){return String(f||"").split("_")[0];}
+  function stagioneDi(d){ var f=tipoBaseFoglio(foglioPerData(d)); return (f==="est" || f==="int") ? 1 : 0; }
+  function nomeStagione(d){ var f=tipoBaseFoglio(foglioPerData(d)); return f==="int"?"foglio intermedio":(f==="est"?"foglio estivo":"foglio invernale"); }
 
   var FOGLI_INFO = {
     est:{tipo:"estivo",titolo:"ESTIVO 2026",dal:"04/07/2026"},
@@ -650,8 +687,19 @@
     return (info.speciale?"Orario speciale ":"Foglio turni ")+info.titolo+" DAL "+info.dal;
   }
   function fonteTurnoPerData(d,programma,infoProgramma){
+    /* Una fonte speciale deve prevalere sul foglio ordinario caricato nel
+       Gestore: i turni Fiera non possono essere etichettati come invernali. */
     if(infoProgramma && infoProgramma.fonte) return infoProgramma.fonte;
     if(programma==="specFes") return FOGLI_INFO.specFes;
+    var testPeriod=periodoTestPerData(d);
+    if(testPeriod) return {tipo:testPeriod.tipo,titolo:testPeriod.titolo,dal:testPeriod.dal.split("-").reverse().join("/")};
+    var testCfg=window.RUOTA_M1_TEST_CONFIG;
+    if(testCfg && testCfg.dal){
+      var isoTest=isoLocale(d);
+      if(isoTest>=testCfg.dal && (!testCfg.al || isoTest<=testCfg.al)){
+        return {tipo:testCfg.tipo,titolo:testCfg.titolo,dal:testCfg.dal.split("-").reverse().join("/")};
+      }
+    }
     var foglio=foglioPerData(d), info=foglio && FOGLI_INFO[foglio];
     if(!info) return null;
     if(foglio==="int" && d>=new Date(2026,7,31)){
@@ -672,12 +720,13 @@
       fer:"sab",sab:"fes",fes:"fes",
       fonte:{speciale:true,titolo:"NATALE 2026-2027",dal:"20/12/2026"}} */
   var FONTE_ESTATE_SPECIALE_2026={speciale:true,titolo:"INTERMEDIO/ESTIVO 2026",dal:"03/08/2026"};
-  var PROGRAMMI_PERIODI = [
+  /* Tra due regole create nel Gestore prevale l'ultima salvata. */
+  var PROGRAMMI_PERIODI = (window.RUOTA_M1_CALENDAR_RULES||[]).slice().reverse().concat([
     /* Le eccezioni puntuali precedono il periodo generale. */
     {dal:"2026-08-09",al:"2026-08-09",nome:"Orario speciale Estate",fer:"fes",sab:"fes",fes:"fes",fonte:FONTE_ESTATE_SPECIALE_2026},
     {dal:"2026-08-15",al:"2026-08-16",nome:"Orario speciale Estate",fer:"fes",sab:"fes",fes:"fes",fonte:FONTE_ESTATE_SPECIALE_2026},
     {dal:"2026-08-03",al:"2026-08-21",nome:"Orario speciale Estate",fer:"sab",sab:"sab",fes:"sab",fonte:FONTE_ESTATE_SPECIALE_2026}
-  ];
+  ]);
   /* Se una comunicazione ufficiale copre l'intervallo, non mostriamo l'avviso storico. */
   var COPERTURE_COMUNICAZIONI = [
     {dal:"2025-11-22",al:"2026-01-06"},
@@ -690,23 +739,34 @@
   }
   function programmaInfoPerData(data,variante){
     var iso=isoLocale(data), puntuale=PROGRAMMI_DATA[iso];
-    if(puntuale){
-      return {programma:puntuale,speciale:/^spec/.test(puntuale),
-        nome:puntuale==="specFes"?"Orario speciale Fiera":"Orario speciale Fiera",
-        fonte:puntuale==="specFes"?FOGLI_INFO.specFes:null};
-    }
+    /* Le regole salvate nel Gestore vengono controllate per prime: servono
+       proprio a sostituire gli avvisi provvisori inseriti in precedenza. */
     for(var i=0;i<PROGRAMMI_PERIODI.length;i++){
       var p=PROGRAMMI_PERIODI[i];
-      if(iso>=p.dal && iso<=p.al){
-        return {programma:p[variante]||variante,speciale:true,
-          nome:p.nome||"Orario speciale",fonte:p.fonte||null};
+      var dal=p.from||p.dal, al=p.to||p.al;
+      if(iso>=dal && iso<=al){
+        var programma=p[variante]||variante;
+        var fonte=p.fonte||null;
+        if(!fonte && p.sourceTitle){
+          var fonteDal=p.sourceFrom||dal;
+          fonte={speciale:true,titolo:p.sourceTitle,dal:fonteDal.split("-").reverse().join("/")};
+        }
+        /* Nei dettagli giornalieri basta il nome breve del programma. Il titolo
+           completo della comunicazione rimane nella fonte in fondo. */
+        var nome=programma==="sab"?"Orari del sabato":(programma==="fes"?"Orari festivi":(programma==="fer"?"Orari feriali":(p.name||p.nome||"Orari speciali")));
+        return {programma:programma,speciale:true,nome:nome,fonte:fonte,foglio:p.sheetKey||null};
       }
     }
-    return {programma:variante,speciale:false,nome:"",fonte:null};
+    if(puntuale){
+      return {programma:puntuale,speciale:/^spec/.test(puntuale),
+        nome:"Orari Fiera",
+        fonte:puntuale==="specFes"?FOGLI_INFO.specFes:null,foglio:null};
+    }
+    return {programma:variante,speciale:false,nome:"",fonte:null,foglio:null};
   }
   function dataCopertaDaComunicazione(data){
     var iso=isoLocale(data);
-    return COPERTURE_COMUNICAZIONI.some(function(p){return iso>=p.dal && iso<=p.al;});
+    return PROGRAMMI_PERIODI.some(function(p){return p.sheetKey && iso>=(p.from||p.dal) && iso<=(p.to||p.al);}) || COPERTURE_COMUNICAZIONI.some(function(p){return iso>=p.dal && iso<=p.al;});
   }
   function dataPasqua(anno){
     var a=anno%19,b=Math.floor(anno/100),c=anno%100,d=Math.floor(b/4),e=b%4;
@@ -728,10 +788,10 @@
   }
   function esc(s){ return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
   function righeTurno(dep,pos,data,variante){
-    var programma = programmaInfoPerData(data,variante).programma;
+    var infoProgramma=programmaInfoPerData(data,variante), programma=infoProgramma.programma;
     if(programma==="specSabMancante") return null;
     var speciale = programma==="specFes";
-    var stagione = foglioPerData(data);
+    var stagione = infoProgramma.foglio||foglioPerData(data);
     if(!stagione) return null;
     var blocco = speciale ? TURNI_PRECISI.fiera : TURNI_PRECISI[stagione];
     var voce = blocco && blocco[dep.sigla] && blocco[dep.sigla][pos];
@@ -793,8 +853,15 @@
     var testo=(righe||[]).join(" ").toUpperCase();
     /* Riposi, scomputi e disponibilità restano intenzionalmente semplici. */
     if(!righe || !righe.length || /\bDISP(?:ONIBILE)?\b|\bRIPOSO\b|\bSCO\b|\bSURR\b/.test(testo)) return corpo;
+    var codiceEffettivo=codiceTurno;
+    (righe||[]).some(function(r){
+      var m=String(r).trim().match(/^(?:PR|GAL|SFS|BIS)([123]\d{2})$/i);
+      if(!m) return false;
+      codiceEffettivo=parseInt(m[1],10);
+      return true;
+    });
     return '<div class="tp-turno-dettaglio">'
-      +'<span class="tp-codice-turno">'+esc(codDi(dep,codiceTurno))+'</span>'
+      +'<span class="tp-codice-turno">'+esc(codDi(dep,codiceEffettivo))+'</span>'
       +'<div class="tp-orari">'+corpo+'</div>'
       +'<span class="tp-sintesi-turno">'+esc(sintesiTurnoGenerica(righe))+'</span>'
       +'</div>';
@@ -869,7 +936,7 @@
         fieraMancante=true;
         corpo='<div class="tp-servizio"><b>FOGLIO SABATO FIERA NON ANCORA PUBBLICATO</b></div>';
       }
-      else if(!foglioPerData(data)){
+      else if(!(infoProgramma.foglio||foglioPerData(data))){
         giorniMancanti.push(i);
         var stagioneStorica=foglioGeneralmentePerData(data);
         if(stagioniStoriche.indexOf(stagioneStorica)<0) stagioniStoriche.push(stagioneStorica);
@@ -881,7 +948,9 @@
       else corpo=servizioEtichettatoHTML(dep,g.stato==="surr"?codice:rigaFonte,righeTurno(dep,rigaFonte,data,variante),rigaFonte,true);
       var chiave=corpo+"|"+(speciale?nomeSpeciale:"")+"|"+(g.stato==="surr"?codice:"");
       var ultimo=blocchi[blocchi.length-1];
-      if(ultimo && ultimo.chiave===chiave) ultimo.fine=i;
+      /* I feriali uguali possono essere accorpati. Sabato e domenica restano
+         sempre separati, anche se servizio e orari coincidono. */
+      if(i<5 && ultimo && ultimo.chiave===chiave) ultimo.fine=i;
       else blocchi.push({inizio:i,fine:i,chiave:chiave,corpo:corpo,speciale:speciale,
         nomeSpeciale:nomeSpeciale,codice:g.stato==="surr"?codice:null});
     }
@@ -1188,7 +1257,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.25");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.27");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -1204,20 +1273,31 @@
     el.setAttribute("aria-hidden","true");
   }
 
+  function messaggioAttivo(mat){
+    var oggi=new Date(),iso=oggi.getFullYear()+"-"+String(oggi.getMonth()+1).padStart(2,"0")+"-"+String(oggi.getDate()).padStart(2,"0");
+    var messaggi=window.RUOTA_M1_MESSAGES||[];
+    for(var i=messaggi.length-1;i>=0;i--){
+      var m=messaggi[i];
+      if(String(m.matricola)!==String(mat)) continue;
+      if(m.from&&iso<m.from) continue;
+      if(m.to&&iso>m.to) continue;
+      return m;
+    }
+    return null;
+  }
+
   function mostraGrazie(mat){
-    var amici={"73703":1,"70549":1,"74483":1,"72700":1};
-    var chiara = mat === "70549";
+    var messaggio=messaggioAttivo(mat);
+    var chiara = !!(messaggio&&messaggio.style==="cats");
     $("gattiAngolo").classList.remove("on");
-    if(!amici[mat]) return;
+    if(!messaggio) return;
     var el=$("grazie");
-    $("grazieTesto").textContent = mat === "73703"
-      ? "Ciao Fra! Grazie per l'aiuto!"
-      : "Grazie per l'aiuto che mi dai!";
+    $("grazieTesto").textContent=messaggio.text;
     el.classList.toggle("chiara",chiara);
     el.classList.add("on"); el.setAttribute("aria-hidden","false");
     grazieTimer=setTimeout(function(){
       el.classList.remove("on"); el.setAttribute("aria-hidden","true");
-      if(chiara) $("gattiAngolo").classList.add("on");
+      if(chiara&&messaggio.persistent) $("gattiAngolo").classList.add("on");
     },1900);
   }
 
@@ -1244,7 +1324,7 @@
     $("cerca").placeholder = "Es. un cognome · oppure " + U.posizioni[20];
     rDep = U.dep;
     $("guidaCerca").textContent =
-      "Digita un cognome: lo cerco in tutti i depositi. A campo vuoto scorri la ruota del deposito scelto.";
+      "Digita un collega o una posizione. A campo vuoto scorri la ruota del deposito scelto.";
     mostra("menu");
     if(silenzioso!==true) registraPagina("menu","push");
     if(silenzioso!==true) mostraGrazie(v);
@@ -1285,15 +1365,17 @@
     if(voci.length===2) return voci[0]+" e "+voci[1];
     return voci.slice(0,-1).join(", ")+" e "+voci[voci.length-1];
   }
-  function riepilogoSettimana(sett){
+  function riepilogoSettimana(sett,conGrassetto){
     var voci=[];
     sett.forEach(function(g,i){
-      if(g.stato==="sco") voci.push(GIORNI_EST[i]+" scomputo");
-      else if(g.stato==="matto") voci.push(GIORNI_EST[i]+" possibile riposo matto: verifica il turno su Attilio");
-      else if(g.stato==="riposo") voci.push("riposo "+GIORNI_EST[i]);
+      var giorno=GIORNI_EST[i].charAt(0).toUpperCase()+GIORNI_EST[i].slice(1);
+      var giornoEvidenziato=conGrassetto?"<b>"+giorno+"</b>":giorno;
+      if(g.stato==="sco") voci.push(giornoEvidenziato+" scomputo");
+      else if(g.stato==="matto") voci.push(giornoEvidenziato+" possibile riposo matto: verifica il turno su Attilio");
+      else if(g.stato==="riposo") voci.push((conGrassetto?"<b>"+giorno+"</b>":giorno)+" riposo");
     });
     var testo=unisciEventi(voci);
-    return testo ? testo.charAt(0).toUpperCase()+testo.slice(1) : "Nessun riposo indicato";
+    return testo || "Nessun riposo indicato";
   }
 
   function disegnaQuesta(){
@@ -1308,8 +1390,8 @@
     var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surr:"Oggi surroga", matto:"Possibile riposo matto"};
     $("qBollo").innerHTML = corrente ? '<span class="bollo '+g.stato+'">'+et[g.stato]+'</span>' : '';
 
-    if(SCHEMI[pos%100]==="surroga") $("qNota").innerHTML = "Surroga da martedì a sabato · riposo <b>lunedì e domenica</b>.";
-    else $("qNota").textContent = riepilogoSettimana(sett)+".";
+    if(SCHEMI[pos%100]==="surroga") $("qNota").innerHTML = "Surrogante da martedì a sabato · <b>Lunedì</b> riposo e <b>Domenica</b> riposo.";
+    else $("qNota").innerHTML = riepilogoSettimana(sett,true)+".";
 
     var el = $("qIndizio");
     el.innerHTML = SCHEMI[pos%100]==="surroga" ? "" : indizioHTML(pos, spostaGiorni(lun,2), "dal lunedì al venerdì");
@@ -1319,6 +1401,10 @@
   }
   $("qPrec").onclick=function(){qLun=spostaSettimane(qLun,-1);disegnaQuesta();};
   $("qSucc").onclick=function(){qLun=spostaSettimane(qLun,1);disegnaQuesta();};
+  $("qApriCalendario").onclick=function(){
+    sLun=qLun;calMese=new Date(qLun.getFullYear(),qLun.getMonth(),1);
+    disegnaCalendario();disegnaSettimana();mostra("settimana");registraPagina("settimana","push");
+  };
 
   function disegnaCalendario(){
     $("mNome").textContent = MESI[calMese.getMonth()].charAt(0).toUpperCase()
@@ -1356,9 +1442,9 @@
     $("sCodice").textContent = cod(pos);
 
     if(SCHEMI[pos%100]==="surroga"){
-      $("sNota").innerHTML = "Settimana di <b>surroga</b>: da martedì a sabato si scala da "+cod(pos-1)+" a "+cod(pos-5)+".";
+      $("sNota").innerHTML = "Settimana da <b>surrogante</b>: da martedì a sabato si scala da "+cod(pos-1)+" a "+cod(pos-5)+". <b>Lunedì</b> riposo e <b>Domenica</b> riposo.";
     } else {
-      $("sNota").textContent = riepilogoSettimana(sett)+".";
+      $("sNota").innerHTML = riepilogoSettimana(sett,true)+".";
     }
 
     var el = $("sIndizio");
@@ -1399,6 +1485,43 @@
     return sp ? (sp.length>1 ? "Variabile" : sp[0]) : "—";
   }
 
+  function occupantePosizione(dep,p,lun){
+    var posizioni=posizioniDi(dep), indice=posizioni.indexOf(p), n=posizioni.length, k=settimaneDa(lun);
+    return indice<0 ? null : dep.ruota[((indice-k)%n+n)%n];
+  }
+
+  /* Restituisce chi svolge davvero quella posizione nel giorno scelto.
+     Da martedì a sabato controlla anche l'eventuale posizione surrogante. */
+  function esecutorePosizione(dep,p,data){
+    var giorno=(data.getDay()+6)%7, lun=lunediDi(data), schema=settimanaDiDeposito(dep,p), voce=schema[giorno];
+    var titolare=occupantePosizione(dep,p,lun);
+    if(voce && voce.stato==="surr"){
+      return {occ:titolare,posSurrogante:p,posEseguita:voce.pos,ruolo:"surrogante",stato:"surr"};
+    }
+    if(giorno>=1 && giorno<=5){
+      var possibile=p+giorno;
+      if(Math.floor(possibile/100)===Math.floor(p/100) && SCHEMI[possibile%100]==="surroga"){
+        var schemaSurr=settimanaDiDeposito(dep,possibile), copertura=schemaSurr[giorno];
+        if(copertura && copertura.pos===p){
+          return {occ:occupantePosizione(dep,possibile,lun),posSurrogante:possibile,posEseguita:p,ruolo:"surrogante",stato:"lavoro"};
+        }
+      }
+    }
+    return {occ:voce && voce.stato==="lavoro"?titolare:null,posSurrogante:null,posEseguita:p,ruolo:"titolare",stato:voce?voce.stato:""};
+  }
+
+  function surroganteSettimanaHTML(dep,p,lun){
+    var html="";
+    for(var i=1;i<=5;i++){
+      var data=spostaGiorni(lun,i), esito=esecutorePosizione(dep,p,data);
+      if(esito.ruolo!=="surrogante" || esito.posSurrogante===p || !esito.occ) continue;
+      var dataBreve=String(data.getDate()).padStart(2,"0")+"/"+String(data.getMonth()+1).padStart(2,"0")+"/"+data.getFullYear();
+      html+='<li class="risultato-surrogante">Il giorno <strong>'+esc(dataBreve)+'</strong> il turno '
+        +esc(codDi(dep,p))+' è svolto dal surrogante <strong>'+esc(nomePersona(esito.occ))+'</strong></li>';
+    }
+    return html;
+  }
+
   // Costruisce una riga dell'elenco. mostraDep = mostra il nome del deposito.
   function rigaHTML(dep, p, occ, mostraDep, data){
     var nome  = occ ? nomePersona(occ) : "Turno scoperto";
@@ -1406,6 +1529,7 @@
     if(!occ) cl.push("vuota");
     if(occ && dep===U.dep && occ[1]===U.mat) cl.push("io");
     if(surr) cl.push("surrweek");
+    cl.push("con-giorno");
 
     var rip = surr ? "surroga da martedì a sabato · riposo lunedì e domenica"
       : riepilogoSettimana(settimanaDiDeposito(dep,p)).toLowerCase();
@@ -1415,7 +1539,7 @@
       : (mostraDep ? dep.nome + " · " : "") + "o collega non presente in ruota";
 
     if(occ) cl.push("con-dettaglio");
-    var lun = spostaGiorni(data,-2);
+    var lun = lunediDi(data);
     return '<li class="'+cl.join(" ")+'"><div class="riga-testa"><span class="pos">'+codDi(dep,p)+'</span>'
          + '<span class="nome">'+nome+'<em>'+sotto+'</em></span>'
          + '<span class="rip">'+tipoBreve(dep, p, data)+(occ?'<span class="apri">Dettaglio turno</span>':'')+'</span></div>'
@@ -1424,12 +1548,12 @@
 
   function disegnaRuota(){
     var dom = spostaGiorni(rLun,6);
+    var dataRiferimento=spostaGiorni(rLun,2);
     $("rQuando").textContent = "Settimana "+fmtIntervalloSettimana(rLun,dom);
 
     var normalizzaRicerca=function(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();};
     var filtro = normalizzaRicerca($("cerca").value);
     var k = settimaneDa(rLun);
-    var mer = spostaGiorni(rLun,2);   // mercoledì: giorno di riferimento per la stagione
     var righe = "", quanti = 0;
 
     if(filtro){
@@ -1442,8 +1566,13 @@
           var alias=occ && NOMI_COMPLETI_MATRICOLA[occ[1]] ? NOMI_COMPLETI_MATRICOLA[occ[1]] : "";
           var testoRicerca=normalizzaRicerca(nome+" "+alias+" "+(occ?occ[1]:"")+" "+codDi(d,ps[i]));
           if(testoRicerca.indexOf(filtro)<0) continue;
-          righe += rigaHTML(d, ps[i], occ, true, mer);
+          var codiceEsatto=filtro===normalizzaRicerca(codDi(d,ps[i]));
+          righe += rigaHTML(d, ps[i], occ, true, dataRiferimento);
           quanti++;
+          if(codiceEsatto){
+            var avvisoSurrogante=surroganteSettimanaHTML(d,ps[i],rLun);
+            if(avvisoSurrogante){righe+=avvisoSurrogante;quanti+=(avvisoSurrogante.match(/risultato-surrogante/g)||[]).length;}
+          }
         }
       }
       $("avviso").style.display = "block";
@@ -1455,7 +1584,7 @@
       // Campo vuoto: scorro la ruota del deposito scelto.
       var dep = rDep, pos = posizioniDi(dep), n = pos.length;
       for(var j=0;j<pos.length;j++){
-        righe += rigaHTML(dep, pos[j], dep.ruota[ ((j - k) % n + n) % n ], false, mer);
+        righe += rigaHTML(dep, pos[j], dep.ruota[ ((j - k) % n + n) % n ], false, dataRiferimento);
       }
       $("avviso").style.display = "none";
       $("notaRuota").textContent = "Ruota di "+dep.nome+": "+n
@@ -1468,8 +1597,11 @@
     var li=e.target.closest("li.con-dettaglio");
     if(li) li.classList.toggle("aperto");
   };
-  $("rPrec").onclick = function(){ rLun = spostaSettimane(rLun,-1); disegnaRuota(); };
-  $("rSucc").onclick = function(){ rLun = spostaSettimane(rLun,1); disegnaRuota(); };
+  function spostaRicercaSettimane(n){
+    rLun=spostaSettimane(rLun,n);disegnaRuota();salvaStato();
+  }
+  $("rPrec").onclick = function(){ spostaRicercaSettimane(-1); };
+  $("rSucc").onclick = function(){ spostaRicercaSettimane(1); };
   $("cerca").oninput = function(){
     var attivo = !this.value.trim();
     $("depositi").style.opacity = attivo ? "1" : ".4";
@@ -1500,5 +1632,6 @@
   }
 })();
 </script>
+
 </body>
 </html>
