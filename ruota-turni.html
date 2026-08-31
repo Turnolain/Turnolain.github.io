@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.29" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.33" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <style>
   :root{
@@ -180,6 +180,9 @@
   .settNav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 0;padding:12px 14px;
            background:var(--carta);border:3px solid var(--ink);border-radius:14px}
   .settNav .testo{font-size:16px;font-weight:800;text-align:center;flex:1;line-height:1.25}
+  .settNav .testo span{display:block}
+  .sett-label{margin:18px 0 6px;font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+  .sett-label + .settNav{margin-top:0}
   .settNav button{flex:0 0 44px;height:44px;font:800 22px/1 inherit;color:var(--ink);background:var(--bone);
                   border:2px solid var(--ink);border-radius:10px;cursor:pointer}
 
@@ -222,20 +225,17 @@
   .grazie-card{max-width:330px;padding:26px 24px;text-align:center;background:#D9DDE1;border:3px solid var(--ink);
                border-radius:20px;box-shadow:7px 7px 0 var(--rossa);transform:scale(.82);transition:transform .25s ease}
   .grazie.on .grazie-card{transform:scale(1)}
-  .grazie-cuore{color:var(--rossa);font-size:48px;line-height:1;animation:battito .7s ease-in-out 2}
-  .grazie-gatti{display:none;width:220px;max-width:78vw;height:auto;margin:0 auto;animation:battito .7s ease-in-out 2}
+  .grazie-effetto{color:var(--rossa);font-size:48px;line-height:1;animation:battito .7s ease-in-out 2}
   .grazie-personale{display:none;width:240px;max-width:78vw;max-height:260px;object-fit:contain;margin:0 auto 12px;
                     border-radius:14px;animation:battito .7s ease-in-out 2}
-  .grazie.chiara .grazie-cuore{display:none}
-  .grazie.chiara .grazie-gatti{display:block}
-  .grazie.personalizzata .grazie-cuore,.grazie.personalizzata .grazie-gatti{display:none}
+  .grazie.personalizzata .grazie-effetto{display:none}
   .grazie.personalizzata .grazie-personale{display:block}
   .grazie-testo{margin:12px 0 0;font-size:20px;font-weight:800;line-height:1.3}
-  .gatti-angolo{position:fixed;left:10px;bottom:7px;z-index:80;width:92px;height:auto;
+  .immagine-angolo{position:fixed;left:10px;bottom:7px;z-index:80;width:92px;height:auto;
                 opacity:0;transform:translateY(18px) scale(.82);pointer-events:none;
                 filter:drop-shadow(0 3px 4px rgba(35,35,35,.22));
                 transition:opacity .35s ease,transform .45s cubic-bezier(.2,.8,.2,1.25)}
-  .gatti-angolo.on{opacity:1;transform:translateY(0) scale(1)}
+  .immagine-angolo.on{opacity:1;transform:translateY(0) scale(1)}
   .versione-app{position:fixed;right:8px;bottom:6px;z-index:90;padding:3px 7px;border-radius:6px;
                 background:rgba(35,35,35,.82);color:#fff;font:800 10px/1.2 Arial,sans-serif;
                 letter-spacing:.08em;pointer-events:none}
@@ -285,7 +285,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.29" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.33" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -317,6 +317,7 @@
 
 <div class="schermata" id="questa">
   <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button></div>
+  <p class="sett-label">Settimana</p>
   <div class="settNav" style="margin:0 0 18px">
     <button id="qPrec" aria-label="Settimana precedente">‹</button>
     <span class="testo" id="qQuando"></span>
@@ -377,6 +378,7 @@
   <input id="cerca" type="search" placeholder="Es. Pigoli · oppure 305" autocomplete="off">
   <div class="depositi" id="depositi"></div>
   <p class="avviso" id="avviso" style="display:none"></p>
+  <p class="sett-label">Settimana</p>
   <div class="settNav">
     <button id="rPrec" aria-label="Settimana precedente">‹</button>
     <span class="testo" id="rQuando"></span>
@@ -391,22 +393,21 @@
 
 <div class="grazie" id="grazie" aria-hidden="true">
   <div class="grazie-card">
-    <div class="grazie-cuore">♥</div>
-    <img class="grazie-gatti" src="gatti-chiara-ottimizzati.webp?v=0.29" alt="Un gatto arancione e un gatto bianco e nero con gli occhi a cuore">
+    <div class="grazie-effetto" id="grazieEffetto">♥</div>
     <img class="grazie-personale" id="grazieImmagine" alt="Immagine allegata al messaggio">
     <p class="grazie-testo" id="grazieTesto">Grazie per l'aiuto che mi dai!</p>
   </div>
 </div>
-<img class="gatti-angolo" id="gattiAngolo" src="gatti-chiara-ottimizzati.webp?v=0.29" alt="" aria-hidden="true">
+<img class="immagine-angolo" id="immagineAngolo" alt="" aria-hidden="true">
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.29</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.33</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.29", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.33", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -421,11 +422,11 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.29"></script>
-<script src="turni-precisi.js?v=0.29"></script>
-<script src="attivita-turni.js?v=0.29"></script>
-<script src="alias-nomi.js?v=0.29"></script>
-<script src="gestore-config.js?v=0.29"></script>
+<script src="schedule-config.js?v=0.33"></script>
+<script src="turni-precisi.js?v=0.33"></script>
+<script src="attivita-turni.js?v=0.33"></script>
+<script src="alias-nomi.js?v=0.33"></script>
+<script src="gestore-config.js?v=0.33"></script>
 <script>
 (function(){
   "use strict";
@@ -1209,7 +1210,7 @@
     xs[x].onclick = function(){
       U = null;
       nascondiGrazie();
-      $("gattiAngolo").classList.remove("on");
+      $("immagineAngolo").classList.remove("on");
       $("matricola").value = "";
       $("erroreMatricola").textContent = "";
       $("segnalaMatricola").style.display="none";
@@ -1248,7 +1249,7 @@
       mostra("accesso");registraPagina("accesso","replace");return;
     }
     if(id==="accesso"){
-      U=null;nascondiGrazie();$("gattiAngolo").classList.remove("on");mostra("accesso");return;
+      U=null;nascondiGrazie();$("immagineAngolo").classList.remove("on");mostra("accesso");return;
     }
     if(id==="questa") disegnaQuesta();
     else if(id==="settimana"){disegnaCalendario();disegnaSettimana();}
@@ -1310,19 +1311,19 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.29");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.33");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
   function chiudiSegnala(){ $("segnalaOverlay").classList.remove("on"); $("segnalaOverlay").setAttribute("aria-hidden","true");salvaStato(); }
   function chiudiMessaggio(){ $("messaggioOverlay").classList.remove("on"); $("messaggioOverlay").setAttribute("aria-hidden","true");salvaStato(); }
 
-  var grazieTimer = null, gattiTimer = null;
+  var grazieTimer = null;
 
   function nascondiGrazie(){
-    clearTimeout(grazieTimer); clearTimeout(gattiTimer);
+    clearTimeout(grazieTimer);
     var el=$("grazie");
-    el.classList.remove("on","chiara","personalizzata");
+    el.classList.remove("on","personalizzata");
     el.setAttribute("aria-hidden","true");
   }
 
@@ -1341,21 +1342,28 @@
 
   function mostraGrazie(mat){
     var messaggio=messaggioAttivo(mat);
-    var chiara = !!(messaggio&&messaggio.style==="cats");
     var personalizzata=!!(messaggio&&messaggio.image);
-    $("gattiAngolo").classList.remove("on");
+    $("immagineAngolo").classList.remove("on");
     if(!messaggio) return;
+    if(personalizzata&&!messaggio.text&&messaggio.persistent){
+      $("immagineAngolo").src=messaggio.image;
+      $("immagineAngolo").classList.add("on");
+      return;
+    }
     var el=$("grazie");
     $("grazieTesto").textContent=messaggio.text;
-    el.classList.toggle("chiara",chiara);
     el.classList.toggle("personalizzata",personalizzata);
+    var simboli={heart:"♥",party:"🎉",star:"⭐",wave:"👋",alert:"⚠"};
+    var simbolo=simboli[messaggio.style]||"";
+    $("grazieEffetto").textContent=simbolo;
+    $("grazieEffetto").style.display=simbolo&&!personalizzata?"block":"none";
     $("grazieImmagine").src=personalizzata?messaggio.image:"";
     el.classList.add("on"); el.setAttribute("aria-hidden","false");
     grazieTimer=setTimeout(function(){
       el.classList.remove("on"); el.setAttribute("aria-hidden","true");
-      if((chiara||personalizzata)&&messaggio.persistent){
-        $("gattiAngolo").src=personalizzata?messaggio.image:"gatti-chiara-ottimizzati.webp";
-        $("gattiAngolo").classList.add("on");
+      if(personalizzata&&messaggio.persistent){
+        $("immagineAngolo").src=messaggio.image;
+        $("immagineAngolo").classList.add("on");
       }
     },1900);
   }
@@ -1443,7 +1451,7 @@
     var dom = spostaGiorni(lun,6);
     var pos = posizioneDi(U.base, lun), sett = settimanaDiDeposito(U.dep,pos), g = gi>=0 ? sett[gi] : null;
 
-    $("qQuando").textContent = fmtIntervalloSettimana(lun,dom);
+    $("qQuando").innerHTML = "<span>Dal "+fmtConAnno(lun)+"</span><span>Al "+fmtConAnno(dom)+"</span>";
     $("qCodice").textContent = cod(pos);
 
     var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surr:"Oggi surroga", matto:"Possibile riposo matto"};
@@ -1614,7 +1622,7 @@
   function disegnaRuota(){
     var dom = spostaGiorni(rLun,6);
     var dataRiferimento=spostaGiorni(rLun,2);
-    $("rQuando").textContent = "Settimana "+fmtIntervalloSettimana(rLun,dom);
+    $("rQuando").innerHTML = "<span>Dal "+fmtConAnno(rLun)+"</span><span>Al "+fmtConAnno(dom)+"</span>";
 
     var normalizzaRicerca=function(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();};
     var filtro = normalizzaRicerca($("cerca").value);
