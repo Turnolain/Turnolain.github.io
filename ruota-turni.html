@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.43" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.44" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <style>
   :root{
@@ -178,7 +178,9 @@
   .confronto-selettori button{min-width:0;min-height:68px;padding:9px 10px;text-align:left;background:var(--carta);color:var(--ink);
                               border:2px solid var(--ink);border-radius:11px;cursor:pointer;overflow:hidden}
   .confronto-selettori button.on{border-color:var(--rossa);box-shadow:0 0 0 1px var(--rossa)}
-  .confronto-selettori button.da-scegliere{animation:invitoConfronto 1.8s ease-in-out infinite}
+  .confronto-selettori button.da-scegliere{border-color:var(--rossa);background:#FFF0E5;
+                                           box-shadow:0 0 0 3px rgba(247,124,25,.16);
+                                           animation:invitoConfronto 1.8s ease-in-out infinite}
   .confronto-selettori small,.confronto-selettori b,.confronto-selettori span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .confronto-selettori small{margin-bottom:3px;color:var(--soft);font:900 10px/1.2 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
   .confronto-selettori b{font:900 14px/1.25 Arial,sans-serif}
@@ -190,6 +192,8 @@
                              letter-spacing:.11em;text-transform:uppercase}
   .confronto-card h3{margin:0 0 10px;font-size:22px;line-height:1.2}
   .confronto-card .turno-probabile{margin:0;box-shadow:none;padding:12px 13px}
+  .confronto-card-nome{margin:0 4px 6px;color:var(--ink);font:900 13px/1.2 Arial,sans-serif;
+                       letter-spacing:.07em;text-transform:uppercase}
   .confronto-ricerca{margin:10px 0 0;padding:12px;background:rgba(255,255,255,.28);border:2px solid var(--linea);border-radius:12px}
   .confronto-ricerca label{display:block;margin:0 0 8px;font-size:18px;font-weight:900}
   .confronto-riga{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
@@ -206,8 +210,8 @@
   .confronto-avviso.rosso{background:#FCE7E3;color:#842A1C;border:2px solid #C64A36}
   .confronto-avviso.neutro{background:var(--carta);color:var(--soft);border:2px dashed var(--soft)}
   .confronto-errore{min-height:0;margin:8px 0 0;color:var(--rossa);font-size:14px;font-weight:800}
-  @keyframes invitoConfronto{0%,100%{border-color:var(--ink);box-shadow:0 0 0 0 rgba(247,124,25,0)}50%{border-color:var(--rossa);box-shadow:0 0 0 5px rgba(247,124,25,.18)}}
-  @media(prefers-reduced-motion:reduce){.confronto-selettori button.da-scegliere{animation:none;border-color:var(--rossa)}}
+  @keyframes invitoConfronto{0%,100%{background:#FFF0E5;box-shadow:0 0 0 2px rgba(247,124,25,.12)}50%{background:#FFE2CB;box-shadow:0 0 0 6px rgba(247,124,25,.24)}}
+  @media(prefers-reduced-motion:reduce){.confronto-selettori button.da-scegliere{animation:none;border-color:var(--rossa);background:#FFF0E5}}
 
   #cerca{width:100%;font:700 22px/1 inherit;color:var(--ink);background:var(--carta);
          border:3px solid var(--ink);border-radius:14px;padding:19px}
@@ -370,7 +374,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.43" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.44" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -490,9 +494,11 @@
 
   <div id="cEsito"></div>
   <section class="confronto-card" id="cMioCard">
+    <p class="confronto-card-nome" id="cMioNome"></p>
     <div id="cMioTurno"></div>
   </section>
   <section class="confronto-card collega" id="cCollegaCard" style="display:none">
+    <p class="confronto-card-nome" id="cCollegaNome"></p>
     <div id="cCollegaTurno"></div>
   </section>
 </div>
@@ -539,12 +545,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.43</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.44</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.43", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.44", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -559,11 +565,11 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.43"></script>
-<script src="turni-precisi.js?v=0.43"></script>
-<script src="attivita-turni.js?v=0.43"></script>
-<script src="alias-nomi.js?v=0.43"></script>
-<script src="gestore-config.js?v=0.43"></script>
+<script src="schedule-config.js?v=0.44"></script>
+<script src="turni-precisi.js?v=0.44"></script>
+<script src="attivita-turni.js?v=0.44"></script>
+<script src="alias-nomi.js?v=0.44"></script>
+<script src="gestore-config.js?v=0.44"></script>
 <script>
 (function(){
   "use strict";
@@ -1550,7 +1556,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.43");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.44");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -1963,6 +1969,7 @@
     var azione=quale==="primo"?(cPrimoTarget||cRicercaQuale==="primo"?"Ripristina il turno previsto":"Tocca per modificare il mio turno"):"Tocca per modificare";
     return '<small>'+esc(etichetta)+'</small><b>'+esc(nome+' · '+codDi(scelto.dep,scelto.pos))+'</b><span>'+esc(azione)+'</span>';
   }
+  function cognomeConfronto(nome){return String(nome||"").replace(/\s+[A-Z]\.$/i,"").trim();}
   function apriRicercaConfronto(quale){
     cRicercaQuale=quale;$("cRicercaInput").value="";$("cRicercaErrore").textContent="";$("cRicercaRisultati").innerHTML="";
     disegnaConfronto();
@@ -1985,11 +1992,13 @@
     var mio=null,mioCard=$("cMioCard");
     if(primoScelto&&cRicercaQuale!=="primo"){
       mio=datiTurnoConfronto(primoScelto.dep,primoScelto.pos,cData);
+      $("cMioNome").textContent=cognomeConfronto(U.nome);
       $("cMioTurno").innerHTML=turnoConfrontoHTML(mio);mioCard.style.display="block";
     }else mioCard.style.display="none";
     var card=$("cCollegaCard"),altro=null;
     if(scelto&&cRicercaQuale!=="secondo"){
       altro=datiTurnoConfronto(scelto.dep,scelto.pos,cData);
+      $("cCollegaNome").textContent=cognomeConfronto(scelto.occ?nomePersona(scelto.occ):"Turno scoperto");
       $("cCollegaTurno").innerHTML=turnoConfrontoHTML(altro);card.style.display="block";
     }else card.style.display="none";
     $("cEsito").innerHTML=mio&&altro?esitoIncontroHTML(mio,altro):"";salvaStato();
