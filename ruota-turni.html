@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.39" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.40" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <style>
   :root{
@@ -165,6 +165,44 @@
                     border:3px solid var(--ink);border-radius:12px;box-shadow:4px 4px 0 var(--ink);
                     font:900 17px/1.2 inherit;letter-spacing:.03em;cursor:pointer}
 
+  .giornoNav{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;
+             background:var(--carta);border:3px solid var(--ink);border-radius:14px}
+  .giornoNav button{flex:0 0 44px;height:44px;font:800 22px/1 inherit;color:var(--ink);background:var(--bone);
+                    border:2px solid var(--ink);border-radius:10px;cursor:pointer}
+  .giornoNav .testo{flex:1;text-align:center;font-size:18px;font-weight:900;line-height:1.25}
+  .confronto-calendario{display:none;width:100%;margin:12px 0 0;padding:14px;background:var(--carta);color:var(--ink);
+                       border:3px solid var(--ink);border-radius:12px;font:800 17px/1.2 inherit}
+  .confronto-calendario.on{display:block}
+  .confronto-modi{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0 0}
+  .confronto-modi button{padding:13px 10px;background:var(--bone);color:var(--ink);border:3px solid var(--ink);
+                         border-radius:12px;font:900 15px/1.2 inherit;cursor:pointer}
+  .confronto-modi button.on{background:var(--rossa);color:#fff}
+  .confronto-card{margin:20px 0 0;padding:18px 16px;background:var(--carta);border:2px solid var(--ink);
+                  border-radius:14px;box-shadow:3px 3px 0 var(--ink)}
+  .confronto-card.collega{border-color:var(--rossa);box-shadow:3px 3px 0 var(--rossa)}
+  .confronto-card .etichetta{margin:0 0 5px;color:var(--soft);font-size:12px;font-weight:900;
+                             letter-spacing:.11em;text-transform:uppercase}
+  .confronto-card h3{margin:0 0 10px;font-size:22px;line-height:1.2}
+  .confronto-card .turno-probabile{margin-top:8px;box-shadow:none}
+  .confronto-ricerca{margin:22px 0 0;padding-top:20px;border-top:2px solid var(--linea)}
+  .confronto-ricerca label{display:block;margin:0 0 8px;font-size:18px;font-weight:900}
+  .confronto-riga{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+  .confronto-riga input{min-width:0;width:100%;padding:15px 14px;background:var(--carta);color:var(--ink);
+                        border:3px solid var(--ink);border-radius:12px;font:700 18px/1.2 inherit}
+  .confronto-riga button{padding:12px 16px;background:var(--rossa);color:#fff;border:3px solid var(--ink);
+                         border-radius:12px;font:900 15px/1.2 inherit;cursor:pointer}
+  .confronto-risultati{display:grid;gap:8px;margin-top:10px}
+  .confronto-risultati button{width:100%;padding:12px 14px;text-align:left;background:var(--carta);color:var(--ink);
+                              border:2px solid var(--ink);border-radius:10px;font:800 15px/1.3 inherit;cursor:pointer}
+  .confronto-risultati button small{display:block;margin-top:2px;color:var(--soft);font-size:12px}
+  .confronto-avviso{margin:12px 0 0;padding:13px 14px;border-radius:10px;font-size:15px;font-weight:800;line-height:1.4}
+  .confronto-avviso.verde{background:#E3F4E8;color:#174D28;border:2px solid #2D8247}
+  .confronto-avviso.rosso{background:#FCE7E3;color:#842A1C;border:2px solid #C64A36}
+  .confronto-avviso.neutro{background:var(--carta);color:var(--soft);border:2px dashed var(--soft)}
+  .confronto-errore{min-height:0;margin:8px 0 0;color:var(--rossa);font-size:14px;font-weight:800}
+  .confronto-cambia{margin:12px 0 0;padding:9px 11px;background:transparent;color:var(--rossa);
+                    border:2px solid var(--rossa);border-radius:9px;font:900 13px/1.2 inherit;cursor:pointer}
+
   #cerca{width:100%;font:700 22px/1 inherit;color:var(--ink);background:var(--carta);
          border:3px solid var(--ink);border-radius:14px;padding:19px}
   #cerca::placeholder{color:#BEB6A3;font-weight:600;font-size:19px}
@@ -301,6 +339,9 @@
                            border:2px solid var(--linea);border-radius:10px}
     .filtro-attivita.aperto .filtro-attivita-corpo{display:block}
     .filtro-attivita button.filtro-chip{flex:1 1 calc(50% - 7px);min-width:120px}
+    .confronto-riga{grid-template-columns:1fr}
+    .confronto-riga button{padding:14px}
+    .confronto-modi{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -325,7 +366,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.39" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.40" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -342,7 +383,7 @@
 <div class="schermata" id="menu">
   <div class="barra"><span class="chiIo" id="saluto"></span><button class="chiudi" aria-label="Esci e cambia matricola"></button></div>
   <h2>Cosa vuoi sapere?</h2>
-  <p class="guida">Scegli una delle due.</p>
+  <p class="guida">Scegli cosa vuoi fare.</p>
   <ul class="scelte">
     <li><button class="scelta" data-vai="questa">
       <b>Visualizza i miei turni</b>
@@ -351,6 +392,10 @@
     <li><button class="scelta" data-vai="ruota">
       <b>Cerca un collega o una posizione</b>
       <span>Digita un cognome o un numero e vedi dove si trova</span>
+    </button></li>
+    <li><button class="scelta" data-vai="confronta">
+      <b>Confronta turni</b>
+      <span>Confronta gli orari e scopri dove potreste incontrarvi</span>
     </button></li>
   </ul>
 </div>
@@ -411,6 +456,60 @@
   </div>
 </div>
 
+<div class="schermata" id="confronta">
+  <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button></div>
+  <h2>Confronta turni</h2>
+  <p class="guida">Scegli il giorno e i turni da confrontare.</p>
+  <p class="sett-label">Giorno</p>
+  <div class="giornoNav">
+    <button id="cPrec" aria-label="Giorno precedente">‹</button>
+    <span class="testo" id="cQuando"></span>
+    <button id="cSucc" aria-label="Giorno successivo">›</button>
+  </div>
+  <button class="apri-calendario" id="cApriCalendario">📅 Visualizza calendario</button>
+  <input class="confronto-calendario" id="cCalendario" type="date" aria-label="Scegli il giorno da confrontare">
+
+  <p class="sett-label">Come vuoi confrontare i turni?</p>
+  <div class="confronto-modi">
+    <button id="cModoMio" type="button">Usa il mio turno</button>
+    <button id="cModoDue" type="button">Scegli due turni</button>
+  </div>
+
+  <section class="confronto-card" id="cMioCard">
+    <p class="etichetta" id="cMioEtichetta">Il tuo turno</p>
+    <h3 id="cMioTitolo"></h3>
+    <div id="cMioTurno"></div>
+    <button class="confronto-cambia" id="cCambiaMio" type="button">Quel giorno svolgo un altro turno</button>
+  </section>
+
+  <div class="confronto-ricerca" id="cPrimaRicerca" style="display:none">
+    <label for="cPrimaCerca">Primo turno</label>
+    <div class="confronto-riga">
+      <input id="cPrimaCerca" type="search" placeholder="Nome, cognome o posizione" autocomplete="off">
+      <button id="cPrimaConferma" type="button">Seleziona</button>
+    </div>
+    <p class="confronto-errore" id="cPrimaErrore"></p>
+    <div class="confronto-risultati" id="cPrimaRisultati"></div>
+  </div>
+
+  <div class="confronto-ricerca">
+    <label for="cCerca" id="cSecondaEtichetta">Confronta con</label>
+    <div class="confronto-riga">
+      <input id="cCerca" type="search" placeholder="Nome, cognome o posizione" autocomplete="off">
+      <button id="cConferma" type="button">Confronta</button>
+    </div>
+    <p class="confronto-errore" id="cErrore"></p>
+    <div class="confronto-risultati" id="cRisultati"></div>
+  </div>
+
+  <div id="cEsito"></div>
+  <section class="confronto-card collega" id="cCollegaCard" style="display:none">
+    <p class="etichetta" id="cCollegaEtichetta">Turno del collega</p>
+    <h3 id="cCollegaTitolo"></h3>
+    <div id="cCollegaTurno"></div>
+  </section>
+</div>
+
 <div class="schermata" id="ruota">
   <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button></div>
   <h2>Chi stai cercando?</h2>
@@ -453,12 +552,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.39</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.40</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.39", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.40", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -473,11 +572,11 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.39"></script>
-<script src="turni-precisi.js?v=0.39"></script>
-<script src="attivita-turni.js?v=0.39"></script>
-<script src="alias-nomi.js?v=0.39"></script>
-<script src="gestore-config.js?v=0.39"></script>
+<script src="schedule-config.js?v=0.40"></script>
+<script src="turni-precisi.js?v=0.40"></script>
+<script src="attivita-turni.js?v=0.40"></script>
+<script src="alias-nomi.js?v=0.40"></script>
+<script src="gestore-config.js?v=0.40"></script>
 <script>
 (function(){
   "use strict";
@@ -1228,12 +1327,21 @@
   var CHIAVE_MATRICOLA_RICORDATA = "ruotaVirtuale.matricolaRicordata";
   var EMAIL_ASSISTENZA = "assistenzaruotavirtuale"+"@"+"gmail.com";
   var qLun = lunediDi(new Date()), sLun = lunediDi(new Date()), calMese = new Date(), rLun = lunediDi(new Date());
+  var cData = new Date(), cTarget = null, cPrimoTarget = null, cModo = "mio", cPrimaRicercaAperta = false;
   var rDep = null;   // deposito mostrato nella schermata di ricerca
   var filtroAttivita="", sottofiltroAttivita="", filtriAttivitaAperti=false, tuttiDepositiAttivita=false;
   var STATO_SESSIONE="ruota-virtuale-stato-v1", ripristinoInCorso=false;
 
   function azzeraRicerca(){
     $("cerca").value="";
+    $("cCerca").value="";
+    $("cRisultati").innerHTML="";
+    $("cErrore").textContent="";
+    cTarget=null;
+    $("cPrimaCerca").value="";
+    $("cPrimaRisultati").innerHTML="";
+    $("cPrimaErrore").textContent="";
+    cPrimoTarget=null;cModo="mio";cPrimaRicercaAperta=false;
     filtroAttivita="";
     sottofiltroAttivita="";
     filtriAttivitaAperti=false;
@@ -1248,9 +1356,12 @@
       for(var i=0;i<nodi.length;i++) campi[nodi[i].id]=nodi[i].value;
       sessionStorage.setItem(STATO_SESSIONE,JSON.stringify({
         matricola:U?U.mat:$("matricola").value.replace(/\D/g,""),accesso:!!U,
-        schermata:att?att.id:"accesso",q:isoLocale(qLun),s:isoLocale(sLun),r:isoLocale(rLun),
+        schermata:att?att.id:"accesso",q:isoLocale(qLun),s:isoLocale(sLun),r:isoLocale(rLun),c:isoLocale(cData),
         mese:calMese.getFullYear()+"-"+(calMese.getMonth()+1),deposito:rDep?rDep.sigla:"",
         ricerca:$("cerca").value,filtroAttivita:filtroAttivita,sottofiltroAttivita:sottofiltroAttivita,
+        confrontoRicerca:$("cCerca").value,confrontoTarget:cTarget,
+        confrontoModo:cModo,confrontoPrimaRicerca:$("cPrimaCerca").value,
+        confrontoPrimoTarget:cPrimoTarget,confrontoPrimaAperta:cPrimaRicercaAperta,
         tuttiDepositiAttivita:tuttiDepositiAttivita,
         filtriAttivitaAperti:filtriAttivitaAperti,tipoAiuto:tipoSegnalazione,campiAiuto:campi,
         moduloAperto:$("messaggioOverlay").classList.contains("on")
@@ -1263,18 +1374,23 @@
     var st; try{st=JSON.parse(sessionStorage.getItem(STATO_SESSIONE)||"null");}catch(e){return false;}
     if(!st) return false; ripristinoInCorso=true;
     try{
-      if(st.q)qLun=daISO(st.q); if(st.s)sLun=daISO(st.s); if(st.r)rLun=daISO(st.r);
+      if(st.q)qLun=daISO(st.q); if(st.s)sLun=daISO(st.s); if(st.r)rLun=daISO(st.r); if(st.c)cData=daISO(st.c);
       if(st.mese){var mp=st.mese.split("-");calMese=new Date(+mp[0],+mp[1]-1,1);}
       $("matricola").value=st.matricola||"";
       if(st.accesso && st.matricola){entra(true);if(!U)throw new Error("matricola non valida");}
       if(!U){mostra("accesso");return true;}
       rDep=DEPOSITI[st.deposito]||U.dep;$("cerca").value=st.ricerca||"";
+      $("cCerca").value=st.confrontoRicerca||"";cTarget=st.confrontoTarget||null;
+      cModo=st.confrontoModo==="due"?"due":"mio";
+      $("cPrimaCerca").value=st.confrontoPrimaRicerca||"";cPrimoTarget=st.confrontoPrimoTarget||null;
+      cPrimaRicercaAperta=!!st.confrontoPrimaAperta;
       filtroAttivita=CATEGORIE_ATTIVITA.indexOf(st.filtroAttivita)>=0?st.filtroAttivita:"";
       sottofiltroAttivita=st.sottofiltroAttivita==="semplice"||st.sottofiltroAttivita==="altro"?st.sottofiltroAttivita:"";
       filtriAttivitaAperti=!!st.filtriAttivitaAperti;
       tuttiDepositiAttivita=!!filtroAttivita&&!!st.tuttiDepositiAttivita;
       if(st.schermata==="questa"){disegnaQuesta();mostra("questa");}
       else if(st.schermata==="settimana"){disegnaCalendario();disegnaSettimana();mostra("settimana");}
+      else if(st.schermata==="confronta"){disegnaConfronto();mostra("confronta");}
       else if(st.schermata==="ruota"){disegnaDepositi();disegnaRuota();mostra("ruota");}
       else mostra("menu");
       if(st.moduloAperto){
@@ -1395,8 +1511,9 @@
     }
     if(id==="questa") disegnaQuesta();
     else if(id==="settimana"){disegnaCalendario();disegnaSettimana();}
+    else if(id==="confronta") disegnaConfronto();
     else if(id==="ruota"){disegnaDepositi();disegnaRuota();}
-    mostra(id==="menu"||id==="questa"||id==="settimana"||id==="ruota"?id:"menu");
+    mostra(id==="menu"||id==="questa"||id==="settimana"||id==="confronta"||id==="ruota"?id:"menu");
   }
   function inizializzaCronologia(){
     if(!window.history || typeof window.history.replaceState!=="function") return;
@@ -1410,7 +1527,7 @@
   }
 
   function contestoSettimana(){
-    var att=document.querySelector(".schermata.attiva"), lun=(att&&att.id==="questa")?qLun:(att&&att.id==="settimana"?sLun:rLun);
+    var att=document.querySelector(".schermata.attiva"), lun=(att&&att.id==="questa")?qLun:(att&&att.id==="settimana"?sLun:(att&&att.id==="confronta"?lunediDi(cData):rLun));
     return fmtIntervalloSettimana(lun,spostaGiorni(lun,6));
   }
   function mittente(){ return U ? U.nome+" · "+U.dep.nome+" · matricola "+U.mat : ""; }
@@ -1453,7 +1570,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.39");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.40");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -1559,6 +1676,12 @@
       if(v==="settimana"){
         sLun = lunediDi(new Date()); calMese = new Date();
         disegnaCalendario(); disegnaSettimana(); mostra("settimana"); registraPagina("settimana","push");
+      }
+      if(v==="confronta"){
+        cData=new Date();cTarget=null;cPrimoTarget=null;cModo="mio";cPrimaRicercaAperta=false;
+        $("cCerca").value="";$("cRisultati").innerHTML="";$("cErrore").textContent="";
+        $("cPrimaCerca").value="";$("cPrimaRisultati").innerHTML="";$("cPrimaErrore").textContent="";
+        disegnaConfronto();mostra("confronta");registraPagina("confronta","push");
       }
       if(v==="ruota"){
         rLun = lunediDi(new Date()); $("cerca").value = ""; rDep = U.dep;
@@ -1669,6 +1792,241 @@
     $("sTurno").innerHTML = turniSettimanaHTML(U.dep, pos, sLun);
     $("sGiorni").innerHTML = strisciaHTML(sett, -1);
   }
+
+  function datiTurnoConfronto(dep,pos,data){
+    var giorno=(data.getDay()+6)%7, variante=giorno<5?"fer":(giorno===5?"sab":"fes");
+    var voce=settimanaDiDeposito(dep,pos)[giorno]||{stato:""};
+    var info=programmaInfoPerData(data,variante), programma=info.programma;
+    var codice=voce.stato==="surr"?(voce.pos||pos):pos;
+    var rigaFonte=(voce.stato==="surr" && giorno>=1 && giorno<=4)?codice:pos;
+    var risultato={dep:dep,pos:pos,codice:codice,rigaFonte:rigaFonte,data:data,stato:voce.stato,
+      variante:variante,info:info,righe:null,disponibile:true,motivo:""};
+    if(programma==="specSabMancante"){
+      risultato.disponibile=false;risultato.motivo="Il foglio del Sabato speciale Fiera non è ancora disponibile.";return risultato;
+    }
+    if(!(info.foglio||foglioPerData(data))){
+      risultato.disponibile=false;risultato.motivo="Non possiedo ancora il foglio turni di questo periodo.";return risultato;
+    }
+    if(voce.stato==="riposo" || voce.stato==="sco" || voce.stato==="matto") return risultato;
+    risultato.righe=righeTurno(dep,rigaFonte,data,variante);
+    if(!risultato.righe){risultato.disponibile=false;risultato.motivo="Turno non disponibile nel foglio caricato.";}
+    return risultato;
+  }
+  function turnoConfrontoHTML(dati){
+    var speciale=dati.info&&dati.info.speciale;
+    var html='<div class="turno-probabile"><p class="tp-titolo'+(speciale?' tp-speciale':'')+'">'
+      +esc(codDi(dati.dep,dati.codice))+(speciale?' · '+esc(dati.info.nome):'')+'</p>';
+    if(!dati.disponibile) return html+'<div class="foglio-mancante">'+esc(dati.motivo)+'</div></div>';
+    if(dati.stato==="riposo") return html+'<div class="tp-servizio">RIPOSO</div></div>';
+    if(dati.stato==="sco") return html+'<div class="tp-servizio">SCOMPUTO</div></div>';
+    if(dati.stato==="matto") return html+'<div class="riposo-matto">Possibile RIPOSO MATTO<br>Verifica il turno su Attilio</div></div>';
+    return html+servizioEtichettatoHTML(dati.dep,dati.codice,dati.righe,dati.rigaFonte,true)+'</div>';
+  }
+  function minutiOra(t){var p=t.split(":");return (+p[0])*60+(+p[1]);}
+  function oraMinuti(n){n=((Math.round(n)%1440)+1440)%1440;return String(Math.floor(n/60)).padStart(2,"0")+":"+String(n%60).padStart(2,"0");}
+  function localitaNormalizzata(t){
+    var luogo=String(t||"").toUpperCase().replace(/\bVG\b/g,"").replace(/[.\s]+/g,"").replace(/[^A-Z0-9]/g,"");
+    if(/^LOR[12]?$/.test(luogo)||luogo==="PAS") return "LORETO";
+    if(/^C[12]?$/.test(luogo)||/^P[12]?$/.test(luogo)) return "PAGANO";
+    if(/^SFS[12]?$/.test(luogo)||luogo==="SR"||luogo==="RHO"||luogo==="BIS") return "SESTO";
+    if(luogo==="PR") return "DEPOSITO PRECOTTO";
+    if(luogo==="GAL") return "DEPOSITO GALLARATESE";
+    if(luogo==="I") return "INGANNI";
+    return luogo;
+  }
+  function nomeLocalita(t){
+    var nomi={LORETO:"Loreto",PAGANO:"Pagano",SESTO:"Sesto",INGANNI:"Inganni",
+      "DEPOSITO PRECOTTO":"Deposito Precotto","DEPOSITO GALLARATESE":"Deposito Gallaratese"};
+    return nomi[t]||t;
+  }
+  function localitaEsclusa(t){return t==="LOT"||t==="QT8"||t==="MD";}
+  function codiceAttivitaFissa(c){return c==="806"||c==="807"||c==="808"||c==="838"||c==="839";}
+  function tempoTrasferimento(da,a){
+    if(da===a) return 0;
+    var tempi={"LORETO|SESTO":11,"LORETO|PAGANO":15,"PAGANO|SESTO":26};
+    return tempi[[da,a].sort().join("|")];
+  }
+  function segmentiTurno(righe){
+    var out=[],precedente=null;
+    (righe||[]).forEach(function(riga){
+      var m=String(riga).trim().match(/^([^\s]+)\s+(.+?)\s+(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})\s+(.+?)\s*$/);
+      if(!m) return;
+      var codice=m[1].replace(/[^0-9]/g,""),inizio=minutiOra(m[3]),fineStampata=minutiOra(m[4]);
+      if(fineStampata<=inizio) fineStampata+=1440;
+      if(precedente!==null){while(inizio+720<precedente){inizio+=1440;fineStampata+=1440;}}
+      precedente=fineStampata;
+      out.push({codice:codice,da:localitaNormalizzata(m[2]),a:localitaNormalizzata(m[5]),inizio:inizio,
+        fine:codiceAttivitaFissa(codice)?fineStampata:fineStampata-10,fineStampata:fineStampata});
+    });
+    return out;
+  }
+  function presenzeTurno(righe){
+    var seg=segmentiTurno(righe),out=[];
+    if(!seg.length) return out;
+    seg.forEach(function(s){
+      if(s.da && !localitaEsclusa(s.da) && s.da===s.a && codiceAttivitaFissa(s.codice))
+        out.push({luogo:s.da,inizio:s.inizio,fine:s.fine,tipo:"presenza"});
+    });
+    for(var i=0;i<seg.length-1;i++){
+      var origine=seg[i].a,destinazione=seg[i+1].da,inizioPausa=seg[i].fine,finePausa=seg[i+1].inizio;
+      if(!origine || !destinazione || localitaEsclusa(origine) || localitaEsclusa(destinazione)) continue;
+      if(origine===destinazione){
+        if(finePausa>inizioPausa) out.push({luogo:origine,inizio:inizioPausa,fine:finePausa,tipo:"pausa"});
+        continue;
+      }
+      var viaggio=tempoTrasferimento(origine,destinazione);
+      if(viaggio===undefined) continue;
+      var partenzaMassima=finePausa-viaggio,arrivoMinimo=inizioPausa+viaggio;
+      if(partenzaMassima>inizioPausa)
+        out.push({luogo:origine,inizio:inizioPausa,fine:partenzaMassima,tipo:"pausa"});
+      if(finePausa>arrivoMinimo)
+        out.push({luogo:destinazione,inizio:arrivoMinimo,fine:finePausa,tipo:"pausa"});
+    }
+    if(seg[0].da && !localitaEsclusa(seg[0].da))
+      out.push({luogo:seg[0].da,inizio:seg[0].inizio-30,fine:seg[0].inizio,tipo:"inizio"});
+    var ultimo=seg[seg.length-1];
+    if(ultimo.a && !localitaEsclusa(ultimo.a))
+      out.push({luogo:ultimo.a,inizio:ultimo.fine,fine:ultimo.fine+10,tipo:"fine"});
+    return out;
+  }
+  function esitoIncontroHTML(mio,altro){
+    if(!mio.disponibile || !altro.disponibile)
+      return '<div class="confronto-avviso neutro">Confronto degli incontri non disponibile: manca almeno uno dei due turni.</div>';
+    if(mio.dep===altro.dep && mio.pos===altro.pos)
+      return '<div class="confronto-avviso neutro">Hai selezionato due volte lo stesso turno.</div>';
+    var segmentiMio=segmentiTurno(mio.righe),segmentiAltro=segmentiTurno(altro.righe);
+    if(!segmentiMio.length || !segmentiAltro.length)
+      return '<div class="confronto-avviso neutro">Non posso calcolare un incontro: almeno uno dei due è a riposo, in scomputo o disponibile.</div>';
+    var a=presenzeTurno(mio.righe),b=presenzeTurno(altro.righe);
+    var incontri=[];
+    a.forEach(function(x){b.forEach(function(y){
+      if(x.luogo!==y.luogo) return;
+      var inizio=Math.max(x.inizio,y.inizio),fine=Math.min(x.fine,y.fine);
+      if(fine-inizio>=5) incontri.push({luogo:x.luogo,inizio:inizio,fine:fine,durata:fine-inizio,
+        solido:x.tipo==="pausa"||x.tipo==="presenza"||y.tipo==="pausa"||y.tipo==="presenza"});
+    });});
+    incontri.sort(function(x,y){return (y.solido-x.solido)||(y.durata-x.durata);});
+    if(!incontri.length)
+      return '<div class="confronto-avviso rosso">Nessun incontro rilevato dagli orari disponibili.</div>';
+    var m=incontri[0],oraCirca=Math.round(((m.inizio+m.fine)/2)/5)*5;
+    var testo='Possibile incontro alle '+oraMinuti(oraCirca)+' circa a '+nomeLocalita(m.luogo)+'.';
+    return '<div class="confronto-avviso verde">'+esc(testo)+'</div>';
+  }
+  function posizionePersonaAllaData(mat,data){
+    var lun=lunediDi(data);
+    for(var sig in DEPOSITI){
+      var dep=DEPOSITI[sig],ps=posizioniDi(dep);
+      for(var i=0;i<ps.length;i++){
+        var occ=occupantePosizione(dep,ps[i],lun);
+        if(occ&&occ[1]===mat) return {dep:dep,pos:ps[i],occ:occ};
+      }
+    }
+    return null;
+  }
+  function risolviTargetConfronto(target){
+    if(!target) return null;
+    if(target.tipo==="posizione"){
+      var dep=DEPOSITI[target.dep],pos=+target.pos;
+      return dep&&posizioniDi(dep).indexOf(pos)>=0?{dep:dep,pos:pos,occ:occupantePosizione(dep,pos,lunediDi(cData))}:null;
+    }
+    return posizionePersonaAllaData(String(target.mat),cData);
+  }
+  function normalizzaConfronto(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();}
+  function cercaTargetConfronto(testo){
+    var pulito=String(testo||"").trim(),codice=pulito.replace(/\s+/g,"").toUpperCase().match(/^(PR|GAL|SFS|BIS)([123]\d{2})$/);
+    var soloNumero=pulito.match(/^([123]\d{2})$/),risultati=[];
+    if(codice||soloNumero){
+      var sigle=codice?[codice[1]]:Object.keys(DEPOSITI),pos=+(codice?codice[2]:soloNumero[1]);
+      sigle.forEach(function(sig){
+        var dep=DEPOSITI[sig];if(posizioniDi(dep).indexOf(pos)<0)return;
+        var occ=occupantePosizione(dep,pos,lunediDi(cData));
+        risultati.push({target:{tipo:"posizione",dep:sig,pos:pos},titolo:codDi(dep,pos),
+          sotto:occ?nomePersona(occ):"Turno scoperto"});
+      });
+      return risultati;
+    }
+    var filtro=normalizzaConfronto(pulito);if(!filtro)return [];
+    var lun=lunediDi(cData);
+    Object.keys(DEPOSITI).forEach(function(sig){
+      var dep=DEPOSITI[sig],ps=posizioniDi(dep);
+      ps.forEach(function(pos){
+        var occ=occupantePosizione(dep,pos,lun);if(!occ)return;
+        var completo=NOMI_COMPLETI_MATRICOLA[occ[1]]||"";
+        var ricerca=normalizzaConfronto(nomePersona(occ)+" "+completo+" "+occ[1]);
+        if(ricerca.indexOf(filtro)<0)return;
+        risultati.push({target:{tipo:"persona",mat:occ[1]},titolo:nomePersona(occ),sotto:codDi(dep,pos)+" · "+dep.nome});
+      });
+    });
+    return risultati;
+  }
+  function selezionaTargetConfronto(r,quale){
+    var primo=quale==="primo",idCerca=primo?"cPrimaCerca":"cCerca",idRisultati=primo?"cPrimaRisultati":"cRisultati",idErrore=primo?"cPrimaErrore":"cErrore";
+    if(primo){cPrimoTarget=r.target;cPrimaRicercaAperta=cModo==="due";}else cTarget=r.target;
+    $(idCerca).value=r.titolo;$(idRisultati).innerHTML="";$(idErrore).textContent="";
+    disegnaConfronto();salvaStato();
+  }
+  function avviaRicercaConfronto(quale){
+    var primo=quale==="primo",idCerca=primo?"cPrimaCerca":"cCerca",idRisultati=primo?"cPrimaRisultati":"cRisultati",idErrore=primo?"cPrimaErrore":"cErrore";
+    var risultati=cercaTargetConfronto($(idCerca).value);$(idRisultati).innerHTML="";
+    if(!risultati.length){if(primo)cPrimoTarget=null;else cTarget=null;$(idErrore).textContent="Nessun collega o posizione trovato.";disegnaConfronto();return;}
+    $(idErrore).textContent="";
+    if(risultati.length===1){selezionaTargetConfronto(risultati[0],quale);return;}
+    $(idRisultati).innerHTML=risultati.slice(0,20).map(function(r,i){
+      return '<button type="button" data-confronto-risultato="'+i+'">'+esc(r.titolo)+'<small>'+esc(r.sotto)+'</small></button>';
+    }).join("");
+    var bottoni=$(idRisultati).querySelectorAll("button");
+    for(var i=0;i<bottoni.length;i++) bottoni[i].onclick=(function(r,q){return function(){selezionaTargetConfronto(r,q);};})(risultati[i],quale);
+    if(primo)cPrimoTarget=null;else cTarget=null;disegnaConfronto();
+  }
+  function disegnaConfronto(){
+    cData=new Date(cData.getFullYear(),cData.getMonth(),cData.getDate());
+    var giorno=(cData.getDay()+6)%7,nomeGiorno=GIORNI_EST[giorno];
+    $("cQuando").textContent=nomeGiorno.charAt(0).toUpperCase()+nomeGiorno.slice(1)+" "+fmtConAnno(cData);
+    $("cCalendario").value=isoLocale(cData);
+    $("cModoMio").classList.toggle("on",cModo==="mio");$("cModoDue").classList.toggle("on",cModo==="due");
+    var mostraPrimaRicerca=cModo==="due"||cPrimaRicercaAperta;
+    $("cPrimaRicerca").style.display=mostraPrimaRicerca?"block":"none";
+    $("cPrimaRicerca").querySelector("label").textContent=cModo==="due"?"Primo turno":"Sostituisci il mio turno";
+    $("cSecondaEtichetta").textContent=cModo==="due"?"Secondo turno":"Confronta con";
+    $("cCollegaEtichetta").textContent=cModo==="due"?"Secondo turno":"Turno da confrontare";
+    var miaPos=posizioneDi(U.base,lunediDi(cData));
+    var primoScelto=cPrimoTarget?risolviTargetConfronto(cPrimoTarget):(cModo==="mio"?{dep:U.dep,pos:miaPos,occ:null}:null);
+    var mio=null,mioCard=$("cMioCard");
+    if(primoScelto){
+      var primoNome=cPrimoTarget?(primoScelto.occ?nomePersona(primoScelto.occ):"Turno scoperto"):U.nome;
+      mio=datiTurnoConfronto(primoScelto.dep,primoScelto.pos,cData);
+      $("cMioEtichetta").textContent=cModo==="due"?"Primo turno":(cPrimoTarget?"Il turno che svolgi":"Il tuo turno");
+      $("cMioTitolo").textContent=primoNome+" · "+codDi(primoScelto.dep,primoScelto.pos);
+      $("cMioTurno").innerHTML=turnoConfrontoHTML(mio);mioCard.style.display="block";
+    }else mioCard.style.display="none";
+    $("cCambiaMio").style.display=cModo==="mio"?"inline-block":"none";
+    $("cCambiaMio").textContent=cPrimoTarget?"Ripristina il mio turno":"Quel giorno svolgo un altro turno";
+    var scelto=risolviTargetConfronto(cTarget),card=$("cCollegaCard"),altro=null;
+    if(scelto){
+      var nome=scelto.occ?nomePersona(scelto.occ):"Turno scoperto";altro=datiTurnoConfronto(scelto.dep,scelto.pos,cData);
+      $("cCollegaTitolo").textContent=nome+" · "+codDi(scelto.dep,scelto.pos);
+      $("cCollegaTurno").innerHTML=turnoConfrontoHTML(altro);card.style.display="block";
+    }else card.style.display="none";
+    $("cEsito").innerHTML=mio&&altro?esitoIncontroHTML(mio,altro):"";salvaStato();
+  }
+  $("cPrec").onclick=function(){cData=spostaGiorni(cData,-1);disegnaConfronto();};
+  $("cSucc").onclick=function(){cData=spostaGiorni(cData,1);disegnaConfronto();};
+  $("cApriCalendario").onclick=function(){
+    var campo=$("cCalendario");campo.classList.toggle("on");
+    if(campo.classList.contains("on")&&typeof campo.showPicker==="function"){try{campo.showPicker();}catch(e){}}
+  };
+  $("cCalendario").onchange=function(){if(this.value){cData=daISO(this.value);disegnaConfronto();}};
+  $("cModoMio").onclick=function(){cModo="mio";cPrimoTarget=null;cPrimaRicercaAperta=false;$("cPrimaCerca").value="";disegnaConfronto();};
+  $("cModoDue").onclick=function(){cModo="due";cPrimoTarget=null;cPrimaRicercaAperta=true;$("cPrimaCerca").value="";disegnaConfronto();};
+  $("cCambiaMio").onclick=function(){
+    if(cPrimoTarget){cPrimoTarget=null;cPrimaRicercaAperta=false;$("cPrimaCerca").value="";}
+    else cPrimaRicercaAperta=!cPrimaRicercaAperta;
+    disegnaConfronto();
+  };
+  $("cConferma").onclick=function(){avviaRicercaConfronto("secondo");};
+  $("cPrimaConferma").onclick=function(){avviaRicercaConfronto("primo");};
+  $("cCerca").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();avviaRicercaConfronto("secondo");this.blur();}});
+  $("cPrimaCerca").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();avviaRicercaConfronto("primo");this.blur();}});
 
   function disegnaDepositi(){
     var html = "";
