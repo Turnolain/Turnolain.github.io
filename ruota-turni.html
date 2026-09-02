@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.40" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.41" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <style>
   :root{
@@ -173,18 +173,26 @@
   .confronto-calendario{display:none;width:100%;margin:12px 0 0;padding:14px;background:var(--carta);color:var(--ink);
                        border:3px solid var(--ink);border-radius:12px;font:800 17px/1.2 inherit}
   .confronto-calendario.on{display:block}
-  .confronto-modi{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0 0}
-  .confronto-modi button{padding:13px 10px;background:var(--bone);color:var(--ink);border:3px solid var(--ink);
-                         border-radius:12px;font:900 15px/1.2 inherit;cursor:pointer}
+  .confronto-modi{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 0}
+  .confronto-modi button{padding:11px 8px;background:var(--bone);color:var(--ink);border:3px solid var(--ink);
+                         border-radius:12px;font:900 14px/1.2 inherit;cursor:pointer}
   .confronto-modi button.on{background:var(--rossa);color:#fff}
-  .confronto-card{margin:20px 0 0;padding:18px 16px;background:var(--carta);border:2px solid var(--ink);
+  .confronto-selettori{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 0}
+  .confronto-selettori button{min-width:0;min-height:68px;padding:9px 10px;text-align:left;background:var(--carta);color:var(--ink);
+                              border:2px solid var(--ink);border-radius:11px;cursor:pointer;overflow:hidden}
+  .confronto-selettori button.on{border-color:var(--rossa);box-shadow:0 0 0 1px var(--rossa)}
+  .confronto-selettori small,.confronto-selettori b,.confronto-selettori span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .confronto-selettori small{margin-bottom:3px;color:var(--soft);font:900 10px/1.2 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+  .confronto-selettori b{font:900 14px/1.25 Arial,sans-serif}
+  .confronto-selettori span{margin-top:3px;color:var(--rossa);font:800 10px/1.2 Arial,sans-serif}
+  .confronto-card{margin:10px 0 0;padding:9px;background:var(--carta);border:2px solid var(--ink);
                   border-radius:14px;box-shadow:3px 3px 0 var(--ink)}
   .confronto-card.collega{border-color:var(--rossa);box-shadow:3px 3px 0 var(--rossa)}
   .confronto-card .etichetta{margin:0 0 5px;color:var(--soft);font-size:12px;font-weight:900;
                              letter-spacing:.11em;text-transform:uppercase}
   .confronto-card h3{margin:0 0 10px;font-size:22px;line-height:1.2}
-  .confronto-card .turno-probabile{margin-top:8px;box-shadow:none}
-  .confronto-ricerca{margin:22px 0 0;padding-top:20px;border-top:2px solid var(--linea)}
+  .confronto-card .turno-probabile{margin:0;box-shadow:none;padding:12px 13px}
+  .confronto-ricerca{margin:10px 0 0;padding:12px;background:rgba(255,255,255,.28);border:2px solid var(--linea);border-radius:12px}
   .confronto-ricerca label{display:block;margin:0 0 8px;font-size:18px;font-weight:900}
   .confronto-riga{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
   .confronto-riga input{min-width:0;width:100%;padding:15px 14px;background:var(--carta);color:var(--ink);
@@ -200,8 +208,8 @@
   .confronto-avviso.rosso{background:#FCE7E3;color:#842A1C;border:2px solid #C64A36}
   .confronto-avviso.neutro{background:var(--carta);color:var(--soft);border:2px dashed var(--soft)}
   .confronto-errore{min-height:0;margin:8px 0 0;color:var(--rossa);font-size:14px;font-weight:800}
-  .confronto-cambia{margin:12px 0 0;padding:9px 11px;background:transparent;color:var(--rossa);
-                    border:2px solid var(--rossa);border-radius:9px;font:900 13px/1.2 inherit;cursor:pointer}
+  .confronto-ripristina{display:none;margin:9px 0 0;padding:8px 10px;background:transparent;color:var(--rossa);
+                        border:2px solid var(--rossa);border-radius:9px;font:900 12px/1.2 inherit;cursor:pointer}
 
   #cerca{width:100%;font:700 22px/1 inherit;color:var(--ink);background:var(--carta);
          border:3px solid var(--ink);border-radius:14px;padding:19px}
@@ -341,7 +349,6 @@
     .filtro-attivita button.filtro-chip{flex:1 1 calc(50% - 7px);min-width:120px}
     .confronto-riga{grid-template-columns:1fr}
     .confronto-riga button{padding:14px}
-    .confronto-modi{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -366,7 +373,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.40" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.41" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -475,37 +482,27 @@
     <button id="cModoDue" type="button">Scegli due turni</button>
   </div>
 
-  <section class="confronto-card" id="cMioCard">
-    <p class="etichetta" id="cMioEtichetta">Il tuo turno</p>
-    <h3 id="cMioTitolo"></h3>
-    <div id="cMioTurno"></div>
-    <button class="confronto-cambia" id="cCambiaMio" type="button">Quel giorno svolgo un altro turno</button>
-  </section>
-
-  <div class="confronto-ricerca" id="cPrimaRicerca" style="display:none">
-    <label for="cPrimaCerca">Primo turno</label>
-    <div class="confronto-riga">
-      <input id="cPrimaCerca" type="search" placeholder="Nome, cognome o posizione" autocomplete="off">
-      <button id="cPrimaConferma" type="button">Seleziona</button>
-    </div>
-    <p class="confronto-errore" id="cPrimaErrore"></p>
-    <div class="confronto-risultati" id="cPrimaRisultati"></div>
+  <div class="confronto-selettori">
+    <button id="cSelettorePrimo" type="button"></button>
+    <button id="cSelettoreSecondo" type="button"></button>
   </div>
 
-  <div class="confronto-ricerca">
-    <label for="cCerca" id="cSecondaEtichetta">Confronta con</label>
+  <div class="confronto-ricerca" id="cRicercaComune" style="display:none">
+    <label for="cRicercaInput" id="cRicercaEtichetta">Scegli un turno</label>
     <div class="confronto-riga">
-      <input id="cCerca" type="search" placeholder="Nome, cognome o posizione" autocomplete="off">
-      <button id="cConferma" type="button">Confronta</button>
+      <input id="cRicercaInput" type="search" placeholder="Nome, cognome o posizione" autocomplete="off">
+      <button id="cRicercaConferma" type="button">Seleziona</button>
     </div>
-    <p class="confronto-errore" id="cErrore"></p>
-    <div class="confronto-risultati" id="cRisultati"></div>
+    <button class="confronto-ripristina" id="cRipristinaMio" type="button">Usa di nuovo il mio turno</button>
+    <p class="confronto-errore" id="cRicercaErrore"></p>
+    <div class="confronto-risultati" id="cRicercaRisultati"></div>
   </div>
 
   <div id="cEsito"></div>
+  <section class="confronto-card" id="cMioCard">
+    <div id="cMioTurno"></div>
+  </section>
   <section class="confronto-card collega" id="cCollegaCard" style="display:none">
-    <p class="etichetta" id="cCollegaEtichetta">Turno del collega</p>
-    <h3 id="cCollegaTitolo"></h3>
     <div id="cCollegaTurno"></div>
   </section>
 </div>
@@ -552,12 +549,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.40</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.41</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.40", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.41", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -572,11 +569,11 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.40"></script>
-<script src="turni-precisi.js?v=0.40"></script>
-<script src="attivita-turni.js?v=0.40"></script>
-<script src="alias-nomi.js?v=0.40"></script>
-<script src="gestore-config.js?v=0.40"></script>
+<script src="schedule-config.js?v=0.41"></script>
+<script src="turni-precisi.js?v=0.41"></script>
+<script src="attivita-turni.js?v=0.41"></script>
+<script src="alias-nomi.js?v=0.41"></script>
+<script src="gestore-config.js?v=0.41"></script>
 <script>
 (function(){
   "use strict";
@@ -1327,21 +1324,17 @@
   var CHIAVE_MATRICOLA_RICORDATA = "ruotaVirtuale.matricolaRicordata";
   var EMAIL_ASSISTENZA = "assistenzaruotavirtuale"+"@"+"gmail.com";
   var qLun = lunediDi(new Date()), sLun = lunediDi(new Date()), calMese = new Date(), rLun = lunediDi(new Date());
-  var cData = new Date(), cTarget = null, cPrimoTarget = null, cModo = "mio", cPrimaRicercaAperta = false;
+  var cData = new Date(), cTarget = null, cPrimoTarget = null, cModo = "mio", cRicercaQuale = "";
   var rDep = null;   // deposito mostrato nella schermata di ricerca
   var filtroAttivita="", sottofiltroAttivita="", filtriAttivitaAperti=false, tuttiDepositiAttivita=false;
   var STATO_SESSIONE="ruota-virtuale-stato-v1", ripristinoInCorso=false;
 
   function azzeraRicerca(){
     $("cerca").value="";
-    $("cCerca").value="";
-    $("cRisultati").innerHTML="";
-    $("cErrore").textContent="";
-    cTarget=null;
-    $("cPrimaCerca").value="";
-    $("cPrimaRisultati").innerHTML="";
-    $("cPrimaErrore").textContent="";
-    cPrimoTarget=null;cModo="mio";cPrimaRicercaAperta=false;
+    $("cRicercaInput").value="";
+    $("cRicercaRisultati").innerHTML="";
+    $("cRicercaErrore").textContent="";
+    cTarget=null;cPrimoTarget=null;cModo="mio";cRicercaQuale="";
     filtroAttivita="";
     sottofiltroAttivita="";
     filtriAttivitaAperti=false;
@@ -1359,9 +1352,8 @@
         schermata:att?att.id:"accesso",q:isoLocale(qLun),s:isoLocale(sLun),r:isoLocale(rLun),c:isoLocale(cData),
         mese:calMese.getFullYear()+"-"+(calMese.getMonth()+1),deposito:rDep?rDep.sigla:"",
         ricerca:$("cerca").value,filtroAttivita:filtroAttivita,sottofiltroAttivita:sottofiltroAttivita,
-        confrontoRicerca:$("cCerca").value,confrontoTarget:cTarget,
-        confrontoModo:cModo,confrontoPrimaRicerca:$("cPrimaCerca").value,
-        confrontoPrimoTarget:cPrimoTarget,confrontoPrimaAperta:cPrimaRicercaAperta,
+        confrontoRicerca:$("cRicercaInput").value,confrontoTarget:cTarget,
+        confrontoModo:cModo,confrontoPrimoTarget:cPrimoTarget,confrontoRicercaQuale:cRicercaQuale,
         tuttiDepositiAttivita:tuttiDepositiAttivita,
         filtriAttivitaAperti:filtriAttivitaAperti,tipoAiuto:tipoSegnalazione,campiAiuto:campi,
         moduloAperto:$("messaggioOverlay").classList.contains("on")
@@ -1380,10 +1372,9 @@
       if(st.accesso && st.matricola){entra(true);if(!U)throw new Error("matricola non valida");}
       if(!U){mostra("accesso");return true;}
       rDep=DEPOSITI[st.deposito]||U.dep;$("cerca").value=st.ricerca||"";
-      $("cCerca").value=st.confrontoRicerca||"";cTarget=st.confrontoTarget||null;
+      $("cRicercaInput").value=st.confrontoRicerca||"";cTarget=st.confrontoTarget||null;
       cModo=st.confrontoModo==="due"?"due":"mio";
-      $("cPrimaCerca").value=st.confrontoPrimaRicerca||"";cPrimoTarget=st.confrontoPrimoTarget||null;
-      cPrimaRicercaAperta=!!st.confrontoPrimaAperta;
+      cPrimoTarget=st.confrontoPrimoTarget||null;cRicercaQuale=st.confrontoRicercaQuale==="primo"||st.confrontoRicercaQuale==="secondo"?st.confrontoRicercaQuale:"";
       filtroAttivita=CATEGORIE_ATTIVITA.indexOf(st.filtroAttivita)>=0?st.filtroAttivita:"";
       sottofiltroAttivita=st.sottofiltroAttivita==="semplice"||st.sottofiltroAttivita==="altro"?st.sottofiltroAttivita:"";
       filtriAttivitaAperti=!!st.filtriAttivitaAperti;
@@ -1570,7 +1561,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.40");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.41");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -1678,9 +1669,8 @@
         disegnaCalendario(); disegnaSettimana(); mostra("settimana"); registraPagina("settimana","push");
       }
       if(v==="confronta"){
-        cData=new Date();cTarget=null;cPrimoTarget=null;cModo="mio";cPrimaRicercaAperta=false;
-        $("cCerca").value="";$("cRisultati").innerHTML="";$("cErrore").textContent="";
-        $("cPrimaCerca").value="";$("cPrimaRisultati").innerHTML="";$("cPrimaErrore").textContent="";
+        cData=new Date();cTarget=null;cPrimoTarget=null;cModo="mio";cRicercaQuale="";
+        $("cRicercaInput").value="";$("cRicercaRisultati").innerHTML="";$("cRicercaErrore").textContent="";
         disegnaConfronto();mostra("confronta");registraPagina("confronta","push");
       }
       if(v==="ruota"){
@@ -1814,8 +1804,7 @@
   }
   function turnoConfrontoHTML(dati){
     var speciale=dati.info&&dati.info.speciale;
-    var html='<div class="turno-probabile"><p class="tp-titolo'+(speciale?' tp-speciale':'')+'">'
-      +esc(codDi(dati.dep,dati.codice))+(speciale?' · '+esc(dati.info.nome):'')+'</p>';
+    var html='<div class="turno-probabile">'+(speciale?'<p class="tp-titolo tp-speciale">'+esc(dati.info.nome)+'</p>':'');
     if(!dati.disponibile) return html+'<div class="foglio-mancante">'+esc(dati.motivo)+'</div></div>';
     if(dati.stato==="riposo") return html+'<div class="tp-servizio">RIPOSO</div></div>';
     if(dati.stato==="sco") return html+'<div class="tp-servizio">SCOMPUTO</div></div>';
@@ -1959,24 +1948,33 @@
     });
     return risultati;
   }
-  function selezionaTargetConfronto(r,quale){
-    var primo=quale==="primo",idCerca=primo?"cPrimaCerca":"cCerca",idRisultati=primo?"cPrimaRisultati":"cRisultati",idErrore=primo?"cPrimaErrore":"cErrore";
-    if(primo){cPrimoTarget=r.target;cPrimaRicercaAperta=cModo==="due";}else cTarget=r.target;
-    $(idCerca).value=r.titolo;$(idRisultati).innerHTML="";$(idErrore).textContent="";
+  function selezionaTargetConfronto(r){
+    if(cRicercaQuale==="primo")cPrimoTarget=r.target;else cTarget=r.target;
+    cRicercaQuale="";$("cRicercaInput").value="";$("cRicercaRisultati").innerHTML="";$("cRicercaErrore").textContent="";
     disegnaConfronto();salvaStato();
   }
-  function avviaRicercaConfronto(quale){
-    var primo=quale==="primo",idCerca=primo?"cPrimaCerca":"cCerca",idRisultati=primo?"cPrimaRisultati":"cRisultati",idErrore=primo?"cPrimaErrore":"cErrore";
-    var risultati=cercaTargetConfronto($(idCerca).value);$(idRisultati).innerHTML="";
-    if(!risultati.length){if(primo)cPrimoTarget=null;else cTarget=null;$(idErrore).textContent="Nessun collega o posizione trovato.";disegnaConfronto();return;}
-    $(idErrore).textContent="";
-    if(risultati.length===1){selezionaTargetConfronto(risultati[0],quale);return;}
-    $(idRisultati).innerHTML=risultati.slice(0,20).map(function(r,i){
+  function avviaRicercaConfronto(){
+    if(!cRicercaQuale)return;
+    var risultati=cercaTargetConfronto($("cRicercaInput").value);$("cRicercaRisultati").innerHTML="";
+    if(!risultati.length){$("cRicercaErrore").textContent="Nessun collega o posizione trovato.";return;}
+    $("cRicercaErrore").textContent="";
+    if(risultati.length===1){selezionaTargetConfronto(risultati[0]);return;}
+    $("cRicercaRisultati").innerHTML=risultati.slice(0,20).map(function(r,i){
       return '<button type="button" data-confronto-risultato="'+i+'">'+esc(r.titolo)+'<small>'+esc(r.sotto)+'</small></button>';
     }).join("");
-    var bottoni=$(idRisultati).querySelectorAll("button");
-    for(var i=0;i<bottoni.length;i++) bottoni[i].onclick=(function(r,q){return function(){selezionaTargetConfronto(r,q);};})(risultati[i],quale);
-    if(primo)cPrimoTarget=null;else cTarget=null;disegnaConfronto();
+    var bottoni=$("cRicercaRisultati").querySelectorAll("button");
+    for(var i=0;i<bottoni.length;i++) bottoni[i].onclick=(function(r){return function(){selezionaTargetConfronto(r);};})(risultati[i]);
+  }
+  function descriviSelettoreConfronto(quale,scelto){
+    var etichetta=quale==="primo"?(cModo==="mio"?"Il mio turno":"Primo turno"):(cModo==="mio"?"Da confrontare":"Secondo turno");
+    if(!scelto)return '<small>'+etichetta+'</small><b>Scegli il turno</b><span>Tocca per cercare</span>';
+    var nome=quale==="primo"&&cModo==="mio"?U.nome:(scelto.occ?nomePersona(scelto.occ):"Turno scoperto");
+    var azione=quale==="primo"&&cModo==="mio"&&!cPrimoTarget?"Quel giorno svolgo un altro turno":"Cambia";
+    return '<small>'+esc(etichetta)+'</small><b>'+esc(nome+' · '+codDi(scelto.dep,scelto.pos))+'</b><span>'+esc(azione)+'</span>';
+  }
+  function apriRicercaConfronto(quale){
+    cRicercaQuale=quale;$("cRicercaInput").value="";$("cRicercaErrore").textContent="";$("cRicercaRisultati").innerHTML="";
+    disegnaConfronto();setTimeout(function(){$("cRicercaInput").focus();},0);
   }
   function disegnaConfronto(){
     cData=new Date(cData.getFullYear(),cData.getMonth(),cData.getDate());
@@ -1984,27 +1982,24 @@
     $("cQuando").textContent=nomeGiorno.charAt(0).toUpperCase()+nomeGiorno.slice(1)+" "+fmtConAnno(cData);
     $("cCalendario").value=isoLocale(cData);
     $("cModoMio").classList.toggle("on",cModo==="mio");$("cModoDue").classList.toggle("on",cModo==="due");
-    var mostraPrimaRicerca=cModo==="due"||cPrimaRicercaAperta;
-    $("cPrimaRicerca").style.display=mostraPrimaRicerca?"block":"none";
-    $("cPrimaRicerca").querySelector("label").textContent=cModo==="due"?"Primo turno":"Sostituisci il mio turno";
-    $("cSecondaEtichetta").textContent=cModo==="due"?"Secondo turno":"Confronta con";
-    $("cCollegaEtichetta").textContent=cModo==="due"?"Secondo turno":"Turno da confrontare";
     var miaPos=posizioneDi(U.base,lunediDi(cData));
     var primoScelto=cPrimoTarget?risolviTargetConfronto(cPrimoTarget):(cModo==="mio"?{dep:U.dep,pos:miaPos,occ:null}:null);
+    var scelto=risolviTargetConfronto(cTarget);
+    $("cSelettorePrimo").innerHTML=descriviSelettoreConfronto("primo",primoScelto);
+    $("cSelettoreSecondo").innerHTML=descriviSelettoreConfronto("secondo",scelto);
+    $("cSelettorePrimo").classList.toggle("on",cRicercaQuale==="primo");
+    $("cSelettoreSecondo").classList.toggle("on",cRicercaQuale==="secondo");
+    $("cRicercaComune").style.display=cRicercaQuale?"block":"none";
+    $("cRicercaEtichetta").textContent=cRicercaQuale==="primo"?(cModo==="mio"?"Quale turno svolgi quel giorno?":"Scegli il primo turno"):"Scegli il secondo turno";
+    $("cRipristinaMio").style.display=cRicercaQuale==="primo"&&cModo==="mio"&&cPrimoTarget?"inline-block":"none";
     var mio=null,mioCard=$("cMioCard");
-    if(primoScelto){
-      var primoNome=cPrimoTarget?(primoScelto.occ?nomePersona(primoScelto.occ):"Turno scoperto"):U.nome;
+    if(primoScelto&&cRicercaQuale!=="primo"){
       mio=datiTurnoConfronto(primoScelto.dep,primoScelto.pos,cData);
-      $("cMioEtichetta").textContent=cModo==="due"?"Primo turno":(cPrimoTarget?"Il turno che svolgi":"Il tuo turno");
-      $("cMioTitolo").textContent=primoNome+" · "+codDi(primoScelto.dep,primoScelto.pos);
       $("cMioTurno").innerHTML=turnoConfrontoHTML(mio);mioCard.style.display="block";
     }else mioCard.style.display="none";
-    $("cCambiaMio").style.display=cModo==="mio"?"inline-block":"none";
-    $("cCambiaMio").textContent=cPrimoTarget?"Ripristina il mio turno":"Quel giorno svolgo un altro turno";
-    var scelto=risolviTargetConfronto(cTarget),card=$("cCollegaCard"),altro=null;
-    if(scelto){
-      var nome=scelto.occ?nomePersona(scelto.occ):"Turno scoperto";altro=datiTurnoConfronto(scelto.dep,scelto.pos,cData);
-      $("cCollegaTitolo").textContent=nome+" · "+codDi(scelto.dep,scelto.pos);
+    var card=$("cCollegaCard"),altro=null;
+    if(scelto&&cRicercaQuale!=="secondo"){
+      altro=datiTurnoConfronto(scelto.dep,scelto.pos,cData);
       $("cCollegaTurno").innerHTML=turnoConfrontoHTML(altro);card.style.display="block";
     }else card.style.display="none";
     $("cEsito").innerHTML=mio&&altro?esitoIncontroHTML(mio,altro):"";salvaStato();
@@ -2016,17 +2011,13 @@
     if(campo.classList.contains("on")&&typeof campo.showPicker==="function"){try{campo.showPicker();}catch(e){}}
   };
   $("cCalendario").onchange=function(){if(this.value){cData=daISO(this.value);disegnaConfronto();}};
-  $("cModoMio").onclick=function(){cModo="mio";cPrimoTarget=null;cPrimaRicercaAperta=false;$("cPrimaCerca").value="";disegnaConfronto();};
-  $("cModoDue").onclick=function(){cModo="due";cPrimoTarget=null;cPrimaRicercaAperta=true;$("cPrimaCerca").value="";disegnaConfronto();};
-  $("cCambiaMio").onclick=function(){
-    if(cPrimoTarget){cPrimoTarget=null;cPrimaRicercaAperta=false;$("cPrimaCerca").value="";}
-    else cPrimaRicercaAperta=!cPrimaRicercaAperta;
-    disegnaConfronto();
-  };
-  $("cConferma").onclick=function(){avviaRicercaConfronto("secondo");};
-  $("cPrimaConferma").onclick=function(){avviaRicercaConfronto("primo");};
-  $("cCerca").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();avviaRicercaConfronto("secondo");this.blur();}});
-  $("cPrimaCerca").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();avviaRicercaConfronto("primo");this.blur();}});
+  $("cModoMio").onclick=function(){cModo="mio";cPrimoTarget=null;cRicercaQuale="";disegnaConfronto();};
+  $("cModoDue").onclick=function(){cModo="due";cPrimoTarget=null;cRicercaQuale="primo";disegnaConfronto();setTimeout(function(){$("cRicercaInput").focus();},0);};
+  $("cSelettorePrimo").onclick=function(){apriRicercaConfronto("primo");};
+  $("cSelettoreSecondo").onclick=function(){apriRicercaConfronto("secondo");};
+  $("cRipristinaMio").onclick=function(){cPrimoTarget=null;cRicercaQuale="";disegnaConfronto();};
+  $("cRicercaConferma").onclick=avviaRicercaConfronto;
+  $("cRicercaInput").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();avviaRicercaConfronto();this.blur();}});
 
   function disegnaDepositi(){
     var html = "";
