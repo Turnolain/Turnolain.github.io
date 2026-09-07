@@ -4,29 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#F58220">
+<meta name="theme-color" content="#0F141B">
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.44" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.46" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <style>
   :root{
-    --bone:#B9C0C6; --carta:#D9DDE1; --ink:#25292D; --soft:#555D64;
-    --rossa:#E97822; --ottone:#6D7277; --linea:rgba(37,41,45,.2);
+    --bone:#0F141B; --carta:#18212B; --ink:#E8EDF3; --soft:#AAB6C5;
+    --rossa:#FF8A3D; --ottone:#778598; --linea:rgba(232,237,243,.14);
+    --elevata:#202B37; --azzurro:#65B0FF; --azzurro-ink:#071421;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0;overscroll-behavior-y:none}
   html{
-    min-height:100%;background:linear-gradient(#F58220 0 10px,var(--bone) 10px) no-repeat;
+    min-height:100%;background:linear-gradient(#65B0FF 0 5px,var(--bone) 5px) no-repeat;
     background-color:var(--bone)
   }
   body{
     min-height:100vh;min-height:100dvh;background:transparent;color:var(--ink);
     font:500 18px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    max-width:540px;margin:0 auto;-webkit-text-size-adjust:100%;
+    max-width:640px;margin:0 auto;-webkit-text-size-adjust:100%;
   }
   .schermata{display:none;padding:0 20px 60px}
   .schermata.attiva{display:block}
@@ -49,12 +50,12 @@
   p.guida{margin:0 0 24px;color:var(--soft);font-size:18px;font-weight:500}
 
   #accesso{padding-top:12vh}
-  .campo{width:100%;font:800 34px/1 inherit;letter-spacing:.08em;text-align:center;color:var(--ink);
+  .campo{width:100%;font-family:inherit;font-size:34px;font-weight:800;line-height:1;letter-spacing:.08em;text-align:center;color:var(--ink);
          background:var(--carta);border:3px solid var(--ink);border-radius:14px;padding:20px 12px;font-variant-numeric:tabular-nums}
   .campo::placeholder{color:#C4BCA8;font-weight:800}
   .campo:focus{outline:4px solid var(--rossa);outline-offset:2px}
   .errore{margin:16px 0 0;color:var(--rossa);font-size:17px;font-weight:700;min-height:24px}
-  .bottone{display:block;width:100%;margin-top:16px;font:800 20px/1 inherit;color:#fff;
+  .bottone{display:block;width:100%;margin-top:16px;font-family:inherit;font-size:20px;font-weight:800;line-height:1;color:#fff;
            background:var(--rossa);border:3px solid var(--ink);border-radius:14px;padding:20px;cursor:pointer;
            box-shadow:4px 4px 0 var(--ink)}
   .bottone:active{transform:translateY(2px)}
@@ -74,7 +75,7 @@
   .scelte{list-style:none;margin:0;padding:0}
   .scelte li{margin-bottom:16px}
   .scelta{display:block;width:100%;text-align:left;cursor:pointer;background:var(--carta);
-          border:3px solid var(--ink);border-radius:16px;padding:22px;font:inherit;color:var(--ink);
+          border:3px solid var(--ink);border-radius:16px;padding:22px;font-family:inherit;font-size:inherit;font-weight:inherit;line-height:inherit;color:var(--ink);
           box-shadow:5px 5px 0 var(--rossa)}
   .scelta:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
   .scelta b{display:block;font-size:23px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
@@ -100,6 +101,9 @@
   .indizio .cap{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin:0 0 4px}
   .indizio .val{font-size:21px;font-weight:800;margin:0;line-height:1.25}
   .indizio .nb{font-size:14px;color:var(--soft);margin:6px 0 0;font-weight:500;line-height:1.45}
+  .turno-giorno-mio{margin:16px 0 0}
+  .turno-giorno-titolo{margin:0 0 8px;font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--rossa)}
+  .turno-giorno-mio>.turno-probabile{margin-top:0;border:2px solid var(--rossa);box-shadow:0 8px 24px rgba(255,138,61,.16)}
   .turno-probabile{margin:16px 0 0;background:#CDD2D6;color:#202326;border:1px solid #70777E;border-radius:4px;
                    padding:15px 16px;text-align:left;box-shadow:0 2px 7px rgba(0,0,0,.12)}
   .turno-probabile .tp-titolo{margin:0 0 9px;font:800 12px/1.2 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
@@ -108,6 +112,10 @@
                             letter-spacing:.05em;text-transform:uppercase}
   .turno-probabile .tp-variante{margin:12px 0 4px;font:700 11px/1.2 Arial,sans-serif;color:#555;text-transform:uppercase}
   .turno-probabile .tp-servizio{font:700 14px/1.55 "Courier New",monospace;font-variant-numeric:tabular-nums;word-spacing:2px}
+  .turno-probabile .tp-stato{display:inline-flex;align-items:center;justify-content:center;margin:3px 0;padding:7px 12px;border-radius:999px;
+                             text-align:center;font-family:inherit;font-size:13px;font-weight:900;line-height:1.15;letter-spacing:.075em;word-spacing:normal}
+  .turno-probabile .tp-stato-riposo{background:#17212B;color:#DCE4ED;border:1px solid #728091}
+  .turno-probabile .tp-stato-scomputo{background:#2A3440;color:#F4E7D6;border:1px solid var(--ottone)}
   .tp-attivita{display:inline-block;margin:8px 0 0;padding:5px 9px;border-left:4px solid var(--rossa);
                background:#FFF0E5;color:var(--ink);font-size:12px;font-weight:900;
                letter-spacing:.035em}
@@ -151,7 +159,7 @@
 
   .mese{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}
   .mese .nome{font-size:21px;font-weight:800;letter-spacing:-.01em}
-  .mese button{width:52px;height:52px;font:800 24px/1 inherit;color:var(--ink);background:var(--carta);
+  .mese button{width:52px;height:52px;font-family:inherit;font-size:24px;font-weight:800;line-height:1;color:var(--ink);background:var(--carta);
                border:3px solid var(--ink);border-radius:12px;cursor:pointer}
   table.cal{width:100%;border-collapse:separate;border-spacing:4px}
   table.cal th{font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--soft);padding:0 0 6px;text-transform:uppercase}
@@ -164,16 +172,21 @@
 
   .apri-calendario{width:100%;margin:16px 0 0;padding:16px;background:var(--rossa);color:#fff;
                     border:3px solid var(--ink);border-radius:12px;box-shadow:4px 4px 0 var(--ink);
-                    font:900 17px/1.2 inherit;letter-spacing:.03em;cursor:pointer}
+                    font-family:inherit;font-size:17px;font-weight:900;line-height:1.2;letter-spacing:.03em;cursor:pointer}
 
   .giornoNav{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;
              background:var(--carta);border:3px solid var(--ink);border-radius:14px}
-  .giornoNav button{flex:0 0 44px;height:44px;font:800 22px/1 inherit;color:var(--ink);background:var(--bone);
+  .giornoNav>button{flex:0 0 44px;height:44px;font-family:inherit;font-size:22px;font-weight:800;line-height:1;color:var(--ink);background:var(--bone);
                     border:2px solid var(--ink);border-radius:10px;cursor:pointer}
   .giornoNav .testo{flex:1;text-align:center;font-size:18px;font-weight:900;line-height:1.25}
-  .confronto-calendario{display:none;width:100%;margin:12px 0 0;padding:14px;background:var(--carta);color:var(--ink);
-                       border:3px solid var(--ink);border-radius:12px;font:800 17px/1.2 inherit}
-  .confronto-calendario.on{display:block}
+  .confronto-calendario,.confronto-calendario.on{position:absolute;width:1px;height:1px;margin:0;padding:0;opacity:0;pointer-events:none;overflow:hidden}
+  .data-calendario-riga{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-width:0}
+  .data-calendario-riga::before{content:"";flex:0 0 34px;width:34px;height:1px}
+  .tempo-centro .data-calendario-riga>.testo{flex:0 1 auto;width:auto;min-width:0}
+  .calendario-inline{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;margin:0;padding:0;background:var(--azzurro);color:var(--azzurro-ink);
+                     border:1px solid #9ACBFF;border-radius:11px;font-family:inherit;line-height:1;cursor:pointer;
+                     box-shadow:0 6px 18px rgba(101,176,255,.22)}
+  .calendario-inline .icona-calendario{font-size:20px;line-height:1}
   .confronto-selettori{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 0}
   .confronto-selettori button{min-width:0;min-height:68px;padding:9px 10px;text-align:left;background:var(--carta);color:var(--ink);
                               border:2px solid var(--ink);border-radius:11px;cursor:pointer;overflow:hidden}
@@ -198,12 +211,12 @@
   .confronto-ricerca label{display:block;margin:0 0 8px;font-size:18px;font-weight:900}
   .confronto-riga{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
   .confronto-riga input{min-width:0;width:100%;padding:15px 14px;background:var(--carta);color:var(--ink);
-                        border:3px solid var(--ink);border-radius:12px;font:700 18px/1.2 inherit}
+                        border:3px solid var(--ink);border-radius:12px;font-family:inherit;font-size:18px;font-weight:700;line-height:1.2}
   .confronto-riga button{padding:12px 16px;background:var(--rossa);color:#fff;border:3px solid var(--ink);
-                         border-radius:12px;font:900 15px/1.2 inherit;cursor:pointer}
+                         border-radius:12px;font-family:inherit;font-size:16px;font-weight:900;line-height:1.2;cursor:pointer}
   .confronto-risultati{display:grid;gap:8px;margin-top:10px}
   .confronto-risultati button{width:100%;padding:12px 14px;text-align:left;background:var(--carta);color:var(--ink);
-                              border:2px solid var(--ink);border-radius:10px;font:800 15px/1.3 inherit;cursor:pointer}
+                              border:2px solid var(--ink);border-radius:10px;font-family:inherit;font-size:16px;font-weight:800;line-height:1.3;cursor:pointer}
   .confronto-risultati button small{display:block;margin-top:2px;color:var(--soft);font-size:12px}
   .confronto-avviso{margin:12px 0 0;padding:13px 14px;border-radius:10px;font-size:15px;font-weight:800;line-height:1.4}
   .confronto-avviso.verde{background:#E3F4E8;color:#174D28;border:2px solid #2D8247}
@@ -213,12 +226,12 @@
   @keyframes invitoConfronto{0%,100%{background:#FFF0E5;box-shadow:0 0 0 2px rgba(247,124,25,.12)}50%{background:#FFE2CB;box-shadow:0 0 0 6px rgba(247,124,25,.24)}}
   @media(prefers-reduced-motion:reduce){.confronto-selettori button.da-scegliere{animation:none;border-color:var(--rossa);background:#FFF0E5}}
 
-  #cerca{width:100%;font:700 22px/1 inherit;color:var(--ink);background:var(--carta);
+  #cerca{width:100%;font-family:inherit;font-size:22px;font-weight:700;line-height:1;color:var(--ink);background:var(--carta);
          border:3px solid var(--ink);border-radius:14px;padding:19px}
   #cerca::placeholder{color:#BEB6A3;font-weight:600;font-size:19px}
   #cerca:focus{outline:4px solid var(--rossa);outline-offset:2px}
   .depositi{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
-  .depositi button{flex:1 1 auto;min-width:96px;font:800 16px/1 inherit;color:var(--ink);
+  .depositi button{flex:1 1 auto;min-width:96px;font-family:inherit;font-size:16px;font-weight:800;line-height:1;color:var(--ink);
                    background:var(--carta);border:3px solid var(--ink);border-radius:12px;
                    padding:14px 10px;cursor:pointer}
   .depositi button:active{transform:translateY(2px)}
@@ -226,30 +239,47 @@
   .depositi button.tutti{flex-basis:100%}
   .depositi button .mio{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;
                         text-transform:uppercase;opacity:.7;margin-top:3px}
-  .filtro-attivita{margin:14px 0 0;padding:13px;background:rgba(255,255,255,.28);
-                   border:2px solid var(--linea);border-radius:12px}
-  .filtro-attivita-toggle{display:none;width:100%;align-items:center;justify-content:space-between;gap:12px;
+  .filtro-attivita{margin:14px 0 0}
+  .filtro-attivita-toggle{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;
                           padding:13px 14px;background:var(--carta);color:var(--ink);border:2px solid var(--ink);
-                          border-radius:10px;font:900 15px/1.2 inherit;cursor:pointer;text-align:left}
+                          border-radius:10px;font-family:inherit;font-size:16px;font-weight:900;line-height:1.2;cursor:pointer;text-align:left}
+  .filtro-attivita-toggle:focus-visible,.filtro-attivita button:focus-visible,.modo-ricerca:focus-visible{outline:4px solid var(--rossa);outline-offset:2px}
   .filtro-attivita-toggle small{color:var(--rossa);font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+  .filtro-attivita-corpo{display:none;margin-top:8px;padding:12px;background:rgba(255,255,255,.28);
+                         border:2px solid var(--linea);border-radius:10px}
+  .filtro-attivita.aperto .filtro-attivita-corpo{display:block}
   .filtro-attivita-titolo{margin:0 0 9px;color:var(--soft);font-size:12px;font-weight:900;
-                          letter-spacing:.11em;text-transform:uppercase}
-  .filtro-attivita-categorie,.filtro-attivita-sotto{display:flex;flex-wrap:wrap;gap:7px}
+                           letter-spacing:.11em;text-transform:uppercase}
+  .filtro-attivita-categorie,.filtro-attivita-sotto,.filtro-fasce{display:flex;flex-wrap:wrap;gap:7px}
+  .filtro-fasce{margin-top:9px}
+  .filtro-gruppo{margin:12px 0 6px;color:var(--soft);font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
   .filtro-attivita-sotto{margin-top:9px;padding-top:9px;border-top:2px solid var(--linea)}
   .filtro-attivita.selezionata .filtro-attivita-sotto{margin-top:0;padding-top:0;border-top:0}
   .filtro-attivita button.filtro-chip{padding:9px 11px;background:var(--carta);color:var(--ink);
                                       border:2px solid var(--ink);border-radius:999px;
-                                      font:900 12px/1 inherit;letter-spacing:.025em;cursor:pointer}
+                                      font-family:inherit;font-size:12px;font-weight:900;line-height:1;letter-spacing:.025em;cursor:pointer}
   .filtro-attivita button.filtro-chip.on{background:var(--rossa);color:#fff}
   .filtro-attivita-azzera{margin:10px 0 0;padding:0;background:none;color:var(--rossa);border:0;
-                          font:900 12px/1.2 inherit;text-decoration:underline;cursor:pointer}
+                          font-family:inherit;font-size:12px;font-weight:900;line-height:1.2;text-decoration:underline;cursor:pointer}
+  .modo-ricerca{display:inline-flex;width:auto;margin:0 auto 10px;padding:10px 15px;background:var(--azzurro);color:var(--azzurro-ink);
+                border:1px solid #9ACBFF;border-radius:12px;font-family:inherit;font-size:12px;font-weight:950;line-height:1.25;cursor:pointer;
+                box-shadow:0 6px 18px rgba(101,176,255,.22)}
+  .giorno-ricerca,.giorno-ricerca.on{position:absolute!important;width:1px!important;height:1px!important;margin:0!important;padding:0!important;
+                  opacity:0!important;pointer-events:none!important;overflow:hidden!important}
+  .risultato-vuoto-titolo{margin:0 0 5px;color:var(--ink);font-size:18px;font-weight:900;line-height:1.2}
+  .alternativa-filtro{margin-top:10px;padding:13px 14px;background:#FFF0E5;border:1px solid var(--rossa);border-radius:11px;color:var(--ink);font-size:15px;font-weight:600;line-height:1.4}
+  .alternativa-filtro button{display:block;width:auto;max-width:100%;margin-top:10px;padding:10px 13px;background:var(--rossa);color:#fff;border:1px solid #FFAA70;border-radius:9px;font-family:inherit;font-size:14px;line-height:1.25;font-weight:900;cursor:pointer}
   .settNav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 0;padding:12px 14px;
            background:var(--carta);border:3px solid var(--ink);border-radius:14px}
   .settNav .testo{font-size:16px;font-weight:800;text-align:center;flex:1;line-height:1.25}
   .settNav .testo span{display:block}
+  .tempo-centro{position:relative;display:flex;min-width:0;flex:1;flex-direction:column;align-items:center;text-align:center}
+  .tempo-centro>.testo{width:100%}
+  .data-principale{min-height:38px;padding:5px 8px;background:transparent;color:var(--ink);border:0;border-radius:9px;font-family:inherit;cursor:pointer}
+  .data-principale:disabled{cursor:default;opacity:1}
   .sett-label{margin:18px 0 6px;font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
   .sett-label + .settNav{margin-top:0}
-  .settNav button{flex:0 0 44px;height:44px;font:800 22px/1 inherit;color:var(--ink);background:var(--bone);
+  .settNav>button{flex:0 0 44px;height:44px;font-family:inherit;font-size:22px;font-weight:800;line-height:1;color:var(--ink);background:var(--bone);
                   border:2px solid var(--ink);border-radius:10px;cursor:pointer}
 
   ol{list-style:none;margin:18px 0 0;padding:0;border-top:2px solid var(--linea)}
@@ -277,10 +307,7 @@
               letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
   .avviso{margin:16px 0 0;padding:13px 16px;border-radius:12px;background:var(--carta);
           border:2px dashed var(--ink);font-size:15px;font-weight:600;color:var(--soft)}
-  ol li.vuota{margin:6px 0;padding:14px 12px;background:#FFF5EC;border:2px dashed var(--rossa);border-radius:10px}
-  ol li.vuota .nome{color:var(--ink);font-style:normal;font-weight:800}
-  ol li.vuota .nome em{color:var(--soft);font-weight:600;letter-spacing:0;
-                        text-transform:none;line-height:1.35}
+  ol li.vuota{display:block;margin:12px 0;padding:15px 16px;background:var(--carta);border:1px solid var(--linea);border-radius:14px}
   ol li.io{background:var(--carta);box-shadow:inset 5px 0 0 var(--rossa);padding-left:14px;margin-left:-10px}
   ol li.surrweek .pos{color:var(--rossa)}
   ol li.con-dettaglio{display:block;cursor:pointer}
@@ -292,6 +319,9 @@
   ol li.risultato-surrogante strong{font-weight:900}
   ol li.con-dettaglio .dettaglio-turno{display:none}
   ol li.con-dettaglio.aperto .dettaglio-turno{display:block}
+  ol li.con-giorno .dettaglio-giorno{display:block}
+  ol li.con-giorno .dettaglio-settimana{display:none}
+  ol li.con-giorno.settimana-aperta .dettaglio-settimana{display:block}
 
   footer{margin-top:34px;padding-top:20px;border-top:3px solid var(--ink);font-size:15px;line-height:1.6;color:var(--soft);font-weight:500}
   .grazie{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;
@@ -316,7 +346,7 @@
                 letter-spacing:.08em;pointer-events:none}
   .segnala{height:46px;display:flex;align-items:center;justify-content:center;gap:7px;padding:0 14px;background:var(--ink);color:var(--carta);border:3px solid var(--ink);border-radius:14px;box-shadow:none;cursor:pointer;font:900 14px/1 Arial,sans-serif;letter-spacing:.08em}
   .segnala::before{content:"?";display:grid;place-items:center;width:22px;height:22px;border:2px solid currentColor;border-radius:50%;font:900 15px/1 Arial,sans-serif}.segnala svg{display:none}
-  .barra .segnala{flex:0 0 auto;height:54px}.accesso-barra{position:relative;top:auto;justify-content:flex-end;padding-bottom:8px}
+  .barra .segnala{flex:0 0 auto;height:54px}
   .segnala-matricola{margin-top:8px;background:var(--carta);color:var(--ink);box-shadow:2px 2px 0 var(--linea);font-size:16px;padding:14px}
   .suggerimento-matricola{display:none;width:100%;margin:14px 0 0;padding:13px 16px;text-align:left;background:#fff3e8;color:var(--ink);border:3px solid var(--rossa);border-radius:12px;box-shadow:3px 3px 0 var(--ink);font:700 16px/1.25 Arial,sans-serif;cursor:pointer}
   .suggerimento-matricola.on{display:block}
@@ -343,21 +373,71 @@
     .tp-orari{grid-column:1/-1;grid-row:2}
     .tp-sintesi-turno{max-width:190px}
     ol .attivita-speciali{margin-left:0;font-size:11px;letter-spacing:.025em}
-    .filtro-attivita{padding:0;background:transparent;border:0}
-    .filtro-attivita-toggle{display:flex}
-    .filtro-attivita-corpo{display:none;margin-top:8px;padding:12px;background:rgba(255,255,255,.28);
-                           border:2px solid var(--linea);border-radius:10px}
-    .filtro-attivita.aperto .filtro-attivita-corpo{display:block}
     .filtro-attivita button.filtro-chip{flex:1 1 calc(50% - 7px);min-width:120px}
+    input,select,textarea,.campo-segnalazione input,.campo-segnalazione select,.campo-segnalazione textarea,.messaggio-testo{font-size:16px}
     .confronto-riga{grid-template-columns:1fr}
     .confronto-riga button{padding:14px}
   }
+  .avviso-bozza{margin:10px 0 14px;padding:11px 13px;border:1px solid #FF9C59;border-radius:10px;background:#3A2418;
+    color:#FFC49C;font:900 12px/1.4 Arial,sans-serif;letter-spacing:.07em;text-transform:uppercase}
+  .avviso-bozza small{display:block;margin-top:3px;color:#E8B995;font-weight:700;letter-spacing:0;text-transform:none}
+  /* Tema scuro: fondo base e superfici elevate, senza nero o bianco puri. */
+  html{color-scheme:dark}
+  .schermata{padding-top:14px}
+  #accesso{padding-top:max(6vh,28px)}
+  .barra{position:relative;top:auto;left:auto;right:auto;z-index:40;width:100%;max-width:640px;margin:5px auto 0;padding:10px 20px 12px;transform:none;
+         background:rgba(15,20,27,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--linea)}
+  .barra .chiIo{display:none}
+  body[data-schermata="menu"] .barra .chiIo{display:block}
+  body[data-schermata="accesso"] .barra .casa,body[data-schermata="accesso"] .barra .chiudi,body[data-schermata="menu"] .barra .casa{display:none}
+  body[data-schermata="accesso"] .barra .segnala{margin-left:auto}
+  .casa,.chiudi,.segnala{border-width:1px;box-shadow:0 5px 16px rgba(0,0,0,.22)}
+  .segnala{background:var(--elevata);color:var(--ink)}
+  .campo,#cerca,.giornoNav,.settNav,.filtro-attivita-toggle,.filtro-attivita-corpo,.depositi button{border-width:1px}
+  .depositi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .depositi button{min-width:0;padding-left:5px;padding-right:5px}
+  .depositi button.tutti{grid-column:1/-1}
+  .campo,#cerca{box-shadow:0 10px 30px rgba(0,0,0,.2)}
+  .campo::placeholder,#cerca::placeholder{color:#748295}
+  .bottone{border-width:1px;box-shadow:0 9px 22px rgba(255,138,61,.2)}
+  .scelta{border-width:1px;box-shadow:0 12px 30px rgba(0,0,0,.22)}
+  .scelta:active{transform:translateY(1px);box-shadow:0 5px 14px rgba(0,0,0,.2)}
+  .riquadro{border-width:1px;box-shadow:0 14px 34px rgba(0,0,0,.24)}
+  .turno-probabile{background:var(--elevata);color:var(--ink);border:1px solid var(--linea);border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.2)}
+  .turno-probabile .tp-fonte{background:#2A3745;color:#CAD4DF}
+  .turno-probabile .tp-variante{color:var(--soft)}
+  .tp-attivita{background:#38271D;color:#FFD0AE}
+  .tp-storico,.avviso-storico{background:#151D26;color:var(--ink)}
+  .foglio-mancante,.riposo-matto{background:#352017;color:#FFBE91}
+  .settNav{padding:14px;background:var(--carta);border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.22)}
+  .settNav>button{border-width:1px;background:var(--elevata)}
+  ol{border-top:1px solid var(--linea)}
+  ol li{padding:17px 7px;border-bottom:1px solid var(--linea)}
+  ol li.con-dettaglio{margin-top:10px;padding:15px;border:1px solid var(--linea);border-radius:16px;background:rgba(24,33,43,.9);box-shadow:0 8px 22px rgba(0,0,0,.18)}
+  ol li.con-dettaglio.io{margin-left:0;background:var(--carta)}
+  ol .rip .apri{display:inline-block;margin-top:7px;padding:5px 8px;border-radius:999px;background:#38271D;color:#FFAA70}
+  ol li.con-giorno .rip{flex-basis:126px}
+  ol li.con-giorno .rip .apri{padding:7px 9px;border-radius:10px;line-height:1.25}
+  .filtro-attivita-corpo,.confronto-ricerca{background:rgba(32,43,55,.72)}
+  .suggerimento-matricola{background:#30251D;color:#FFF7F0;border-color:var(--rossa)}
+  .suggerimento-matricola span{color:#C9D2DC}
+  .alternativa-filtro,.confronto-selettori button.da-scegliere{background:#38271D}
+  .risultato-vuoto-titolo{color:#F2F5F8}
+  .sheet-active-hint{background:#173225;color:#A7E7BE}
+  .messaggio-card,.segnala-card,.grazie-card{background:var(--elevata);color:var(--ink)}
+  @media(max-width:520px){.schermata{padding-left:15px;padding-right:15px}.barra{width:100%;margin:0;padding-left:15px;padding-right:15px}.settNav,.giornoNav{padding:11px}.modo-ricerca,.calendario-inline{font-size:11px}.settNav .testo,.giornoNav .testo{font-size:15px}#qQuando{font-size:13px}}
 </style>
 </head>
-<body>
+<body data-schermata="accesso">
+
+<div class="barra" id="barraGlobale">
+  <button class="casa" aria-label="Torna al menu"></button>
+  <span class="chiIo" id="saluto"></span>
+  <button class="chiudi" aria-label="Esci e cambia matricola"></button>
+  <button class="segnala" data-apri-segnala aria-label="Aiuto e assistenza">AIUTO</button>
+</div>
 
 <div class="schermata attiva" id="accesso">
-  <div class="barra accesso-barra"><button class="segnala" data-apri-segnala aria-label="Aiuto e assistenza">AIUTO</button></div>
   <p class="occhiello" style="padding-top:8px">ATM · Metropolitana 1</p>
   <h1>Ruota Virtuale</h1>
   <p class="guida">Digita la tua matricola. Il deposito lo riconosco da solo.</p>
@@ -374,7 +454,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.44" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.46" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -389,7 +469,6 @@
 </div>
 
 <div class="schermata" id="menu">
-  <div class="barra"><span class="chiIo" id="saluto"></span><button class="chiudi" aria-label="Esci e cambia matricola"></button><button class="segnala" data-apri-segnala aria-label="Aiuto e assistenza">AIUTO</button></div>
   <h2>Cosa vuoi sapere?</h2>
   <p class="guida">Scegli cosa vuoi fare.</p>
   <ul class="scelte">
@@ -409,21 +488,24 @@
 </div>
 
 <div class="schermata" id="questa">
-  <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button><button class="segnala" data-apri-segnala aria-label="Aiuto e assistenza">AIUTO</button></div>
   <p class="sett-label">Settimana</p>
   <div class="settNav" style="margin:0 0 18px">
     <button id="qPrec" aria-label="Settimana precedente">‹</button>
-    <span class="testo" id="qQuando"></span>
+    <div class="tempo-centro">
+      <div class="data-calendario-riga">
+        <span class="testo" id="qQuando"></span>
+        <button type="button" class="calendario-inline" id="qApriCalendario" aria-label="Apri il calendario"><span class="icona-calendario" aria-hidden="true">📅</span></button>
+      </div>
+    </div>
     <button id="qSucc" aria-label="Settimana successiva">›</button>
   </div>
-  <button class="apri-calendario" id="qApriCalendario">📅 Visualizza calendario</button>
   <div class="riquadro">
     <p class="chi">Questa settimana ricopri</p>
     <p class="grande" id="qCodice"></p>
     <div id="qBollo"></div>
     <p class="sotto" id="qNota"></p>
   </div>
-  <div class="indizio" id="qIndizio"></div>
+  <div id="qGiorno"></div>
   <div id="qTurno"></div>
   <div class="giorni" id="qGiorni"></div>
   <div class="legenda">
@@ -435,7 +517,6 @@
 </div>
 
 <div class="schermata" id="settimana">
-  <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button><button class="segnala" data-apri-segnala aria-label="Aiuto e assistenza">AIUTO</button></div>
   <h2>Calendario dei miei turni</h2>
   <p class="guida">Tocca un giorno qualsiasi della settimana che ti interessa.</p>
   <div class="mese">
@@ -465,15 +546,18 @@
 </div>
 
 <div class="schermata" id="confronta">
-  <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button><button class="segnala" data-apri-segnala aria-label="Aiuto e assistenza">AIUTO</button></div>
   <h2>Confronta turni</h2>
   <p class="guida">Scegli il giorno e i turni da confrontare.</p>
-  <button class="apri-calendario" id="cApriCalendario">📅 Visualizza calendario</button>
-  <input class="confronto-calendario" id="cCalendario" type="date" aria-label="Scegli il giorno da confrontare">
   <p class="sett-label">Giorno</p>
   <div class="giornoNav">
     <button id="cPrec" aria-label="Giorno precedente">‹</button>
-    <span class="testo" id="cQuando"></span>
+    <div class="tempo-centro">
+      <div class="data-calendario-riga">
+        <span class="testo" id="cQuando"></span>
+        <button type="button" class="calendario-inline" id="cApriCalendario" aria-label="Scegli un altro giorno"><span class="icona-calendario" aria-hidden="true">📅</span></button>
+      </div>
+      <input class="confronto-calendario" id="cCalendario" type="date" aria-label="Scegli il giorno da confrontare">
+    </div>
     <button id="cSucc" aria-label="Giorno successivo">›</button>
   </div>
 
@@ -504,27 +588,35 @@
 </div>
 
 <div class="schermata" id="ruota">
-  <div class="barra"><button class="casa" aria-label="Torna al menu"></button><button class="chiudi" aria-label="Esci"></button><button class="segnala" data-apri-segnala aria-label="Aiuto e assistenza">AIUTO</button></div>
   <h2>Chi stai cercando?</h2>
   <p class="guida" id="guidaCerca">Digita un collega o una posizione. A campo vuoto scorri la ruota del deposito scelto.</p>
   <input id="cerca" type="search" placeholder="Es. Pigoli · oppure 305" autocomplete="off">
   <div class="depositi" id="depositi"></div>
   <div class="filtro-attivita" id="filtroAttivita">
     <button type="button" class="filtro-attivita-toggle" id="toggleFiltriAttivita" aria-expanded="false">
-      <span>Attività speciali</span><small id="riassuntoFiltroAttivita">Filtra</small>
+      <span>FILTRI</span><small id="riassuntoFiltroAttivita">Nessun filtro</small>
     </button>
-    <div class="filtro-attivita-corpo">
-      <p class="filtro-attivita-titolo">Filtra attività speciali</p>
+    <div class="filtro-attivita-corpo" id="corpoFiltri" aria-hidden="true">
+      <p class="filtro-gruppo">Attività</p>
       <div class="filtro-attivita-categorie" id="categorieAttivita"></div>
       <div class="filtro-attivita-sotto" id="sottofiltriAttivita" style="display:none"></div>
+      <p class="filtro-gruppo">Fascia</p>
+      <div class="filtro-fasce" id="fasceTurno"></div>
       <button type="button" class="filtro-attivita-azzera" id="azzeraFiltroAttivita" style="display:none">Azzera filtri</button>
     </div>
   </div>
   <p class="avviso" id="avviso" style="display:none"></p>
-  <p class="sett-label">Settimana</p>
-  <div class="settNav">
+  <p class="sett-label" id="rEtichettaTempo">Giorno specifico</p>
+  <div class="settNav tempo-nav">
     <button id="rPrec" aria-label="Settimana precedente">‹</button>
-    <span class="testo" id="rQuando"></span>
+    <div class="tempo-centro">
+      <button type="button" class="modo-ricerca" id="toggleModoRicerca">Vista giorno · passa alla settimana</button>
+      <div class="data-calendario-riga">
+        <button type="button" class="testo data-principale" id="rQuando" aria-label="Scegli un altro giorno"></button>
+        <button type="button" class="calendario-inline" id="rApriCalendario" aria-label="Scegli un altro giorno"><span class="icona-calendario" aria-hidden="true">📅</span></button>
+      </div>
+      <input class="giorno-ricerca" id="rData" type="date" aria-label="Scegli il giorno specifico">
+    </div>
     <button id="rSucc" aria-label="Settimana successiva">›</button>
   </div>
   <ol id="elenco"></ol>
@@ -545,12 +637,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.44</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.46</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.44", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.46", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -565,17 +657,31 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.44"></script>
-<script src="turni-precisi.js?v=0.44"></script>
-<script src="attivita-turni.js?v=0.44"></script>
-<script src="alias-nomi.js?v=0.44"></script>
-<script src="gestore-config.js?v=0.44"></script>
+<script src="schedule-config.js?v=0.46"></script>
+<script src="turni-precisi.js?v=0.46"></script>
+<script src="attivita-turni.js?v=0.46"></script>
+<script src="alias-nomi.js?v=0.46"></script>
+<script src="gestore-config.js?v=0.46"></script>
+
 <script>
 (function(){
   "use strict";
 
   var DATI_TURNI_OK = typeof TURNI_PRECISI !== "undefined"
     && typeof INIZIALI_MATRICOLA !== "undefined";
+  if(window.RUOTA_M1_LAB){
+    window.RUOTA_M1_TEST_API={
+      servizio:function(sig,pos,data){return servizioEffettivo(DEPOSITI[sig],+pos,daISO(data));},
+      combinazione:function(sig,pos,data,categoria,sotto,fascia){
+        var s=servizioEffettivo(DEPOSITI[sig],+pos,daISO(data));
+        return s.disponibile&&attivitaGiornoCorrisponde(s.attivita,categoria,sotto)&&fasciaCorrispondeFiltro(s.fascia,fascia);
+      },
+      giorniMatching:function(sig,pos,date,categoria,sotto,fascia){
+        return date.filter(function(d){return this.combinazione(sig,pos,d,categoria,sotto,fascia);},this);
+      },
+      avvisoBozza:function(data){return avvisoBozzaHTML(daISO(data));}
+    };
+  }
   if(!DATI_TURNI_OK){
     globalThis.TURNI_PRECISI = {};
     globalThis.INIZIALI_MATRICOLA = {};
@@ -818,6 +924,16 @@
     });
     return matches.length?matches[matches.length-1]:null;
   }
+  function bozzaPerData(d){
+    var period=periodoTestPerData(d);
+    if(period && period.stato==="draft") return period;
+    var cfg=window.RUOTA_M1_TEST_CONFIG,iso=isoLocale(d);
+    return cfg&&cfg.stato==="draft"&&cfg.dal&&iso>=cfg.dal&&(!cfg.al||iso<=cfg.al)?cfg:null;
+  }
+  function avvisoBozzaHTML(d){
+    var bozza=bozzaPerData(d);
+    return bozza?'<div class="avviso-bozza">Bozza · non ufficiale<small>'+esc(bozza.titolo||'Foglio turni provvisorio')+'. Verifica sempre eventuali aggiornamenti aziendali.</small></div>':'';
+  }
   function tipoBaseFoglio(f){return String(f||"").split("_")[0];}
   function stagioneDi(d){ var f=tipoBaseFoglio(foglioPerData(d)); return (f==="est" || f==="int") ? 1 : 0; }
   function nomeStagione(d){ var f=tipoBaseFoglio(foglioPerData(d)); return f==="int"?"foglio intermedio":(f==="est"?"foglio estivo":"foglio invernale"); }
@@ -853,12 +969,12 @@
     if(infoProgramma && infoProgramma.fonte) return infoProgramma.fonte;
     if(programma==="specFes") return FOGLI_INFO.specFes;
     var testPeriod=periodoTestPerData(d);
-    if(testPeriod) return {tipo:testPeriod.tipo,titolo:testPeriod.titolo,dal:testPeriod.dal.split("-").reverse().join("/")};
+    if(testPeriod) return {tipo:testPeriod.tipo,titolo:testPeriod.titolo,dal:testPeriod.dal.split("-").reverse().join("/"),stato:testPeriod.stato||"official"};
     var testCfg=window.RUOTA_M1_TEST_CONFIG;
     if(testCfg && testCfg.dal){
       var isoTest=isoLocale(d);
       if(isoTest>=testCfg.dal && (!testCfg.al || isoTest<=testCfg.al)){
-        return {tipo:testCfg.tipo,titolo:testCfg.titolo,dal:testCfg.dal.split("-").reverse().join("/")};
+        return {tipo:testCfg.tipo,titolo:testCfg.titolo,dal:testCfg.dal.split("-").reverse().join("/"),stato:testCfg.stato||"official"};
       }
     }
     var foglio=foglioPerData(d), info=foglio && FOGLI_INFO[foglio];
@@ -1010,20 +1126,23 @@
   function contieneCategoriaAttivita(nome,categoria){
     return String(nome).split("+").indexOf(categoria)>=0;
   }
-  function attivitaCorrispondeFiltro(lista){
-    if(!filtroAttivita) return true;
-    return (lista||[]).some(function(item){
-      if(!contieneCategoriaAttivita(item.nome,filtroAttivita)) return false;
-      if(sottofiltroAttivita==="semplice") return item.nome===filtroAttivita;
-      if(sottofiltroAttivita==="altro") return item.nome!==filtroAttivita;
+  function attivitaGiornoCorrisponde(lista,categoria,sottofiltro){
+    if(!categoria) return true;
+    return (lista||[]).some(function(nome){
+      if(!contieneCategoriaAttivita(nome,categoria)) return false;
+      if(sottofiltro==="semplice") return nome===categoria;
+      if(sottofiltro==="altro") return nome!==categoria;
       return true;
     });
   }
   function testoFiltroAttivo(){
-    return titoloAttivita(filtroAttivita)+(sottofiltroAttivita==="altro"?" + altro":"");
+    var parti=[];
+    if(filtroAttivita) parti.push(titoloAttivita(filtroAttivita)+(sottofiltroAttivita==="altro"?" + altro":""));
+    if(filtroFascia) parti.push(filtroFascia);
+    return parti.join(" · ");
   }
   function disegnaFiltriAttivita(){
-    var categorie=$("categorieAttivita"), sotto=$("sottofiltriAttivita");
+    var categorie=$("categorieAttivita"), sotto=$("sottofiltriAttivita"), fasce=$("fasceTurno");
     categorie.style.display=filtroAttivita?"none":"flex";
     categorie.innerHTML=filtroAttivita?"":CATEGORIE_ATTIVITA.map(function(nome){
       return '<button type="button" class="filtro-chip" data-attivita="'+nome+'">'+titoloAttivita(nome)+'</button>';
@@ -1037,11 +1156,37 @@
       sotto.style.display="none";sotto.innerHTML="";
       sottofiltroAttivita="";
     }
-    $("azzeraFiltroAttivita").style.display=filtroAttivita?"inline-block":"none";
-    $("riassuntoFiltroAttivita").textContent=filtroAttivita?titoloAttivita(filtroAttivita):"Filtra";
-    $("filtroAttivita").classList.toggle("selezionata",!!filtroAttivita);
+    fasce.innerHTML=["Mattino","Pomeriggio","Ridotta","Notte"].map(function(nome){
+      return '<button type="button" class="filtro-chip'+(filtroFascia===nome?' on':'')+'" data-fascia="'+nome+'">'+nome+'</button>';
+    }).join("");
+    var filtriAttivi=!!(filtroAttivita||filtroFascia);
+    $("azzeraFiltroAttivita").style.display=filtriAttivi?"inline-block":"none";
+    $("riassuntoFiltroAttivita").textContent=filtriAttivi?testoFiltroAttivo():"Nessun filtro";
+    $("filtroAttivita").classList.toggle("selezionata",filtriAttivi);
     $("filtroAttivita").classList.toggle("aperto",filtriAttivitaAperti);
     $("toggleFiltriAttivita").setAttribute("aria-expanded",filtriAttivitaAperti?"true":"false");
+    $("corpoFiltri").setAttribute("aria-hidden",filtriAttivitaAperti?"false":"true");
+    var controlli=$("corpoFiltri").querySelectorAll("button");
+    for(var i=0;i<controlli.length;i++) controlli[i].tabIndex=filtriAttivitaAperti?0:-1;
+  }
+  function giorniRicerca(){
+    if(rModo==="giorno") return [new Date(rData.getFullYear(),rData.getMonth(),rData.getDate())];
+    var giorni=[];for(var i=0;i<7;i++) giorni.push(spostaGiorni(rLun,i));return giorni;
+  }
+  function corrispondenzePosizione(dep,pos,opzioni){
+    opzioni=opzioni||{};
+    var categoria=opzioni.categoria!==undefined?opzioni.categoria:filtroAttivita;
+    var sotto=opzioni.sotto!==undefined?opzioni.sotto:sottofiltroAttivita;
+    var fascia=opzioni.fascia!==undefined?opzioni.fascia:filtroFascia;
+    var risultati=[],insufficienti=[];
+    giorniRicerca().forEach(function(data){
+      var servizio=servizioEffettivo(dep,pos,data);
+      if(!servizio.disponibile){insufficienti.push(servizio);return;}
+      if(!attivitaGiornoCorrisponde(servizio.attivita,categoria,sotto)) return;
+      if(!fasciaCorrispondeFiltro(servizio.fascia,fascia)) return;
+      risultati.push(servizio);
+    });
+    return {risultati:risultati,insufficienti:insufficienti};
   }
   function attivitaHTML(lista){
     if(!lista||!lista.length) return "";
@@ -1082,6 +1227,38 @@
     if(inizio>570) return "Pomeriggio";
     if(inizio>=300) return "Mattino";
     return "Notte";
+  }
+  /* Fonte comune per ricerca, filtri, dettaglio giornaliero e confronto.
+     disponibile indica che il foglio esiste, non lo stato operativo DISPONIBILE. */
+  function servizioEffettivo(dep,pos,data){
+    var giorno=(data.getDay()+6)%7, variante=giorno<5?"fer":(giorno===5?"sab":"fes");
+    var voce=settimanaDiDeposito(dep,pos)[giorno]||{stato:""};
+    var info=programmaInfoPerData(data,variante), programma=info.programma;
+    var codice=voce.stato==="surr"?(voce.pos||pos):pos;
+    /* Martedì-venerdì la surroga legge la posizione coperta; sabato la riga
+       stampata del surrogante. */
+    var rigaFonte=(voce.stato==="surr" && giorno>=1 && giorno<=4)?codice:pos;
+    var risultato={dep:dep,pos:pos,codice:codice,rigaFonte:rigaFonte,data:data,stato:voce.stato,
+      variante:variante,info:info,programma:programma,righe:null,attivita:[],fascia:"",disponibile:true,motivo:""};
+    if(programma==="specSabMancante"){
+      risultato.disponibile=false;risultato.motivo="Il foglio del Sabato speciale Fiera non è ancora disponibile.";return risultato;
+    }
+    if(!(info.foglio||foglioPerData(data))){
+      risultato.disponibile=false;risultato.motivo="Non possiedo ancora il foglio turni di questo periodo.";return risultato;
+    }
+    if(voce.stato==="riposo" || voce.stato==="sco" || voce.stato==="matto") return risultato;
+    risultato.righe=righeTurno(dep,rigaFonte,data,variante);
+    if(!risultato.righe){
+      risultato.disponibile=false;risultato.motivo="Turno non disponibile nel foglio caricato.";return risultato;
+    }
+    risultato.attivita=attivitaTurno(dep,rigaFonte,data,variante);
+    var testo=risultato.righe.join(" ").toUpperCase();
+    if(!/\bDISP(?:ONIBILE)?\b|\bRIPOSO\b|\bSCO\b/.test(testo)) risultato.fascia=fasciaOraria(risultato.righe);
+    return risultato;
+  }
+  function fasciaCorrispondeFiltro(fascia,selezionata){
+    if(!selezionata) return true;
+    return fascia===selezionata;
   }
   function intervalloComplessivo(righe){
     var testo=(righe||[]).join(" "), ore=[], re=/(\d{1,2}):(\d{2})/g, m;
@@ -1167,6 +1344,7 @@
     var infoProgramma=programmaInfoPerData(data,variante), speciale=infoProgramma.speciale;
     return '<div class="turno-probabile"><p class="tp-titolo'+(speciale?' tp-speciale':'')+'">Turno probabile'
       +(speciale?' · '+esc(infoProgramma.nome):'')+'</p>'
+      +avvisoBozzaHTML(data)
       +'<p class="tp-variante">'+GIORNI_EST[gi]+' '+data.getDate()+' '+MESI[data.getMonth()]+'</p>'
       +servizioEtichettatoHTML(dep,pos,righeTurno(dep,pos,data,variante),pos,stato==="lavoro"||stato==="surr")+'</div>';
   }
@@ -1196,9 +1374,9 @@
         if(stagioniStoriche.indexOf(stagioneStorica)<0) stagioniStoriche.push(stagioneStorica);
         corpo=storicoTurnoHTML(dep,g.stato==="surr"?codice:rigaFonte,rigaFonte,data,variante);
       }
-      else if(g.stato==="riposo") corpo='<div class="tp-servizio">RIPOSO</div>';
+      else if(g.stato==="riposo") corpo='<div class="tp-servizio tp-stato tp-stato-riposo">RIPOSO</div>';
       else if(g.stato==="matto") corpo='<div class="riposo-matto">Possibile RIPOSO MATTO<br>Verifica il turno su Attilio</div>';
-      else if(g.stato==="sco") corpo='<div class="tp-servizio">SCOMPUTO</div>';
+      else if(g.stato==="sco") corpo='<div class="tp-servizio tp-stato tp-stato-scomputo">SCOMPUTO</div>';
       else corpo=servizioEtichettatoHTML(dep,g.stato==="surr"?codice:rigaFonte,righeTurno(dep,rigaFonte,data,variante),rigaFonte,true);
       var chiave=corpo+"|"+(speciale?nomeSpeciale:"")+"|"+(g.stato==="surr"?codice:"");
       var ultimo=blocchi[blocchi.length-1];
@@ -1208,7 +1386,9 @@
       else blocchi.push({inizio:i,fine:i,chiave:chiave,corpo:corpo,speciale:speciale,
         nomeSpeciale:nomeSpeciale,codice:g.stato==="surr"?codice:null});
     }
+    var giorniBozza=[];for(var bi=0;bi<7;bi++){var bd=spostaGiorni(lun,bi);if(bozzaPerData(bd))giorniBozza.push(bd);}
     var html='<div class="turno-probabile"><p class="tp-titolo">Turni probabili della settimana</p>';
+    if(giorniBozza.length) html+=avvisoBozzaHTML(giorniBozza[0]);
     if(avvisiStorici.length){
       html+='<div class="avviso-storico"><b>Possibile periodo con orari speciali.</b><br>'
         +'Negli anni precedenti, durante '+esc(avvisiStorici.join(' e '))+', sono stati applicati programmi diversi dall’orario ordinario. '
@@ -1319,10 +1499,13 @@
   var matricolaNonTrovata = "";
   var CHIAVE_MATRICOLA_RICORDATA = "ruotaVirtuale.matricolaRicordata";
   var EMAIL_ASSISTENZA = "assistenzaruotavirtuale"+"@"+"gmail.com";
+  function dispositivoTouch(){return (navigator.maxTouchPoints||0)>0||(window.matchMedia&&window.matchMedia("(pointer: coarse)").matches);}
+  function focusMatricolaDesktop(){if(!dispositivoTouch())$("matricola").focus();}
   var qLun = lunediDi(new Date()), sLun = lunediDi(new Date()), calMese = new Date(), rLun = lunediDi(new Date());
+  var rModo="giorno", rData=new Date(), rGiornoInizializzato=true;
   var cData = new Date(), cTarget = null, cPrimoTarget = null, cRicercaQuale = "";
   var rDep = null;   // deposito mostrato nella schermata di ricerca
-  var filtroAttivita="", sottofiltroAttivita="", filtriAttivitaAperti=false, tuttiDepositiAttivita=false;
+  var filtroAttivita="", sottofiltroAttivita="", filtroFascia="", filtriAttivitaAperti=false, tuttiDepositiAttivita=false;
   var STATO_SESSIONE="ruota-virtuale-stato-v1", ripristinoInCorso=false;
 
   function azzeraRicerca(){
@@ -1333,6 +1516,8 @@
     cTarget=null;cPrimoTarget=null;cRicercaQuale="";
     filtroAttivita="";
     sottofiltroAttivita="";
+    filtroFascia="";
+    rModo="giorno";rData=new Date();rLun=lunediDi(rData);rGiornoInizializzato=true;
     filtriAttivitaAperti=false;
     tuttiDepositiAttivita=false;
     if(U) rDep=U.dep;
@@ -1345,9 +1530,9 @@
       for(var i=0;i<nodi.length;i++) campi[nodi[i].id]=nodi[i].value;
       sessionStorage.setItem(STATO_SESSIONE,JSON.stringify({
         matricola:U?U.mat:$("matricola").value.replace(/\D/g,""),accesso:!!U,
-        schermata:att?att.id:"accesso",q:isoLocale(qLun),s:isoLocale(sLun),r:isoLocale(rLun),c:isoLocale(cData),
+        schermata:att?att.id:"accesso",q:isoLocale(qLun),s:isoLocale(sLun),r:isoLocale(rLun),rData:isoLocale(rData),rModo:rModo,rGiornoInizializzato:rGiornoInizializzato,c:isoLocale(cData),
         mese:calMese.getFullYear()+"-"+(calMese.getMonth()+1),deposito:rDep?rDep.sigla:"",
-        ricerca:$("cerca").value,filtroAttivita:filtroAttivita,sottofiltroAttivita:sottofiltroAttivita,
+        ricerca:$("cerca").value,filtroAttivita:filtroAttivita,sottofiltroAttivita:sottofiltroAttivita,filtroFascia:filtroFascia,
         confrontoRicerca:$("cRicercaInput").value,confrontoTarget:cTarget,
         confrontoPrimoTarget:cPrimoTarget,confrontoRicercaQuale:cRicercaQuale,
         tuttiDepositiAttivita:tuttiDepositiAttivita,
@@ -1362,7 +1547,8 @@
     var st; try{st=JSON.parse(sessionStorage.getItem(STATO_SESSIONE)||"null");}catch(e){return false;}
     if(!st) return false; ripristinoInCorso=true;
     try{
-      if(st.q)qLun=daISO(st.q); if(st.s)sLun=daISO(st.s); if(st.r)rLun=daISO(st.r); if(st.c)cData=daISO(st.c);
+      if(st.q)qLun=daISO(st.q); if(st.s)sLun=daISO(st.s); if(st.r)rLun=daISO(st.r); if(st.rData)rData=daISO(st.rData);else rData=new Date(rLun);
+      rModo=st.rModo==="settimana"?"settimana":"giorno";rGiornoInizializzato=!!st.rGiornoInizializzato||rModo==="giorno"; if(st.c)cData=daISO(st.c);
       if(st.mese){var mp=st.mese.split("-");calMese=new Date(+mp[0],+mp[1]-1,1);}
       $("matricola").value=st.matricola||"";
       if(st.accesso && st.matricola){entra(true);if(!U)throw new Error("matricola non valida");}
@@ -1372,8 +1558,9 @@
       cPrimoTarget=st.confrontoPrimoTarget||null;cRicercaQuale=st.confrontoRicercaQuale==="primo"||st.confrontoRicercaQuale==="secondo"?st.confrontoRicercaQuale:"";
       filtroAttivita=CATEGORIE_ATTIVITA.indexOf(st.filtroAttivita)>=0?st.filtroAttivita:"";
       sottofiltroAttivita=st.sottofiltroAttivita==="semplice"||st.sottofiltroAttivita==="altro"?st.sottofiltroAttivita:"";
+      filtroFascia=["Mattino","Pomeriggio","Ridotta","Notte"].indexOf(st.filtroFascia)>=0?st.filtroFascia:"";
       filtriAttivitaAperti=!!st.filtriAttivitaAperti;
-      tuttiDepositiAttivita=!!filtroAttivita&&!!st.tuttiDepositiAttivita;
+      tuttiDepositiAttivita=!!(filtroAttivita||filtroFascia)&&!!st.tuttiDepositiAttivita;
       if(st.schermata==="questa"){disegnaQuesta();mostra("questa");}
       else if(st.schermata==="settimana"){disegnaCalendario();disegnaSettimana();mostra("settimana");}
       else if(st.schermata==="confronta"){disegnaConfronto();mostra("confronta");}
@@ -1460,7 +1647,7 @@
       mostra("accesso");
       registraPagina("accesso","replace");
       cancellaStato();
-      $("matricola").focus();
+      focusMatricolaDesktop();
     };
   }
 
@@ -1478,6 +1665,7 @@
     var t = document.querySelectorAll(".schermata");
     for(var i=0;i<t.length;i++) t[i].classList.remove("attiva");
     $(id).classList.add("attiva");
+    document.body.setAttribute("data-schermata",id);
     window.scrollTo(0,0);
     salvaStato();
   }
@@ -1556,7 +1744,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.44");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.46");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -1669,7 +1857,7 @@
         disegnaConfronto();mostra("confronta");registraPagina("confronta","push");
       }
       if(v==="ruota"){
-        rLun = lunediDi(new Date()); $("cerca").value = ""; rDep = U.dep;
+        rLun = lunediDi(new Date());rData=new Date();rModo="giorno";rGiornoInizializzato=true; $("cerca").value = ""; rDep = U.dep;
         $("depositi").style.opacity = "1"; $("depositi").style.pointerEvents = "auto";
         disegnaDepositi(); disegnaRuota(); mostra("ruota"); registraPagina("ruota","push");
       }
@@ -1717,9 +1905,9 @@
     if(SCHEMI[pos%100]==="surroga") $("qNota").innerHTML = "Surrogante da martedì a sabato · <b>Lunedì</b> riposo e <b>Domenica</b> riposo.";
     else $("qNota").innerHTML = riepilogoSettimana(sett,true)+".";
 
-    var el = $("qIndizio");
-    el.innerHTML = SCHEMI[pos%100]==="surroga" ? "" : indizioHTML(pos, spostaGiorni(lun,2), "dal lunedì al venerdì");
-    el.style.display = el.innerHTML ? "block" : "none";
+    var indiceGiorno=(oggi.getDay()+6)%7, dataGiorno=spostaGiorni(lun,indiceGiorno);
+    $("qGiorno").innerHTML='<div class="turno-giorno-mio"><p class="turno-giorno-titolo">Turno del giorno · '+esc(GIORNI_EST[indiceGiorno]+' '+dataGiorno.getDate()+' '+MESI[dataGiorno.getMonth()])+'</p>'
+      +turnoConfrontoHTML(servizioEffettivo(U.dep,pos,dataGiorno))+'</div>';
     $("qTurno").innerHTML = turniSettimanaHTML(U.dep,pos,lun);
     $("qGiorni").innerHTML = strisciaHTML(sett, gi);
   }
@@ -1779,30 +1967,14 @@
   }
 
   function datiTurnoConfronto(dep,pos,data){
-    var giorno=(data.getDay()+6)%7, variante=giorno<5?"fer":(giorno===5?"sab":"fes");
-    var voce=settimanaDiDeposito(dep,pos)[giorno]||{stato:""};
-    var info=programmaInfoPerData(data,variante), programma=info.programma;
-    var codice=voce.stato==="surr"?(voce.pos||pos):pos;
-    var rigaFonte=(voce.stato==="surr" && giorno>=1 && giorno<=4)?codice:pos;
-    var risultato={dep:dep,pos:pos,codice:codice,rigaFonte:rigaFonte,data:data,stato:voce.stato,
-      variante:variante,info:info,righe:null,disponibile:true,motivo:""};
-    if(programma==="specSabMancante"){
-      risultato.disponibile=false;risultato.motivo="Il foglio del Sabato speciale Fiera non è ancora disponibile.";return risultato;
-    }
-    if(!(info.foglio||foglioPerData(data))){
-      risultato.disponibile=false;risultato.motivo="Non possiedo ancora il foglio turni di questo periodo.";return risultato;
-    }
-    if(voce.stato==="riposo" || voce.stato==="sco" || voce.stato==="matto") return risultato;
-    risultato.righe=righeTurno(dep,rigaFonte,data,variante);
-    if(!risultato.righe){risultato.disponibile=false;risultato.motivo="Turno non disponibile nel foglio caricato.";}
-    return risultato;
+    return servizioEffettivo(dep,pos,data);
   }
   function turnoConfrontoHTML(dati){
     var speciale=dati.info&&dati.info.speciale;
     var html='<div class="turno-probabile">'+(speciale?'<p class="tp-titolo tp-speciale">'+esc(dati.info.nome)+'</p>':'');
     if(!dati.disponibile) return html+'<div class="foglio-mancante">'+esc(dati.motivo)+'</div></div>';
-    if(dati.stato==="riposo") return html+'<div class="tp-servizio">RIPOSO</div></div>';
-    if(dati.stato==="sco") return html+'<div class="tp-servizio">SCOMPUTO</div></div>';
+    if(dati.stato==="riposo") return html+'<div class="tp-servizio tp-stato tp-stato-riposo">RIPOSO</div></div>';
+    if(dati.stato==="sco") return html+'<div class="tp-servizio tp-stato tp-stato-scomputo">SCOMPUTO</div></div>';
     if(dati.stato==="matto") return html+'<div class="riposo-matto">Possibile RIPOSO MATTO<br>Verifica il turno su Attilio</div></div>';
     return html+servizioEtichettatoHTML(dati.dep,dati.codice,dati.righe,dati.rigaFonte,true)+'</div>';
   }
@@ -2006,8 +2178,9 @@
   $("cPrec").onclick=function(){cData=spostaGiorni(cData,-1);disegnaConfronto();};
   $("cSucc").onclick=function(){cData=spostaGiorni(cData,1);disegnaConfronto();};
   $("cApriCalendario").onclick=function(){
-    var campo=$("cCalendario");campo.classList.toggle("on");
-    if(campo.classList.contains("on")&&typeof campo.showPicker==="function"){try{campo.showPicker();}catch(e){}}
+    var campo=$("cCalendario");
+    if(typeof campo.showPicker==="function"){try{campo.showPicker();return;}catch(e){}}
+    campo.click();
   };
   $("cCalendario").onchange=function(){if(this.value){cData=daISO(this.value);disegnaConfronto();}};
   $("cSelettorePrimo").onclick=function(){
@@ -2019,13 +2192,14 @@
   $("cRicercaInput").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();avviaRicercaConfronto();this.blur();}});
 
   function disegnaDepositi(){
-    var html = "";
-    if(filtroAttivita) html+='<button data-dep="*" class="tutti '+(tuttiDepositiAttivita?"on":"")+'">Tutti</button>';
-    for(var sig in DEPOSITI){
+    var html = "",ordine=["PR","SFS","BIS","GAL"];
+    for(var oi=0;oi<ordine.length;oi++){
+      var sig=ordine[oi];
       var d = DEPOSITI[sig];
-      html += '<button data-dep="'+sig+'" class="'+(!tuttiDepositiAttivita&&d===rDep?"on":"")+'">'+d.nome
+      html += '<button data-dep="'+sig+'" class="'+(!tuttiDepositiAttivita&&d===rDep?"on":"")+'">'+sig
            +  (d===U.dep ? '<span class="mio">il tuo</span>' : '')+'</button>';
     }
+    html+='<button data-dep="*" class="tutti '+(tuttiDepositiAttivita?"on":"")+'">TUTTI</button>';
     $("depositi").innerHTML = html;
     var bs = $("depositi").querySelectorAll("button");
     for(var i=0;i<bs.length;i++){
@@ -2099,14 +2273,40 @@
     return html;
   }
 
-  // Costruisce una riga dell'elenco. mostraDep = mostra il nome del deposito.
-  function rigaHTML(dep, p, occ, mostraDep, data){
+  function etichettaStatoGiorno(servizio){
+    if(!servizio.disponibile) return "Dati insufficienti";
+    if(servizio.stato==="surr") return "Surrogante";
+    if(servizio.stato==="riposo") return "Riposo";
+    if(servizio.stato==="sco") return "Scomputo";
+    if(servizio.stato==="matto") return "Riposo matto da verificare";
+    if(servizio.fascia) return servizio.fascia;
+    return "Disponibile";
+  }
+  function etichettaGiorniCorrispondenti(servizi){
+    if(!servizi||!servizi.length||(!filtroAttivita&&!filtroFascia)) return "";
+    return servizi.map(function(s){
+      var i=(s.data.getDay()+6)%7;return GIORNI_EST[i].charAt(0).toUpperCase()+GIORNI_EST[i].slice(1);
+    }).join(", ");
+  }
+  function attivitaDaServizi(servizi){
+    var perNome={};
+    (servizi||[]).forEach(function(s){
+      s.attivita.forEach(function(nome){
+        if(!perNome[nome])perNome[nome]=[];
+        var giorno=GIORNI_EST[(s.data.getDay()+6)%7];if(perNome[nome].indexOf(giorno)<0)perNome[nome].push(giorno);
+      });
+    });
+    return Object.keys(perNome).map(function(nome){return {nome:nome,testo:perNome[nome].join(", ")+": "+titoloAttivita(nome)};});
+  }
+
+  // Costruisce una riga dell'elenco senza confondere titolare ed esecutore.
+  function rigaHTML(dep, p, occ, mostraDep, data, corrispondenze){
     var nome  = occ ? nomePersona(occ) : "Turno scoperto";
     var surr  = SCHEMI[p%100]==="surroga", cl = [];
     if(!occ) cl.push("vuota");
     if(occ && dep===U.dep && occ[1]===U.mat) cl.push("io");
     if(surr) cl.push("surrweek");
-    cl.push("con-giorno");
+    if(rModo==="giorno") cl.push("con-giorno");
 
     /* Nell'elenco conta soprattutto chi occupa la posizione. Riposi, scomputi e
        riposo matto restano nel dettaglio del turno, dove hanno davvero senso. */
@@ -2116,45 +2316,67 @@
     var sottoHTML = sotto ? '<em>'+sotto+'</em>' : '';
 
     cl.push("con-dettaglio");
-    var lun = lunediDi(data);
-    var attivita=attivitaSettimana(dep,p,lun);
+    var lun = lunediDi(data), servizioGiorno=rModo==="giorno"?servizioEffettivo(dep,p,rData):null;
+    var attivita=rModo==="giorno"?attivitaDaServizi(servizioGiorno?[servizioGiorno]:[]):attivitaSettimana(dep,p,lun);
+    if((filtroAttivita||filtroFascia)&&corrispondenze&&corrispondenze.length) attivita=attivitaDaServizi(corrispondenze);
     var attivitaRigaHTML=attivitaHTML(attivita);
-    var tipo=tipoBreve(dep,p,data), disponibile=tipo.indexOf("Disponibile")>=0;
+    var tipo=SCHEMI[p%100]==="surroga"?"Surrogante":(rModo==="giorno"?etichettaStatoGiorno(servizioGiorno):tipoBreve(dep,p,data)), disponibile=tipo.indexOf("Disponibile")>=0;
+    var giorniMatch=etichettaGiorniCorrispondenti(corrispondenze);
+    if(giorniMatch) sottoHTML+='<em>Corrisponde: '+esc(giorniMatch)+'</em>';
+    if(rModo==="giorno"){
+      var esecutore=esecutorePosizione(dep,p,rData);
+      if(esecutore.ruolo==="surrogante"&&esecutore.posSurrogante!==p&&esecutore.occ){
+        sottoHTML+='<em>Titolare: '+esc(nome||"Turno scoperto")+' · servizio svolto da '+esc(nomePersona(esecutore.occ))
+          +' ('+esc(codDi(dep,esecutore.posSurrogante))+')</em>';
+      }
+    }
     var disponibilitaHTML=disponibile?'<span class="disponibilita-riga">'+esc(tipo)+'</span>':'';
-    var destra=disponibile
-      ? '<span class="rip solo-apri"><span class="apri">Mostra turno</span></span>'
-      : '<span class="rip">'+esc(tipo)+'<span class="apri">Mostra turno</span></span>';
-    return '<li class="'+cl.join(" ")+'"><div class="riga-testa"><span class="pos">'+codDi(dep,p)+'</span>'
+    var destra=rModo==="giorno"
+      ? '<span class="rip">'+(disponibile?'':esc(tipo))+'<span class="apri">Mostra turno della settimana</span></span>'
+      : (disponibile
+        ? '<span class="rip solo-apri"><span class="apri">Mostra turno</span></span>'
+        : '<span class="rip">'+esc(tipo)+'<span class="apri">Mostra turno</span></span>');
+    var dettagli=rModo==="giorno"
+      ? '<div class="dettaglio-turno dettaglio-giorno">'+turnoConfrontoHTML(servizioGiorno)+'</div><div class="dettaglio-turno dettaglio-settimana"></div>'
+      : '<div class="dettaglio-turno">'+turniSettimanaHTML(dep,p,lun)+'</div>';
+    return '<li class="'+cl.join(" ")+'" data-dep="'+dep.sigla+'" data-pos="'+p+'"><div class="riga-testa"><span class="pos">'+codDi(dep,p)+'</span>'
          + '<span class="nome">'+nome+sottoHTML+disponibilitaHTML+'</span>'+destra+'</div>'+attivitaRigaHTML
-         + '<div class="dettaglio-turno">'+turniSettimanaHTML(dep,p,lun)+'</div></li>';
+         + dettagli+'</li>';
   }
 
   function disegnaRuota(){
-    var dom = spostaGiorni(rLun,6);
-    var dataRiferimento=spostaGiorni(rLun,2);
-    $("rQuando").innerHTML = "<span>Dal "+fmtConAnno(rLun)+"</span><span>Al "+fmtConAnno(dom)+"</span>";
+    var dom = spostaGiorni(rLun,6), dataRiferimento=rModo==="giorno"?rData:spostaGiorni(rLun,2);
+    $("rQuando").innerHTML = rModo==="giorno"?fmtConAnno(rData):"<span>Dal "+fmtConAnno(rLun)+"</span><span>Al "+fmtConAnno(dom)+"</span>";
+    $("rEtichettaTempo").textContent=rModo==="giorno"?"Giorno":"Settimana";
+    $("toggleModoRicerca").textContent=rModo==="giorno"?"Vista giorno · passa alla settimana":"Vista settimana · passa al giorno";
+    $("rPrec").setAttribute("aria-label",rModo==="giorno"?"Giorno precedente":"Settimana precedente");
+    $("rSucc").setAttribute("aria-label",rModo==="giorno"?"Giorno successivo":"Settimana successiva");
+    $("rData").classList.toggle("on",rModo==="giorno");$("rData").value=isoLocale(rData);
+    $("rQuando").classList.toggle("seleziona-giorno",rModo==="giorno");$("rQuando").disabled=rModo!=="giorno";
     disegnaFiltriAttivita();
 
     var normalizzaRicerca=function(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();};
     var filtro = normalizzaRicerca($("cerca").value);
     var k = settimaneDa(rLun);
-    var righe = "", quanti = 0;
+    var righe = "", quanti = 0, noteSurroganti=0, datiInsufficienti=0;
     function risultatiDeposito(d,mostraDep){
       var html="", numero=0, ps=posizioniDi(d), tot=ps.length;
       for(var i=0;i<ps.length;i++){
         var occ=d.ruota[((i-k)%tot+tot)%tot];
         var nome=occ?nomePersona(occ):"turno scoperto o collega non presente in ruota";
         var alias=occ&&NOMI_COMPLETI_MATRICOLA[occ[1]]?NOMI_COMPLETI_MATRICOLA[occ[1]]:"";
-        var attivitaRicerca=attivitaSettimana(d,ps[i],rLun);
-        if(!attivitaCorrispondeFiltro(attivitaRicerca)) continue;
+        var esitoFiltro=corrispondenzePosizione(d,ps[i]);
+        datiInsufficienti+=esitoFiltro.insufficienti.length;
+        if((filtroAttivita||filtroFascia)&&!esitoFiltro.risultati.length) continue;
+        var attivitaRicerca=rModo==="giorno"?attivitaDaServizi(esitoFiltro.risultati):attivitaSettimana(d,ps[i],rLun);
         if(filtro){
           var testoRicerca=normalizzaRicerca(nome+" "+alias+" "+(occ?occ[1]:"")+" "+codDi(d,ps[i])+" "+testoRicercaAttivita(attivitaRicerca));
           if(testoRicerca.indexOf(filtro)<0) continue;
         }
-        html+=rigaHTML(d,ps[i],occ,mostraDep,dataRiferimento);numero++;
+        html+=rigaHTML(d,ps[i],occ,mostraDep,dataRiferimento,esitoFiltro.risultati);numero++;
         if(filtro===normalizzaRicerca(codDi(d,ps[i]))){
-          var avvisoSurrogante=surroganteSettimanaHTML(d,ps[i],rLun);
-          if(avvisoSurrogante){html+=avvisoSurrogante;numero+=(avvisoSurrogante.match(/risultato-surrogante/g)||[]).length;}
+          var avvisoSurrogante=rModo==="settimana"?surroganteSettimanaHTML(d,ps[i],rLun):"";
+          if(avvisoSurrogante){html+=avvisoSurrogante;noteSurroganti+=(avvisoSurrogante.match(/risultato-surrogante/g)||[]).length;}
         }
       }
       return {html:html,numero:numero};
@@ -2163,52 +2385,79 @@
       return '<li class="gruppo-deposito"><span>'+esc(dep.nome)+'</span><small>'+numero+' '+(numero===1?"risultato":"risultati")+'</small></li>';
     }
 
-    var cercaInTutti=filtroAttivita?tuttiDepositiAttivita:!!filtro;
+    var filtriAttivi=!!(filtroAttivita||filtroFascia);
+    var cercaInTutti=tuttiDepositiAttivita||!!filtro;
     if(cercaInTutti){
-      var ordine=filtroAttivita?ordineDepositiAttivita():Object.keys(DEPOSITI);
+      var ordine=filtriAttivi?ordineDepositiAttivita():["PR","SFS","BIS","GAL"];
       for(var o=0;o<ordine.length;o++){
         var d=DEPOSITI[ordine[o]], gruppo=risultatiDeposito(d,true);
         if(!gruppo.numero) continue;
-        if(filtroAttivita) righe+=intestazioneDeposito(d,gruppo.numero);
+        if(filtriAttivi||tuttiDepositiAttivita) righe+=intestazioneDeposito(d,gruppo.numero);
         righe+=gruppo.html;quanti+=gruppo.numero;
       }
       $("avviso").style.display="block";
       $("avviso").textContent=quanti
         ?"Trovati "+quanti+(quanti===1?" risultato":" risultati")
-          +(filtroAttivita?" per "+testoFiltroAttivo():"")+" in tutti i depositi."
-        :"Nessun risultato"+(filtroAttivita?" per "+testoFiltroAttivo():"")+" in nessun deposito.";
-      $("notaRuota").textContent=filtroAttivita
+          +(filtriAttivi?" per "+testoFiltroAttivo():"")+" in tutti i depositi."
+        :"Nessun risultato"+(filtriAttivi?" per "+testoFiltroAttivo():"")+" in nessun deposito.";
+      $("notaRuota").textContent=filtriAttivi
         ?"I risultati sono raggruppati a partire dal tuo deposito, poi mostrano gli altri gruppi."
         :"La ricerca guarda in tutte le ruote caricate.";
     }else{
       var dep=rDep, gruppoSingolo=risultatiDeposito(dep,false);
       righe=gruppoSingolo.html;quanti=gruppoSingolo.numero;
-      $("avviso").style.display=filtroAttivita||filtro?"block":"none";
-      if(filtroAttivita||filtro) $("avviso").textContent=quanti
+      $("avviso").style.display=filtriAttivi||filtro?"block":"none";
+      if(filtriAttivi||filtro) $("avviso").textContent=quanti
         ?"Trovati "+quanti+(quanti===1?" risultato":" risultati")
-          +(filtroAttivita?" per "+testoFiltroAttivo():"")+" in "+dep.nome+"."
-        :"Nessun risultato"+(filtroAttivita?" per "+testoFiltroAttivo():"")+" in "+dep.nome+".";
-      $("notaRuota").textContent=filtroAttivita
+          +(filtriAttivi?" per "+testoFiltroAttivo():"")+" in "+dep.nome+"."
+        :"Nessun risultato"+(filtriAttivi?" per "+testoFiltroAttivo():"")+" in "+dep.nome+".";
+      $("notaRuota").textContent=filtriAttivi
         ?"Il filtro considera le attività della settimana visualizzata nella ruota di "+dep.nome+"."
         :"Ruota di "+dep.nome+": "+posizioniDi(dep).length+" posizioni. Ogni settimana tutti avanzano di una.";
     }
 
-    $("elenco").innerHTML = righe || '<li class="vuota"><span class="nome">Nessun risultato</span></li>';
+    if(!quanti&&filtriAttivi&&datiInsufficienti) $("avviso").textContent="Dati insufficienti per verificare completamente "+testoFiltroAttivo()+" nel periodo selezionato.";
+    var alternativa=0;
+    if(!quanti&&filtroAttivita&&sottofiltroAttivita==="semplice"&&filtroAttivita!=="PRESENZIAMENTO"){
+      var depAlt=cercaInTutti?(tuttiDepositiAttivita?ordineDepositiAttivita():[rDep.sigla]):[rDep.sigla];
+      depAlt.forEach(function(sig){var d=DEPOSITI[sig],ps=posizioniDi(d),tot=ps.length;
+        ps.forEach(function(p,i){var m=corrispondenzePosizione(d,p,{sotto:"altro"});if(!m.risultati.length)return;
+          var occ=d.ruota[((i-k)%tot+tot)%tot],nome=occ?nomePersona(occ):"turno scoperto";
+          var alias=occ&&NOMI_COMPLETI_MATRICOLA[occ[1]]?NOMI_COMPLETI_MATRICOLA[occ[1]]:"";
+          var testo=normalizzaRicerca(nome+" "+alias+" "+(occ?occ[1]:"")+" "+codDi(d,p)+" "+m.risultati.map(function(s){return s.attivita.join(" ");}).join(" "));
+          if(!filtro||testo.indexOf(filtro)>=0)alternativa++;
+        });
+      });
+    }
+    var periodo=rModo==="giorno"?"in questo giorno":"in questa settimana";
+    var proposta=alternativa?'<div class="alternativa-filtro">Non ho risultati per '+esc(titoloAttivita(filtroAttivita))+' '+periodo+', ma posso mostrarti risultati per '+esc(titoloAttivita(filtroAttivita))+' + altro.'
+      +'<button type="button" id="mostraAlternativa">Mostra '+esc(titoloAttivita(filtroAttivita))+' + altro ('+alternativa+')</button></div>':"";
+    if(noteSurroganti) $("notaRuota").textContent+=" Note sui surroganti: "+noteSurroganti+" (non conteggiate nei risultati).";
+    $("elenco").innerHTML = righe || '<li class="vuota"><p class="risultato-vuoto-titolo">Nessun risultato</p>'+proposta+'</li>';
   }
   $("elenco").onclick = function(e){
     var li=e.target.closest("li.con-dettaglio");
     if(li){
-      var aperto=li.classList.toggle("aperto"), etichetta=li.querySelector(".apri");
-      if(etichetta) etichetta.textContent=aperto?"Nascondi turno":"Mostra turno";
+      var etichetta=li.querySelector(".apri");
+      if(li.classList.contains("con-giorno")){
+        var aperta=li.classList.toggle("settimana-aperta"),contenitore=li.querySelector(".dettaglio-settimana");
+        if(aperta&&contenitore&&!contenitore.innerHTML){var dep=DEPOSITI[li.getAttribute("data-dep")],pos=+li.getAttribute("data-pos");contenitore.innerHTML=turniSettimanaHTML(dep,pos,lunediDi(rData));}
+        if(etichetta) etichetta.textContent=aperta?"Nascondi turno della settimana":"Mostra turno della settimana";
+      }else{
+        var aperto=li.classList.toggle("aperto");
+        if(etichetta) etichetta.textContent=aperto?"Nascondi turno":"Mostra turno";
+      }
     }
   };
   function spostaRicercaSettimane(n){
-    rLun=spostaSettimane(rLun,n);disegnaRuota();salvaStato();
+    if(rModo==="giorno"){rData=spostaGiorni(rData,n);rLun=lunediDi(rData);}
+    else rLun=spostaSettimane(rLun,n);
+    disegnaRuota();salvaStato();
   }
   $("rPrec").onclick = function(){ spostaRicercaSettimane(-1); };
   $("rSucc").onclick = function(){ spostaRicercaSettimane(1); };
   function aggiornaInterazioneDepositi(){
-    var attivo=!!filtroAttivita||!$("cerca").value.trim();
+    var attivo=!!(filtroAttivita||filtroFascia)||!$("cerca").value.trim();
     $("depositi").style.opacity=attivo?"1":".4";
     $("depositi").style.pointerEvents=attivo?"auto":"none";
   }
@@ -2222,28 +2471,58 @@
   $("filtroAttivita").onclick=function(e){
     var categoria=e.target.closest("[data-attivita]");
     if(categoria){
+      var avevaFiltri=!!(filtroAttivita||filtroFascia);
       filtroAttivita=categoria.getAttribute("data-attivita");sottofiltroAttivita="semplice";
-      tuttiDepositiAttivita=true;filtriAttivitaAperti=true;
+      if(!avevaFiltri)tuttiDepositiAttivita=true;filtriAttivitaAperti=true;
       disegnaDepositi();disegnaRuota();salvaStato();return;
     }
     var sotto=e.target.closest("[data-sottoattivita]");
     if(sotto){
       var scelta=sotto.getAttribute("data-sottoattivita");
       if(sottofiltroAttivita===scelta){
-        filtroAttivita="";sottofiltroAttivita="";tuttiDepositiAttivita=false;rDep=U.dep;
+        filtroAttivita="";sottofiltroAttivita="";
+        if(!filtroFascia){tuttiDepositiAttivita=false;rDep=U.dep;}
         disegnaDepositi();
       }else sottofiltroAttivita=scelta;
       disegnaRuota();salvaStato();return;
     }
+    var fascia=e.target.closest("[data-fascia]");
+    if(fascia){
+      var sceltaFascia=fascia.getAttribute("data-fascia"),aveva=!!(filtroAttivita||filtroFascia);
+      if(filtroFascia===sceltaFascia){
+        filtroFascia="";
+        if(!filtroAttivita){tuttiDepositiAttivita=false;rDep=U.dep;}
+      }else{
+        filtroFascia=sceltaFascia;if(!aveva)tuttiDepositiAttivita=true;
+      }
+      filtriAttivitaAperti=true;disegnaDepositi();disegnaRuota();salvaStato();return;
+    }
     if(e.target.closest("#azzeraFiltroAttivita")){
-      filtroAttivita="";sottofiltroAttivita="";tuttiDepositiAttivita=false;rDep=U.dep;
+      filtroAttivita="";sottofiltroAttivita="";filtroFascia="";tuttiDepositiAttivita=false;rDep=U.dep;
       disegnaDepositi();disegnaRuota();salvaStato();return;
     }
     if(e.target.closest("#toggleFiltriAttivita")){
       filtriAttivitaAperti=!filtriAttivitaAperti;disegnaFiltriAttivita();salvaStato();
     }
   };
+  $("elenco").addEventListener("click",function(e){
+    if(e.target.closest("#mostraAlternativa")){sottofiltroAttivita="altro";disegnaRuota();salvaStato();}
+  });
+  $("toggleModoRicerca").onclick=function(){
+    if(rModo==="settimana"){
+      var oggi=new Date(),fine=spostaGiorni(rLun,6);
+      if(!rGiornoInizializzato) rData=(giornoUTC(oggi)>=giornoUTC(rLun)&&giornoUTC(oggi)<=giornoUTC(fine))?oggi:new Date(rLun);
+      else if(lunediDi(rData).getTime()!==rLun.getTime()) rData=new Date(rLun);
+      rGiornoInizializzato=true;rModo="giorno";
+    }else{rLun=lunediDi(rData);rModo="settimana";}
+    disegnaRuota();salvaStato();
+  };
+  $("rData").onchange=function(){if(this.value){rData=daISO(this.value);rLun=lunediDi(rData);disegnaRuota();salvaStato();}};
+  function apriCalendarioRicerca(){var campo=$("rData");if(typeof campo.showPicker==="function"){try{campo.showPicker();return}catch(e){}}campo.click();}
+  $("rQuando").onclick=apriCalendarioRicerca;
+  $("rApriCalendario").onclick=apriCalendarioRicerca;
 
+  aggiornaSuggerimentoMatricola();
   if(!DATI_TURNI_OK){
     $("avvisoDati").style.display="block";
     $("entra").disabled=true;
@@ -2251,7 +2530,7 @@
   } else {
     var statoRipristinato=ripristinaStato();
     inizializzaCronologia();
-    if(!statoRipristinato)$("matricola").focus();
+    if(!statoRipristinato)focusMatricolaDesktop();
   }
   if(window.addEventListener){
     window.addEventListener("popstate",function(e){
@@ -2263,6 +2542,5 @@
   }
 })();
 </script>
-
 </body>
 </html>
