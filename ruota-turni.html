@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.52" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.53" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <style>
   :root{
@@ -21,8 +21,7 @@
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0;overscroll-behavior-y:none}
   html{
-    min-height:100%;background:linear-gradient(#65B0FF 0 5px,var(--bone) 5px) no-repeat;
-    background-color:var(--bone)
+    min-height:100%;background:var(--bone)
   }
   body{
     min-height:100vh;min-height:100dvh;background:transparent;color:var(--ink);
@@ -74,7 +73,7 @@
 
   .scelte{list-style:none;margin:0;padding:0}
   .scelte li{margin-bottom:16px}
-  .scelta{display:block;width:100%;text-align:left;cursor:pointer;background:var(--carta);
+  .scelta{display:block;width:100%;text-align:left;cursor:pointer;touch-action:manipulation;background:var(--carta);
           border:3px solid var(--ink);border-radius:16px;padding:22px;font-family:inherit;font-size:inherit;font-weight:inherit;line-height:inherit;color:var(--ink);
           box-shadow:5px 5px 0 var(--rossa)}
   .scelta:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
@@ -587,6 +586,9 @@
     .scelta .scelta-testo b{font-size:18px}.scelta .scelta-testo small{font-size:13px}
     .oggi-personale,.settimana-breve{padding:13px}.oggi-personale .riquadro .grande{font-size:34px}
   }
+  @media(min-width:700px){
+    .barra{width:calc(100% - 36px);max-width:644px;padding-left:0;padding-right:0}
+  }
 </style>
 </head>
 <body data-schermata="accesso">
@@ -617,7 +619,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.52" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.53" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -807,12 +809,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.52</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.53</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.52", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.53", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -827,11 +829,11 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.52"></script>
-<script src="turni-precisi.js?v=0.52"></script>
-<script src="attivita-turni.js?v=0.52"></script>
-<script src="alias-nomi.js?v=0.52"></script>
-<script src="gestore-config.js?v=0.52"></script>
+<script src="schedule-config.js?v=0.53"></script>
+<script src="turni-precisi.js?v=0.53"></script>
+<script src="attivita-turni.js?v=0.53"></script>
+<script src="alias-nomi.js?v=0.53"></script>
+<script src="gestore-config.js?v=0.53"></script>
 
 <script>
 (function(){
@@ -1921,7 +1923,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.52");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.53");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
