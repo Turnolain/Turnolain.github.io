@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.54" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.55" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <style>
   :root{
@@ -518,9 +518,9 @@
   .integrata-caricamento,.integrata-utili{display:none}
   body.integrata .barra{display:flex;min-height:0;padding:10px 14px 0;border:0;background:transparent;backdrop-filter:none}
   body.integrata .barra>*{display:none!important}
-  body.integrata .barra .casa{display:flex!important;flex:0 0 42px;width:42px;height:42px;border:1px solid var(--linea);border-radius:12px;box-shadow:none}
+  body.integrata .barra .casa{display:flex!important;flex:0 0 46px;width:46px;height:42px;border:1px solid #FFAA70;border-radius:12px;background:var(--rossa);box-shadow:0 6px 16px rgba(255,138,61,.2)}
   body.integrata .barra .casa svg{display:none}
-  body.integrata .barra .casa::before{content:"‹";color:var(--ink);font:500 32px/1 Arial,sans-serif;transform:translateY(-1px)}
+  body.integrata .barra .casa::before{content:"←";color:var(--azzurro-ink);font:800 23px/1 Arial,sans-serif;transform:none}
   body.integrata[data-schermata="accesso"] .barra,body.integrata[data-schermata="menu"] .barra{display:none}
   body.integrata .schermata{padding-top:10px}
   body.integrata #accesso>*:not(.integrata-caricamento){display:none!important}
@@ -587,6 +587,12 @@
     .scelta{grid-template-columns:42px minmax(0,1fr) 18px;gap:11px}.scelta .scelta-icona{width:42px;height:42px}
     .scelta .scelta-testo b{font-size:18px}.scelta .scelta-testo small{font-size:13px}
     .oggi-personale,.settimana-breve{padding:13px}.oggi-personale .riquadro .grande{font-size:34px}
+    .tempo-nav.vista-settimana{padding:8px;gap:5px}
+    .tempo-nav.vista-settimana>button{flex-basis:38px;width:38px;height:38px}
+    .tempo-nav.vista-settimana .data-calendario-riga{gap:5px}
+    .tempo-nav.vista-settimana .data-principale{font-size:13px;line-height:1.15;white-space:nowrap;opacity:1}
+    .tempo-nav.vista-settimana .modo-ricerca{min-height:34px;padding:6px 8px;font-size:10px}
+    .tempo-nav.vista-settimana .calendario-inline{display:none}
   }
   @media(min-width:700px){
     .barra{width:calc(100% - 36px);max-width:644px;padding-left:0;padding-right:0}
@@ -621,7 +627,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.54" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.55" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -811,12 +817,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.54</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.55</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.54", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.55", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -831,11 +837,11 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.54"></script>
-<script src="turni-precisi.js?v=0.54"></script>
-<script src="attivita-turni.js?v=0.54"></script>
-<script src="alias-nomi.js?v=0.54"></script>
-<script src="gestore-config.js?v=0.54"></script>
+<script src="schedule-config.js?v=0.55"></script>
+<script src="turni-precisi.js?v=0.55"></script>
+<script src="attivita-turni.js?v=0.55"></script>
+<script src="alias-nomi.js?v=0.55"></script>
+<script src="gestore-config.js?v=0.55"></script>
 
 <script>
 (function(){
@@ -1659,6 +1665,13 @@
       ? fmt(lun)+" – "+fmt(dom)+" "+dom.getFullYear()
       : fmtConAnno(lun)+" – "+fmtConAnno(dom);
   }
+  function fmtIntervalloCompatto(lun,dom){
+    if(lun.getFullYear()===dom.getFullYear()&&lun.getMonth()===dom.getMonth())
+      return lun.getDate()+"–"+dom.getDate()+" "+MESI[dom.getMonth()]+" "+dom.getFullYear();
+    if(lun.getFullYear()===dom.getFullYear())
+      return lun.getDate()+" "+MESI[lun.getMonth()]+"–"+dom.getDate()+" "+MESI[dom.getMonth()]+" "+dom.getFullYear();
+    return lun.getDate()+" "+MESI[lun.getMonth()]+" "+lun.getFullYear()+"–"+dom.getDate()+" "+MESI[dom.getMonth()]+" "+dom.getFullYear();
+  }
   function stessoGiorno(a,b){
     return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
   }
@@ -1925,7 +1938,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.54");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.55");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -2020,6 +2033,15 @@
     $("matricola").value=String(matricola||"").replace(/\D/g,"");
     entra(true);
     if(!U)return false;
+    mostra("menu");
+    registraPagina("menu","replace");
+    return true;
+  };
+  window.__indietroRuotaIntegrata=function(){
+    if(!MODALITA_INTEGRATA)return false;
+    var att=document.querySelector(".schermata.attiva"),id=att?att.id:"menu";
+    if(id==="menu"||id==="accesso")return false;
+    azzeraRicerca();
     mostra("menu");
     registraPagina("menu","replace");
     return true;
@@ -2551,7 +2573,8 @@
 
   function disegnaRuota(){
     var dom = spostaGiorni(rLun,6), dataRiferimento=rModo==="giorno"?rData:spostaGiorni(rLun,2);
-    $("rQuando").innerHTML = rModo==="giorno"?fmtConAnno(rData):"<span>Dal "+fmtConAnno(rLun)+"</span><span>Al "+fmtConAnno(dom)+"</span>";
+    $("rQuando").textContent = rModo==="giorno"?fmtConAnno(rData):fmtIntervalloCompatto(rLun,dom);
+    document.querySelector("#ruota .tempo-nav").classList.toggle("vista-settimana",rModo==="settimana");
     $("rEtichettaTempo").textContent=rModo==="giorno"?"Giorno":"Settimana";
     $("toggleModoRicerca").setAttribute("aria-label",rModo==="giorno"?"Passa alla vista settimana":"Passa alla vista giorno");
     $("rPrec").setAttribute("aria-label",rModo==="giorno"?"Giorno precedente":"Settimana precedente");
