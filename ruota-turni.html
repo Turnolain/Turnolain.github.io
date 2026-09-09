@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.53" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.54" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <style>
   :root{
@@ -304,6 +304,8 @@
   ol .rip.solo-apri .apri{margin-top:0}
   ol .nome em{display:block;font-style:normal;font-size:13px;font-weight:800;color:var(--soft);
               letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+  ol .nome .nota-copertura{display:block;margin-top:4px;color:var(--soft);font-size:13px;font-weight:600;
+                           letter-spacing:0;line-height:1.35;text-transform:none}
   .avviso{margin:16px 0 0;padding:13px 16px;border-radius:12px;background:var(--carta);
           border:2px dashed var(--ink);font-size:15px;font-weight:600;color:var(--soft)}
   ol li.vuota{display:block;margin:12px 0;padding:15px 16px;background:var(--carta);border:1px solid var(--linea);border-radius:14px}
@@ -415,8 +417,8 @@
   ol li.con-dettaglio{margin-top:10px;padding:15px;border:1px solid var(--linea);border-radius:16px;background:rgba(24,33,43,.9);box-shadow:0 8px 22px rgba(0,0,0,.18)}
   ol li.con-dettaglio.io{margin-left:0;background:var(--carta)}
   ol .rip .apri{display:inline-block;margin-top:7px;padding:5px 8px;border-radius:999px;background:#38271D;color:#FFAA70}
-  ol li.con-giorno .rip{flex-basis:126px}
-  ol li.con-giorno .rip .apri{padding:7px 9px;border-radius:10px;line-height:1.25}
+  ol li.con-giorno .rip{flex-basis:112px}
+  ol li.con-giorno .rip .apri{padding:6px 9px;border-radius:9px;line-height:1.15;white-space:nowrap;text-transform:none;letter-spacing:0}
   .filtro-attivita-corpo,.confronto-ricerca{background:rgba(32,43,55,.72)}
   .suggerimento-matricola{background:#30251D;color:#FFF7F0;border-color:var(--rossa)}
   .suggerimento-matricola span{color:#C9D2DC}
@@ -499,7 +501,7 @@
   @media(max-width:420px){
     .schermata{padding-left:14px;padding-right:14px}.barra{padding-left:14px;padding-right:14px;gap:9px}
     h1{font-size:33px}h2{font-size:27px}.giorni{gap:4px}.g .d{font-size:11px}.g .v{font-size:13px}
-    ol .pos{flex-basis:72px;font-size:18px}ol .nome{font-size:17px}ol li.con-giorno .rip{flex-basis:112px}
+    ol .pos{flex-basis:72px;font-size:18px}ol .nome{font-size:17px}ol li.con-giorno .rip{flex-basis:106px}
   }
 
   /* Struttura definitiva ispirata al concept approvato. */
@@ -619,7 +621,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.53" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.54" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -809,12 +811,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.53</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.54</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.53", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.54", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -829,11 +831,11 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.53"></script>
-<script src="turni-precisi.js?v=0.53"></script>
-<script src="attivita-turni.js?v=0.53"></script>
-<script src="alias-nomi.js?v=0.53"></script>
-<script src="gestore-config.js?v=0.53"></script>
+<script src="schedule-config.js?v=0.54"></script>
+<script src="turni-precisi.js?v=0.54"></script>
+<script src="attivita-turni.js?v=0.54"></script>
+<script src="alias-nomi.js?v=0.54"></script>
+<script src="gestore-config.js?v=0.54"></script>
 
 <script>
 (function(){
@@ -1923,7 +1925,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.53");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.54");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -2528,18 +2530,19 @@
     if(rModo==="giorno"){
       var esecutore=esecutorePosizione(dep,p,rData);
       if(esecutore.ruolo==="surrogante"&&esecutore.posSurrogante!==p&&esecutore.occ){
-        sottoHTML+='<em>Titolare: '+esc(nome||"Turno scoperto")+' · servizio svolto da '+esc(nomePersona(esecutore.occ))
-          +' ('+esc(codDi(dep,esecutore.posSurrogante))+')</em>';
+        sottoHTML+='<span class="nota-copertura">Servizio coperto da '+esc(nomePersona(esecutore.occ))
+          +' · '+esc(codDi(dep,esecutore.posSurrogante))+'</span>';
       }
     }
     var disponibilitaHTML=disponibile?'<span class="disponibilita-riga">'+esc(tipo)+'</span>':'';
     var destra=rModo==="giorno"
-      ? '<span class="rip">'+(disponibile?'':esc(tipo))+'<span class="apri">Mostra turno della settimana</span></span>'
+      ? '<span class="rip">'+(disponibile?'':esc(tipo))+'<span class="apri">Vedi settimana</span></span>'
       : (disponibile
         ? '<span class="rip solo-apri"><span class="apri">Mostra turno</span></span>'
         : '<span class="rip">'+esc(tipo)+'<span class="apri">Mostra turno</span></span>');
+    var statoGiaVisibile=rModo==="giorno"&&servizioGiorno&&(servizioGiorno.stato==="riposo"||servizioGiorno.stato==="sco");
     var dettagli=rModo==="giorno"
-      ? '<div class="dettaglio-turno dettaglio-giorno">'+turnoConfrontoHTML(servizioGiorno)+'</div><div class="dettaglio-turno dettaglio-settimana"></div>'
+      ? (statoGiaVisibile?'':'<div class="dettaglio-turno dettaglio-giorno">'+turnoConfrontoHTML(servizioGiorno)+'</div>')+'<div class="dettaglio-turno dettaglio-settimana"></div>'
       : '<div class="dettaglio-turno">'+turniSettimanaHTML(dep,p,lun)+'</div>';
     return '<li class="'+cl.join(" ")+'" data-dep="'+dep.sigla+'" data-pos="'+p+'"><div class="riga-testa"><span class="pos">'+codDi(dep,p)+'</span>'
          + '<span class="nome">'+nome+sottoHTML+disponibilitaHTML+'</span>'+destra+'</div>'+attivitaRigaHTML
@@ -2645,7 +2648,7 @@
       if(li.classList.contains("con-giorno")){
         var aperta=li.classList.toggle("settimana-aperta"),contenitore=li.querySelector(".dettaglio-settimana");
         if(aperta&&contenitore&&!contenitore.innerHTML){var dep=DEPOSITI[li.getAttribute("data-dep")],pos=+li.getAttribute("data-pos");contenitore.innerHTML=turniSettimanaHTML(dep,pos,lunediDi(rData));}
-        if(etichetta) etichetta.textContent=aperta?"Nascondi turno della settimana":"Mostra turno della settimana";
+        if(etichetta) etichetta.textContent=aperta?"Chiudi settimana":"Vedi settimana";
       }else{
         var aperto=li.classList.toggle("aperto");
         if(etichetta) etichetta.textContent=aperto?"Nascondi turno":"Mostra turno";
