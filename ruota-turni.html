@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.56" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.57" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <script>
   /* Tema prima del primo disegno: usa l'ultima matricola nota e non mostra
@@ -683,7 +683,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.56" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.57" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -873,12 +873,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.56</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.57</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.56", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.57", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -893,11 +893,11 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.56"></script>
-<script src="turni-precisi.js?v=0.56"></script>
-<script src="attivita-turni.js?v=0.56"></script>
-<script src="alias-nomi.js?v=0.56"></script>
-<script src="gestore-config.js?v=0.56"></script>
+<script src="schedule-config.js?v=0.57"></script>
+<script src="turni-precisi.js?v=0.57"></script>
+<script src="attivita-turni.js?v=0.57"></script>
+<script src="alias-nomi.js?v=0.57"></script>
+<script src="gestore-config.js?v=0.57"></script>
 
 <script>
 (function(){
@@ -908,6 +908,7 @@
   if(window.RUOTA_M1_LAB){
     window.RUOTA_M1_TEST_API={
       servizio:function(sig,pos,data){return servizioEffettivo(DEPOSITI[sig],+pos,daISO(data));},
+      servizioManuale:function(sig,codice,data){return servizioTurnoManuale(DEPOSITI[sig],+codice,daISO(data));},
       combinazione:function(sig,pos,data,categoria,sotto,fascia){
         var s=servizioEffettivo(DEPOSITI[sig],+pos,daISO(data));
         return s.disponibile&&attivitaGiornoCorrisponde(s.attivita,categoria,sotto)&&fasciaCorrispondeFiltro(s.fascia,fascia);
@@ -2012,7 +2013,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.56");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.57");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -2275,6 +2276,30 @@
   function datiTurnoConfronto(dep,pos,data){
     return servizioEffettivo(dep,pos,data);
   }
+  /* Un codice inserito volontariamente nel riquadro "Il mio turno" non e'
+     una posizione di ruota: e' il servizio che il macchinista dichiara di
+     svolgere dopo un cambio. Per questo si legge direttamente la riga del
+     foglio e non si applicano riposi/SCO della posizione omonima. */
+  function servizioTurnoManuale(dep,codice,data){
+    var giorno=(data.getDay()+6)%7, variante=giorno<5?"fer":(giorno===5?"sab":"fes");
+    var info=programmaInfoPerData(data,variante), programma=info.programma;
+    var risultato={dep:dep,pos:codice,codice:codice,rigaFonte:codice,data:data,stato:"lavoro",
+      variante:variante,info:info,programma:programma,righe:null,attivita:[],fascia:"",disponibile:true,motivo:""};
+    if(programma==="specSabMancante"){
+      risultato.disponibile=false;risultato.motivo="Il foglio del Sabato speciale Fiera non è ancora disponibile.";return risultato;
+    }
+    if(!(info.foglio||foglioPerData(data))){
+      risultato.disponibile=false;risultato.motivo="Non possiedo ancora il foglio turni di questo periodo.";return risultato;
+    }
+    risultato.righe=righeTurno(dep,codice,data,variante);
+    if(!risultato.righe){
+      risultato.disponibile=false;risultato.motivo="Turno non disponibile nel foglio caricato.";return risultato;
+    }
+    risultato.attivita=attivitaTurno(dep,codice,data,variante);
+    var testo=risultato.righe.join(" ").toUpperCase();
+    if(!/\bDISP(?:ONIBILE)?\b|\bRIPOSO\b|\bSCO\b/.test(testo)) risultato.fascia=fasciaOraria(risultato.righe);
+    return risultato;
+  }
   function turnoConfrontoHTML(dati){
     var speciale=dati.info&&dati.info.speciale;
     var html='<div class="turno-probabile">'+(speciale?'<p class="tp-titolo tp-speciale">'+esc(dati.info.nome)+'</p>':'');
@@ -2389,6 +2414,11 @@
   }
   function risolviTargetConfronto(target){
     if(!target) return null;
+    if(target.tipo==="servizio"){
+      var depServizio=DEPOSITI[target.dep],codice=+target.codice;
+      return depServizio&&posizioniDi(depServizio).indexOf(codice)>=0
+        ?{dep:depServizio,pos:codice,occ:null,manuale:true}:null;
+    }
     if(target.tipo==="posizione"){
       var dep=DEPOSITI[target.dep],pos=+target.pos;
       return dep&&posizioniDi(dep).indexOf(pos)>=0?{dep:dep,pos:pos,occ:occupantePosizione(dep,pos,lunediDi(cData))}:null;
@@ -2399,6 +2429,13 @@
   function cercaTargetConfronto(testo){
     var pulito=String(testo||"").trim(),codice=pulito.replace(/\s+/g,"").toUpperCase().match(/^(PR|GAL|SFS|BIS)([123]\d{2})$/);
     var soloNumero=pulito.match(/^([123]\d{2})$/),risultati=[];
+    if(codice&&cRicercaQuale==="primo"){
+      var depTurno=DEPOSITI[codice[1]],numeroTurno=+codice[2];
+      if(!depTurno||posizioniDi(depTurno).indexOf(numeroTurno)<0)return [];
+      var servizio=servizioTurnoManuale(depTurno,numeroTurno,cData);
+      return [{target:{tipo:"servizio",dep:codice[1],codice:numeroTurno},titolo:codDi(depTurno,numeroTurno),
+        sotto:servizio.disponibile?(intervalloComplessivo(servizio.righe)||fasciaProbabile(servizio.righe)):servizio.motivo}];
+    }
     if(codice||soloNumero){
       var sigle=codice?[codice[1]]:Object.keys(DEPOSITI),pos=+(codice?codice[2]:soloNumero[1]);
       sigle.forEach(function(sig){
@@ -2472,7 +2509,9 @@
     $("cRicercaInput").placeholder=cRicercaQuale==="primo"?"Es. PR201":"Nome, cognome o posizione";
     var mio=null,mioCard=$("cMioCard");
     if(primoScelto&&cRicercaQuale!=="primo"){
-      mio=datiTurnoConfronto(primoScelto.dep,primoScelto.pos,cData);
+      mio=primoScelto.manuale
+        ?servizioTurnoManuale(primoScelto.dep,primoScelto.pos,cData)
+        :datiTurnoConfronto(primoScelto.dep,primoScelto.pos,cData);
       $("cMioNome").textContent=cognomeConfronto(U.nome);
       $("cMioTurno").innerHTML=turnoConfrontoHTML(mio);mioCard.style.display="block";
     }else mioCard.style.display="none";
