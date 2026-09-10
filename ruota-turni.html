@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.57" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.58" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <script>
   /* Tema prima del primo disegno: usa l'ultima matricola nota e non mostra
@@ -230,6 +230,10 @@
   .confronto-avviso.verde{background:#E3F4E8;color:#174D28;border:2px solid #2D8247}
   .confronto-avviso.rosso{background:#FCE7E3;color:#842A1C;border:2px solid #C64A36}
   .confronto-avviso.neutro{background:var(--carta);color:var(--soft);border:2px dashed var(--soft)}
+  .confronto-avviso .incontro-titolo{display:block;margin-bottom:7px}
+  .confronto-avviso .incontro-riga{display:flex;align-items:baseline;gap:8px;padding:6px 0;font-weight:700}
+  .confronto-avviso .incontro-riga+.incontro-riga{border-top:1px solid rgba(45,130,71,.22)}
+  .confronto-avviso .incontro-ora{flex:0 0 52px;font-variant-numeric:tabular-nums;font-weight:900}
   .confronto-errore{min-height:0;margin:8px 0 0;color:var(--rossa);font-size:14px;font-weight:800}
   @keyframes invitoConfronto{0%,100%{background:#FFF0E5;box-shadow:0 0 0 2px rgba(247,124,25,.12)}50%{background:#FFE2CB;box-shadow:0 0 0 6px rgba(247,124,25,.24)}}
   @media(prefers-reduced-motion:reduce){.confronto-selettori button.da-scegliere{animation:none;border-color:var(--rossa);background:#FFF0E5}}
@@ -555,6 +559,8 @@
   :root[data-theme="light"] .tema-ruota .sole{display:none}
   :root[data-theme="light"] .tema-ruota .luna{display:block}
   body.integrata .barra .tema-ruota{display:none!important}
+  body.integrata:not(.integrata-pronta) .schermata:not(#accesso){display:none!important}
+  body.integrata:not(.integrata-pronta) #accesso{display:block!important;pointer-events:none}
 
   /* Struttura definitiva ispirata al concept approvato. */
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}
@@ -683,7 +689,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.57" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.58" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -873,12 +879,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.57</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.58</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.57", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.58", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -893,11 +899,11 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.57"></script>
-<script src="turni-precisi.js?v=0.57"></script>
-<script src="attivita-turni.js?v=0.57"></script>
-<script src="alias-nomi.js?v=0.57"></script>
-<script src="gestore-config.js?v=0.57"></script>
+<script src="schedule-config.js?v=0.58"></script>
+<script src="turni-precisi.js?v=0.58"></script>
+<script src="attivita-turni.js?v=0.58"></script>
+<script src="alias-nomi.js?v=0.58"></script>
+<script src="gestore-config.js?v=0.58"></script>
 
 <script>
 (function(){
@@ -909,6 +915,7 @@
     window.RUOTA_M1_TEST_API={
       servizio:function(sig,pos,data){return servizioEffettivo(DEPOSITI[sig],+pos,daISO(data));},
       servizioManuale:function(sig,codice,data){return servizioTurnoManuale(DEPOSITI[sig],+codice,daISO(data));},
+      incontri:function(primo,secondo){return incontriTurni(primo,secondo);},
       combinazione:function(sig,pos,data,categoria,sotto,fascia){
         var s=servizioEffettivo(DEPOSITI[sig],+pos,daISO(data));
         return s.disponibile&&attivitaGiornoCorrisponde(s.attivita,categoria,sotto)&&fasciaCorrispondeFiltro(s.fascia,fascia);
@@ -2013,7 +2020,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.57");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.58");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -2105,13 +2112,32 @@
   }
   window.__avviaRuotaIntegrata=function(matricola,tema){
     if(!MODALITA_INTEGRATA||!DATI_TURNI_OK)return false;
+    var pulita=String(matricola||"").replace(/\D/g,"");
+    /* onPageFinished puo' essere notificato piu' di una volta dalla WebView.
+       Non deve mai azzerare una pagina che l'utente ha gia' aperto. */
+    if(document.body.classList.contains("integrata-pronta")&&U&&U.mat===pulita){
+      applicaTema(tema,matricola,false);
+      return true;
+    }
     cancellaStato();
-    $("matricola").value=String(matricola||"").replace(/\D/g,"");
+    $("matricola").value=pulita;
     entra(true);
     if(!U)return false;
     applicaTema(tema,matricola,false);
     mostra("menu");
     registraPagina("menu","replace");
+    document.body.classList.add("integrata-pronta");
+    return true;
+  };
+  window.__apriConfrontoRuotaIntegrata=function(codice,dataIso){
+    if(!MODALITA_INTEGRATA||!U)return false;
+    var m=String(codice||"").replace(/\s+/g,"").toUpperCase().match(/^(PR|GAL|SFS|BIS)([123]\d{2})$/);
+    cData=/^\d{4}-\d{2}-\d{2}$/.test(String(dataIso||""))?daISO(dataIso):new Date();
+    cTarget=null;cPrimoTarget=null;cRicercaQuale="";
+    $("cRicercaInput").value="";$("cRicercaRisultati").innerHTML="";$("cRicercaErrore").textContent="";
+    if(m&&DEPOSITI[m[1]]&&posizioniDi(DEPOSITI[m[1]]).indexOf(+m[2])>=0)
+      cPrimoTarget={tipo:"servizio",dep:m[1],codice:+m[2]};
+    disegnaConfronto();mostra("confronta");registraPagina("confronta","replace");
     return true;
   };
   window.__impostaTemaRuotaIntegrata=function(tema){
@@ -2376,6 +2402,26 @@
       out.push({luogo:ultimo.a,inizio:ultimo.fine,fine:ultimo.fine+10,tipo:"fine"});
     return out;
   }
+  function incontriTurni(righeMie,righeAltre){
+    var a=presenzeTurno(righeMie),b=presenzeTurno(righeAltre),grezzi=[];
+    a.forEach(function(x){b.forEach(function(y){
+      if(x.luogo!==y.luogo)return;
+      var inizio=Math.max(x.inizio,y.inizio),fine=Math.min(x.fine,y.fine);
+      if(fine-inizio>=5)grezzi.push({luogo:x.luogo,inizio:inizio,fine:fine,durata:fine-inizio,
+        solido:x.tipo==="pausa"||x.tipo==="presenza"||y.tipo==="pausa"||y.tipo==="presenza"});
+    });});
+    /* La stessa sosta puo' nascere da due segmenti adiacenti. La uniamo,
+       ma non uniamo incontri realmente separati nella stessa localita'. */
+    grezzi.sort(function(x,y){return x.inizio-y.inizio||x.fine-y.fine||x.luogo.localeCompare(y.luogo);});
+    var uniti=[];
+    grezzi.forEach(function(x){
+      var ultimo=uniti.length?uniti[uniti.length-1]:null;
+      if(ultimo&&ultimo.luogo===x.luogo&&x.inizio<=ultimo.fine){
+        ultimo.fine=Math.max(ultimo.fine,x.fine);ultimo.durata=ultimo.fine-ultimo.inizio;ultimo.solido=ultimo.solido||x.solido;
+      }else uniti.push({luogo:x.luogo,inizio:x.inizio,fine:x.fine,durata:x.durata,solido:x.solido});
+    });
+    return uniti;
+  }
   function esitoIncontroHTML(mio,altro){
     if(!mio.disponibile || !altro.disponibile)
       return '<div class="confronto-avviso neutro">Confronto degli incontri non disponibile: manca almeno uno dei due turni.</div>';
@@ -2386,20 +2432,15 @@
     var segmentiMio=segmentiTurno(mio.righe),segmentiAltro=segmentiTurno(altro.righe);
     if(!segmentiMio.length || !segmentiAltro.length)
       return '<div class="confronto-avviso neutro">Non posso calcolare un incontro: almeno uno dei due è a riposo, in scomputo o disponibile.</div>';
-    var a=presenzeTurno(mio.righe),b=presenzeTurno(altro.righe);
-    var incontri=[];
-    a.forEach(function(x){b.forEach(function(y){
-      if(x.luogo!==y.luogo) return;
-      var inizio=Math.max(x.inizio,y.inizio),fine=Math.min(x.fine,y.fine);
-      if(fine-inizio>=5) incontri.push({luogo:x.luogo,inizio:inizio,fine:fine,durata:fine-inizio,
-        solido:x.tipo==="pausa"||x.tipo==="presenza"||y.tipo==="pausa"||y.tipo==="presenza"});
-    });});
-    incontri.sort(function(x,y){return (y.solido-x.solido)||(y.durata-x.durata);});
+    var incontri=incontriTurni(mio.righe,altro.righe);
     if(!incontri.length)
       return '<div class="confronto-avviso rosso">Nessun incontro rilevato dagli orari disponibili.</div>';
-    var m=incontri[0],oraCirca=Math.round(((m.inizio+m.fine)/2)/5)*5;
-    var testo='Possibile incontro alle '+oraMinuti(oraCirca)+' circa a '+nomeLocalita(m.luogo)+'.';
-    return '<div class="confronto-avviso verde">'+esc(testo)+'</div>';
+    var righe=incontri.map(function(m){
+      var oraCirca=Math.round(((m.inizio+m.fine)/2)/5)*5;
+      return '<span class="incontro-riga"><span class="incontro-ora">'+esc(oraMinuti(oraCirca))+'</span><span>'+esc(nomeLocalita(m.luogo))+'</span></span>';
+    }).join('');
+    var titolo=incontri.length===1?'Possibile incontro':'Possibili incontri · '+incontri.length;
+    return '<div class="confronto-avviso verde"><strong class="incontro-titolo">'+titolo+'</strong>'+righe+'</div>';
   }
   function posizionePersonaAllaData(mat,data){
     var lun=lunediDi(data);
