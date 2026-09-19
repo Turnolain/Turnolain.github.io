@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.65" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.67" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <script>
   /* Tema prima del primo disegno: usa l'ultima matricola nota e non mostra
@@ -102,7 +102,7 @@
   .bollo.lavoro{background:var(--ink);color:var(--bone)}
   .bollo.riposo{background:var(--carta);color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink)}
   .bollo.sco{background:var(--ottone);color:#fff}
-  .bollo.surr{background:var(--rossa);color:#fff}
+  .bollo.surroga{background:var(--rossa);color:#fff}
   .bollo.matto{background:#FFF5EC;color:var(--rossa);box-shadow:inset 0 0 0 3px var(--rossa)}
 
   .indizio{margin:16px 0 0;padding:16px 18px;border-radius:14px;background:var(--carta);border:2px dashed var(--ink)}
@@ -158,8 +158,8 @@
   .g.riposo .d,.g.riposo .v{color:var(--bone)}
   .g.sco{background:var(--ottone);border-color:var(--ottone)}
   .g.sco .d,.g.sco .v{color:#fff}
-  .g.surr{background:var(--rossa);border-color:var(--rossa)}
-  .g.surr .d,.g.surr .v{color:#fff}
+  .g.surroga{background:var(--rossa);border-color:var(--rossa)}
+  .g.surroga .d,.g.surroga .v{color:#fff}
   .g.matto{background:#FFF5EC;border-color:var(--rossa)}
   .g.matto .d,.g.matto .v{color:var(--rossa)}
   .config-matto{margin:0 0 18px;padding:15px;border:1px solid rgba(205,76,30,.36);border-radius:16px;background:rgba(205,76,30,.055)}
@@ -693,7 +693,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.65" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.67" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -884,12 +884,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.65</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.67</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.65", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.67", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -904,12 +904,12 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.65"></script>
-<script src="turni-precisi.js?v=0.65"></script>
-<script src="attivita-turni.js?v=0.65"></script>
-<script src="alias-nomi.js?v=0.65"></script>
-<script src="gestore-config.js?v=0.65"></script>
-<script src="calendario-turni.js?v=0.65"></script>
+<script src="schedule-config.js?v=0.67"></script>
+<script src="turni-precisi.js?v=0.67"></script>
+<script src="attivita-turni.js?v=0.67"></script>
+<script src="alias-nomi.js?v=0.67"></script>
+<script src="gestore-config.js?v=0.67"></script>
+<script src="calendario-turni.js?v=0.67"></script>
 
 <script>
 (function(){
@@ -1351,10 +1351,10 @@
     var sett=settimanaDiDeposito(dep,pos,lun), lavorati=[], perAttivita={};
     for(var i=0;i<7;i++){
       var g=sett[i];
-      if(!g || (g.stato!=="lavoro" && g.stato!=="surr")) continue;
+      if(!g || (g.stato!=="lavoro" && g.stato!==CalendarioTurni.STATI.SURROGA)) continue;
       lavorati.push(i);
       var data=spostaGiorni(lun,i), variante=i<5?"fer":(i===5?"sab":"fes");
-      var rigaFonte=(g.stato==="surr" && i>=1 && i<=4)?(g.pos||pos):pos;
+      var rigaFonte=(g.stato===CalendarioTurni.STATI.SURROGA && i>=1 && i<=4)?(g.pos||pos):pos;
       attivitaTurno(dep,rigaFonte,data,variante).forEach(function(nome){
         if(!perAttivita[nome]) perAttivita[nome]=[];
         if(perAttivita[nome].indexOf(i)<0) perAttivita[nome].push(i);
@@ -1494,10 +1494,10 @@
     var giorno=(data.getDay()+6)%7, variante=giorno<5?"fer":(giorno===5?"sab":"fes");
     var voce=settimanaDiDeposito(dep,pos,lunediDi(data))[giorno]||{stato:""};
     var info=programmaInfoPerData(data,variante), programma=info.programma;
-    var codice=voce.stato==="surr"?(voce.pos||pos):pos;
+    var codice=voce.stato===CalendarioTurni.STATI.SURROGA?(voce.pos||pos):pos;
     /* Martedì-venerdì la surroga legge la posizione coperta; sabato la riga
        stampata del surrogante. */
-    var rigaFonte=(voce.stato==="surr" && giorno>=1 && giorno<=4)?codice:pos;
+    var rigaFonte=(voce.stato===CalendarioTurni.STATI.SURROGA && giorno>=1 && giorno<=4)?codice:pos;
     var risultato={dep:dep,pos:pos,codice:codice,rigaFonte:rigaFonte,data:data,stato:voce.stato,
       variante:variante,info:info,programma:programma,righe:null,attivita:[],fascia:"",disponibile:true,motivo:""};
     if(programma==="specSabMancante"){
@@ -1607,7 +1607,7 @@
       +avvisoBozzaHTML(data)
       +avvisoOrarioSpecialeHTML(infoProgramma)
       +'<p class="tp-variante">'+GIORNI_EST[gi]+' '+data.getDate()+' '+MESI[data.getMonth()]+'</p>'
-      +servizioEtichettatoHTML(dep,pos,righeTurno(dep,pos,data,variante),pos,stato==="lavoro"||stato==="surr")+'</div>';
+      +servizioEtichettatoHTML(dep,pos,righeTurno(dep,pos,data,variante),pos,stato==="lavoro"||stato===CalendarioTurni.STATI.SURROGA)+'</div>';
   }
   function turniSettimanaHTML(dep,pos,lun){
     var sett=settimanaDiDeposito(dep,pos,lun), blocchi=[], giorniMancanti=[], stagioniStoriche=[];
@@ -1623,7 +1623,7 @@
       if(fonte && !fonti.some(function(f){return f.titolo===fonte.titolo && f.dal===fonte.dal;})) fonti.push(fonte);
       /* La surroga feriale copia il servizio della posizione coperta.
          Il sabato, invece, il servizio specifico è stampato sulla riga del surrogante. */
-      var rigaFonte=(g.stato==="surr" && i>=1 && i<=4) ? codice : pos;
+      var rigaFonte=(g.stato===CalendarioTurni.STATI.SURROGA && i>=1 && i<=4) ? codice : pos;
       var corpo;
       if(sabFieraMancante){
         fieraMancante=true;
@@ -1633,19 +1633,19 @@
         giorniMancanti.push(i);
         var stagioneStorica=foglioGeneralmentePerData(data);
         if(stagioniStoriche.indexOf(stagioneStorica)<0) stagioniStoriche.push(stagioneStorica);
-        corpo=storicoTurnoHTML(dep,g.stato==="surr"?codice:rigaFonte,rigaFonte,data,variante);
+        corpo=storicoTurnoHTML(dep,g.stato===CalendarioTurni.STATI.SURROGA?codice:rigaFonte,rigaFonte,data,variante);
       }
       else if(g.stato==="riposo") corpo='<div class="tp-servizio tp-stato tp-stato-riposo">RIPOSO</div>';
       else if(g.stato==="matto") corpo='<div class="riposo-matto">Possibile RIPOSO MATTO<br>Verifica il turno su Attilio</div>';
       else if(g.stato==="sco") corpo='<div class="tp-servizio tp-stato tp-stato-scomputo">SCOMPUTO</div>';
-      else corpo=servizioEtichettatoHTML(dep,g.stato==="surr"?codice:rigaFonte,righeTurno(dep,rigaFonte,data,variante),rigaFonte,true);
-      var chiave=corpo+"|"+(speciale?nomeSpeciale:"")+"|"+(g.stato==="surr"?codice:"");
+      else corpo=servizioEtichettatoHTML(dep,g.stato===CalendarioTurni.STATI.SURROGA?codice:rigaFonte,righeTurno(dep,rigaFonte,data,variante),rigaFonte,true);
+      var chiave=corpo+"|"+(speciale?nomeSpeciale:"")+"|"+(g.stato===CalendarioTurni.STATI.SURROGA?codice:"");
       var ultimo=blocchi[blocchi.length-1];
       /* I feriali uguali possono essere accorpati. Sabato e domenica restano
          sempre separati, anche se servizio e orari coincidono. */
       if(i<5 && ultimo && ultimo.chiave===chiave) ultimo.fine=i;
       else blocchi.push({inizio:i,fine:i,chiave:chiave,corpo:corpo,speciale:speciale,
-        nomeSpeciale:nomeSpeciale,codice:g.stato==="surr"?codice:null});
+        nomeSpeciale:nomeSpeciale,codice:g.stato===CalendarioTurni.STATI.SURROGA?codice:null});
     }
     var giorniBozza=[];for(var bi=0;bi<7;bi++){var bd=spostaGiorni(lun,bi);if(bozzaPerData(bd))giorniBozza.push(bd);}
     var html='<div class="turno-probabile"><p class="tp-titolo">Turni probabili della settimana</p>';
@@ -2134,7 +2134,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.65");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.67");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -2357,7 +2357,7 @@
     $("qCodice").textContent = cod(pos);
     $("qOggiPersonale").style.display = corrente ? "grid" : "none";
 
-    var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surr:"Oggi surroga", matto:"Possibile riposo matto"};
+    var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surroga:"Oggi surroga", matto:"Possibile riposo matto"};
     $("qBollo").innerHTML = corrente ? '<span class="bollo '+g.stato+'">'+et[g.stato]+'</span>' : '';
 
     if(SCHEMI[pos%100]==="surroga") $("qNota").innerHTML = "Surrogante da martedì a sabato · <b>Lunedì</b> riposo e <b>Domenica</b> riposo.";
@@ -2763,8 +2763,8 @@
   function esecutorePosizione(dep,p,data){
     var giorno=(data.getDay()+6)%7, lun=lunediDi(data), schema=settimanaDiDeposito(dep,p,lun), voce=schema[giorno];
     var titolare=occupantePosizione(dep,p,lun);
-    if(voce && voce.stato==="surr"){
-      return {occ:titolare,posSurrogante:p,posEseguita:voce.pos,ruolo:"surrogante",stato:"surr"};
+    if(voce && voce.stato===CalendarioTurni.STATI.SURROGA){
+      return {occ:titolare,posSurrogante:p,posEseguita:voce.pos,ruolo:"surrogante",stato:CalendarioTurni.STATI.SURROGA};
     }
     if(giorno>=1 && giorno<=5){
       var possibile=p+giorno;
@@ -2792,7 +2792,7 @@
 
   function etichettaStatoGiorno(servizio){
     if(!servizio.disponibile) return "Dati insufficienti";
-    if(servizio.stato==="surr") return "Surrogante";
+    if(servizio.stato===CalendarioTurni.STATI.SURROGA) return "Surrogante";
     if(servizio.stato==="riposo") return "Riposo";
     if(servizio.stato==="sco") return "Scomputo";
     if(servizio.stato==="matto") return "Riposo matto da verificare";

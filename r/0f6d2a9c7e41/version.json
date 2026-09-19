@@ -1,5 +1,5 @@
 {
-  "version": "0.65",
+  "version": "0.67",
   "files": {
     "alias-nomi.js": "7f995a93c99e7239665392b78e713329b2e231f82489c007e501bd3f0a8aeb0d",
     "attivita-turni.js": "403bf19bfe49efa2e8ff961f8f88f7fd8af411f32638ca939da4b762d54144af",
@@ -8,8 +8,8 @@
     "gestore-config.js": "42bf1fabf2146a58838a7cd565c388a37a1b7493fff6e7104a93f0bf47c42940",
     "icona-attilio.webp": "b1056831ee11bffc8a890d8ff1f4ca5ac3cf5c43b1b9c12ae72b37d776f8ab3d",
     "robots.txt": "523d2f315ee47b71a0720f52605c13a344f6b45a8cc1fba0706e88a5e84353df",
-    "ruota-turni.html": "a6aa16a910cf980175c9bedebe9ea49e227e0c7fd39a55f873433d85253c9500",
-    "schedule-config.js": "1f97a09c19989ca2c46033f227f653bbd9ded317a8ac32b0ac764278bb52964b",
-    "turni-precisi.js": "616133c82a0b078ecca371e985d6e8b33b0a1cb7732daaab98021aee3f6b36a9"
+    "ruota-turni.html": "a8b4fef97ca76ff4f94d19d83acf8f4df2923b6b91ddf13434272309fc3009b3",
+    "schedule-config.js": "a9861d6676dcfa716dfa5dc174012d818c7f9784f6e4c64c8174069ed13eadc1",
+    "turni-precisi.js": "feb532778c4003b47b03dd1d586642d3f3efa57a80448a980fc435dc198a7019"
   }
 }
