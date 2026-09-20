@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.72" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.75" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <script>
   /* Tema prima del primo disegno: usa l'ultima matricola nota e non mostra
@@ -645,6 +645,45 @@
   .confronto-card{margin-top:12px;padding:14px}
   .confronto-card .turno-probabile{background:var(--elevata)}
   #settimana>h2{margin-top:4px}
+  .treno-cerca{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;margin:0 0 18px}
+  .treno-campo{position:relative;min-width:0}
+  .treno-campo svg{position:absolute;left:16px;top:50%;width:22px;height:22px;transform:translateY(-50%);fill:none;stroke:var(--soft);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+  .treno-campo input{width:100%;height:54px;padding:0 16px 0 48px;border:1px solid var(--linea);border-radius:15px;background:var(--carta);color:var(--ink);font-size:20px;font-weight:750;outline:none;box-shadow:0 10px 28px rgba(0,0,0,.17)}
+  .treno-campo input:focus{border-color:var(--rossa);box-shadow:0 0 0 3px rgba(255,138,61,.12)}
+  .treno-cerca>button{height:54px;padding:0 18px;border:1px solid #FFAA70;border-radius:15px;background:var(--rossa);color:var(--azzurro-ink);font-size:15px;font-weight:800;cursor:pointer}
+  .treno-errore{min-height:0;margin:-8px 2px 13px;color:#FFB18A;font-size:14px;font-weight:650}
+  .treno-tempo{display:grid;grid-template-columns:minmax(0,1fr) 116px;gap:10px;align-items:stretch;margin-bottom:16px}
+  .treno-tempo .giornoNav{margin:0;min-width:0}
+  .treno-tempo .giornoNav>button{flex-basis:40px;width:40px;height:40px}
+  .treno-tempo .testo{font-size:14px;line-height:1.2}
+  .treno-ora{display:grid;align-content:center;gap:3px;padding:7px 11px;border:1px solid var(--linea);border-radius:14px;background:var(--carta)}
+  .treno-ora span{color:var(--soft);font-size:10px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+  .treno-ora input{min-width:0;width:100%;padding:0;border:0;background:transparent;color:var(--ink);font-size:18px;font-weight:750;outline:none;color-scheme:dark}
+  :root[data-theme="light"] .treno-ora input{color-scheme:light}
+  .treno-vuoto{padding:24px 18px;border:1px dashed var(--linea);border-radius:17px;background:rgba(25,36,51,.45);color:var(--soft);text-align:center}
+  .treno-vuoto svg{display:block;width:34px;height:34px;margin:0 auto 10px;fill:none;stroke:var(--rossa);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .treno-vuoto b{display:block;margin-bottom:4px;color:var(--ink);font-size:17px}
+  .treno-adesso{position:relative;overflow:hidden;padding:18px;border:1px solid var(--rossa);border-radius:19px;background:linear-gradient(145deg,var(--carta),#2A211D);box-shadow:0 12px 30px rgba(0,0,0,.2)}
+  .treno-adesso::after{content:"";position:absolute;right:-32px;top:-34px;width:112px;height:112px;border-radius:50%;background:rgba(255,138,61,.09)}
+  .treno-adesso .etichetta{display:flex;align-items:center;gap:7px;margin:0 0 8px;color:var(--rossa);font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+  .treno-adesso .etichetta i{width:8px;height:8px;border-radius:50%;background:var(--rossa);box-shadow:0 0 0 5px rgba(255,138,61,.13)}
+  .treno-adesso h3{position:relative;z-index:1;margin:0;font-size:25px;line-height:1.18}
+  .treno-adesso p{position:relative;z-index:1;margin:7px 0 0;color:var(--soft);font-size:14px}
+  .treno-passaggi{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .treno-passaggio{padding:14px;border:1px solid var(--linea);border-radius:16px;background:var(--carta)}
+  .treno-passaggio>span{display:block;margin-bottom:5px;color:var(--soft);font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+  .treno-passaggio strong{display:block;font-size:16px;line-height:1.25}
+  .treno-passaggio small{display:block;margin-top:4px;color:var(--rossa);font-size:12px;font-weight:700}
+  .treno-passaggio.manca strong{color:var(--soft);font-weight:600}
+  .treno-cronologia{margin-top:20px}
+  .treno-cronologia h3{margin:0 0 10px;font-size:18px}
+  .treno-lista{display:grid;gap:8px}
+  .treno-riga{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center;padding:12px 13px;border:1px solid var(--linea);border-radius:14px;background:var(--carta)}
+  .treno-riga.on{border-color:var(--rossa);background:#2A211D;box-shadow:0 7px 18px rgba(255,138,61,.08)}
+  .treno-riga-ora{color:var(--rossa);font-size:14px;font-weight:800;white-space:nowrap}
+  .treno-riga strong{display:block;font-size:16px;line-height:1.2}
+  .treno-riga small{display:block;margin-top:3px;color:var(--soft);font-size:12px}
+  .treno-nota{margin:13px 2px 0;color:var(--soft);font-size:12px;line-height:1.45}
   @media(max-width:420px){
     .scelta{grid-template-columns:42px minmax(0,1fr) 18px;gap:11px}.scelta .scelta-icona{width:42px;height:42px}
     .scelta .scelta-testo b{font-size:18px}.scelta .scelta-testo small{font-size:13px}
@@ -655,6 +694,11 @@
     .tempo-nav.vista-settimana .data-principale{font-size:13px;line-height:1.15;white-space:nowrap;opacity:1}
     .tempo-nav.vista-settimana .modo-ricerca{min-height:34px;padding:6px 8px;font-size:10px}
     .tempo-nav.vista-settimana .calendario-inline{display:none}
+    .treno-cerca{grid-template-columns:1fr}.treno-cerca>button{height:48px}
+    .treno-tempo{grid-template-columns:1fr 104px;gap:8px}.treno-tempo .giornoNav{padding:8px;gap:4px}.treno-tempo .giornoNav>button{flex-basis:36px;width:36px;height:36px}
+    .treno-tempo .testo{font-size:12px}.treno-ora{padding-left:9px;padding-right:9px}.treno-ora input{font-size:16px}
+    .treno-adesso{padding:16px}.treno-adesso h3{font-size:22px}.treno-passaggi{grid-template-columns:1fr}
+    .treno-riga{grid-template-columns:88px minmax(0,1fr);gap:9px;padding:11px}.treno-riga-ora{font-size:13px}
   }
   @media(min-width:700px){
     .barra{width:calc(100% - 36px);max-width:644px;padding-left:0;padding-right:0}
@@ -693,7 +737,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.72" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.75" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -726,7 +770,31 @@
       <span class="scelta-testo"><b>Confronta turni</b><small>Orari e possibili punti d’incontro</small></span>
       <span class="scelta-freccia" aria-hidden="true">›</span>
     </button></li>
+    <li><button class="scelta" data-vai="treno">
+      <span class="scelta-icona" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="13" height="15" rx="3"/><path d="M7 7h7M7 11h7M7 18l-2 3M15 18l2 3"/><circle cx="8" cy="15" r="1"/><circle cx="13" cy="15" r="1"/><circle cx="18.5" cy="8.5" r="3.5"/><path d="m21 11 2 2"/></svg></span>
+      <span class="scelta-testo"><b>Ricerca treno</b><small>Chi lo guida adesso, prima e dopo</small></span>
+      <span class="scelta-freccia" aria-hidden="true">›</span>
+    </button></li>
   </ul>
+</div>
+
+<div class="schermata" id="treno">
+  <div class="pagina-titolo"><p class="occhiello">Ricerca treno</p><h2>Che treno stai cercando?</h2><p class="guida">Inserisci il numero della tabella per vedere chi risulta alla guida secondo la Ruota.</p></div>
+  <form class="treno-cerca" id="tForm">
+    <label class="treno-campo" for="tNumero"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="13" height="15" rx="3"/><path d="M6 7h7M6 11h7M6 18l-2 3M14 18l2 3"/><circle cx="7" cy="15" r="1"/><circle cx="12" cy="15" r="1"/><circle cx="18" cy="8" r="3"/><path d="m20.2 10.2 2.3 2.3"/></svg><input id="tNumero" type="search" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="Es. 63" autocomplete="off" aria-label="Numero del treno"></label>
+    <button type="submit">Cerca</button>
+  </form>
+  <p class="treno-errore" id="tErrore" aria-live="polite"></p>
+  <p class="sett-label">Giorno e ora</p>
+  <div class="treno-tempo">
+    <div class="giornoNav">
+      <button id="tPrec" type="button" aria-label="Giorno precedente">‹</button>
+      <div class="tempo-centro"><div class="data-calendario-riga"><span class="testo" id="tQuando"></span><button type="button" class="calendario-inline" id="tApriCalendario" aria-label="Scegli un altro giorno"><span class="icona-calendario" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span></button></div><input class="confronto-calendario" id="tCalendario" type="date" aria-label="Scegli il giorno da cercare"></div>
+      <button id="tSucc" type="button" aria-label="Giorno successivo">›</button>
+    </div>
+    <label class="treno-ora" for="tOra"><span>Ora</span><input id="tOra" type="time" step="60" aria-label="Ora di riferimento"></label>
+  </div>
+  <div id="tEsito" aria-live="polite"><div class="treno-vuoto"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="13" height="15" rx="3"/><path d="M7 7h7M7 11h7M7 18l-2 3M15 18l2 3"/><circle cx="8" cy="15" r="1"/><circle cx="13" cy="15" r="1"/></svg><b>Inserisci un numero</b>La ricerca usa i turni della data e dell’ora selezionate.</div></div>
 </div>
 
 <div class="schermata" id="questa">
@@ -884,12 +952,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.72</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.75</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.72", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.75", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -904,12 +972,12 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.72"></script>
-<script src="turni-precisi.js?v=0.72"></script>
-<script src="attivita-turni.js?v=0.72"></script>
-<script src="alias-nomi.js?v=0.72"></script>
-<script src="gestore-config.js?v=0.72"></script>
-<script src="calendario-turni.js?v=0.72"></script>
+<script src="schedule-config.js?v=0.75"></script>
+<script src="turni-precisi.js?v=0.75"></script>
+<script src="attivita-turni.js?v=0.75"></script>
+<script src="alias-nomi.js?v=0.75"></script>
+<script src="gestore-config.js?v=0.75"></script>
+<script src="calendario-turni.js?v=0.75"></script>
 
 <script>
 (function(){
@@ -939,6 +1007,7 @@
         var d=daISO(data),lun=lunediDi(d),g=(d.getDay()+6)%7;
         return settimanaDiDeposito(DEPOSITI[sig],+pos,lun)[g];
       },
+      ricercaTreno:function(numero,data,ora){return analizzaTreno(String(numero),daISO(data),ora);},
       avvisoBozza:function(data){return avvisoBozzaHTML(daISO(data));}
     };
   }
@@ -1754,6 +1823,7 @@
   function stessoGiorno(a,b){
     return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
   }
+  function oraLocale(d){return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
 
   var LUN_RIF = lunediDi(daISO(RIFERIMENTO));
   function settimaneDa(lun){ return CalendarioTurni.settimaneTra(LUN_RIF,lun); }
@@ -1793,6 +1863,7 @@
   var qLun = lunediDi(new Date()), sLun = lunediDi(new Date()), calMese = new Date(), rLun = lunediDi(new Date());
   var rModo="giorno", rData=new Date(), rGiornoInizializzato=true;
   var cData = new Date(), cTarget = null, cPrimoTarget = null, cRicercaQuale = "";
+  var tData = new Date(), tOra = oraLocale(new Date()), tNumero = "";
   var rDep = null;   // deposito mostrato nella schermata di ricerca
   var filtroAttivita="", sottofiltroAttivita="", filtroFascia="", filtriAttivitaAperti=false, tuttiDepositiAttivita=true;
   var STATO_SESSIONE="ruota-virtuale-stato-v2", ripristinoInCorso=false;
@@ -1802,6 +1873,7 @@
     $("cRicercaInput").value="";
     $("cRicercaRisultati").innerHTML="";
     $("cRicercaErrore").textContent="";
+    tNumero="";$("tNumero").value="";$("tErrore").textContent="";
     cTarget=null;cPrimoTarget=null;cRicercaQuale="";
     filtroAttivita="";
     sottofiltroAttivita="";
@@ -1821,8 +1893,9 @@
     var oggi=new Date(),att=document.querySelector('.schermata.attiva'),id=att?att.id:'menu';
     qLun=lunediDi(oggi);sLun=lunediDi(oggi);calMese=new Date(oggi.getFullYear(),oggi.getMonth(),1);
     cData=new Date(oggi);rLun=lunediDi(oggi);rData=new Date(oggi);rGiornoInizializzato=true;
+    tData=new Date(oggi);tOra=oraLocale(oggi);
     azzeraRicerca();
-    $('cCalendario').value=isoLocale(cData);$('rData').value=isoLocale(rData);
+    $('cCalendario').value=isoLocale(cData);$('rData').value=isoLocale(rData);$('tCalendario').value=isoLocale(tData);$('tOra').value=tOra;
     $('segnalaOverlay').classList.remove('on');$('segnalaOverlay').setAttribute('aria-hidden','true');
     $('messaggioOverlay').classList.remove('on');$('messaggioOverlay').setAttribute('aria-hidden','true');
     $('campiSegnalazione').innerHTML='';$('messaggioTesto').value='';
@@ -1830,6 +1903,7 @@
     else if(id==='settimana'){disegnaCalendario();disegnaSettimana();}
     else if(id==='confronta')disegnaConfronto();
     else if(id==='ruota'){disegnaDepositi();disegnaRuota();}
+    else if(id==='treno')disegnaRicercaTreno();
     salvaStato();
     clearTimeout(timerInattivita);timerInattivita=null;
     return true;
@@ -1847,6 +1921,7 @@
       sessionStorage.setItem(STATO_SESSIONE,JSON.stringify({
         matricola:U?U.mat:$("matricola").value.replace(/\D/g,""),accesso:!!U,
         schermata:att?att.id:"accesso",q:isoLocale(qLun),s:isoLocale(sLun),r:isoLocale(rLun),rData:isoLocale(rData),rModo:rModo,rGiornoInizializzato:rGiornoInizializzato,c:isoLocale(cData),
+        tData:isoLocale(tData),tOra:tOra,tNumero:tNumero,
         mese:calMese.getFullYear()+"-"+(calMese.getMonth()+1),deposito:rDep?rDep.sigla:"",
         ricerca:$("cerca").value,filtroAttivita:filtroAttivita,sottofiltroAttivita:sottofiltroAttivita,filtroFascia:filtroFascia,
         confrontoRicerca:$("cRicercaInput").value,confrontoTarget:cTarget,
@@ -1865,11 +1940,13 @@
     try{
       if(st.q)qLun=daISO(st.q); if(st.s)sLun=daISO(st.s); if(st.r)rLun=daISO(st.r); if(st.rData)rData=daISO(st.rData);else rData=new Date(rLun);
       rModo=st.rModo==="settimana"?"settimana":"giorno";rGiornoInizializzato=!!st.rGiornoInizializzato||rModo==="giorno"; if(st.c)cData=daISO(st.c);
+      if(st.tData)tData=daISO(st.tData);tOra=/^\d{2}:\d{2}$/.test(String(st.tOra||""))?st.tOra:oraLocale(new Date());tNumero=String(st.tNumero||"").replace(/\D/g,"").slice(0,3);
       if(st.mese){var mp=st.mese.split("-");calMese=new Date(+mp[0],+mp[1]-1,1);}
       $("matricola").value=st.matricola||"";
       if(st.accesso && st.matricola){entra(true);if(!U)throw new Error("matricola non valida");}
       if(!U){mostra("accesso");return true;}
       rDep=DEPOSITI[st.deposito]||U.dep;$("cerca").value=st.ricerca||"";
+      $("tNumero").value=tNumero;$("tOra").value=tOra;
       $("cRicercaInput").value=st.confrontoRicerca||"";cTarget=st.confrontoTarget||null;
       cPrimoTarget=st.confrontoPrimoTarget||null;cRicercaQuale=st.confrontoRicercaQuale==="primo"||st.confrontoRicercaQuale==="secondo"?st.confrontoRicercaQuale:"";
       filtroAttivita=CATEGORIE_ATTIVITA.indexOf(st.filtroAttivita)>=0?st.filtroAttivita:"";
@@ -1881,6 +1958,7 @@
       else if(st.schermata==="settimana"){disegnaCalendario();disegnaSettimana();mostra("settimana");}
       else if(st.schermata==="confronta"){disegnaConfronto();mostra("confronta");}
       else if(st.schermata==="ruota"){disegnaDepositi();disegnaRuota();mostra("ruota");}
+      else if(st.schermata==="treno"){disegnaRicercaTreno();mostra("treno");}
       else mostra("menu");
       if(st.moduloAperto){
         apriModulo(st.tipoAiuto||"errore");var vals=st.campiAiuto||{};
@@ -2077,7 +2155,8 @@
     else if(id==="settimana"){disegnaCalendario();disegnaSettimana();}
     else if(id==="confronta") disegnaConfronto();
     else if(id==="ruota"){disegnaDepositi();disegnaRuota();}
-    mostra(id==="menu"||id==="questa"||id==="settimana"||id==="confronta"||id==="ruota"?id:"menu");
+    else if(id==="treno") disegnaRicercaTreno();
+    mostra(id==="menu"||id==="questa"||id==="settimana"||id==="confronta"||id==="ruota"||id==="treno"?id:"menu");
   }
   function inizializzaCronologia(){
     if(!window.history || typeof window.history.replaceState!=="function") return;
@@ -2091,7 +2170,7 @@
   }
 
   function contestoSettimana(){
-    var att=document.querySelector(".schermata.attiva"), lun=(att&&att.id==="questa")?qLun:(att&&att.id==="settimana"?sLun:(att&&att.id==="confronta"?lunediDi(cData):rLun));
+    var att=document.querySelector(".schermata.attiva"), lun=(att&&att.id==="questa")?qLun:(att&&att.id==="settimana"?sLun:(att&&att.id==="confronta"?lunediDi(cData):(att&&att.id==="treno"?lunediDi(tData):rLun)));
     return fmtIntervalloSettimana(lun,spostaGiorni(lun,6));
   }
   function mittente(){ return U ? U.nome+" · "+U.dep.nome+" · matricola "+U.mat : ""; }
@@ -2134,7 +2213,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.72");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.75");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -2265,6 +2344,13 @@
     disegnaConfronto();mostra("confronta");registraPagina("confronta","replace");
     return true;
   };
+  window.__apriRicercaTrenoIntegrata=function(numero){
+    if(!MODALITA_INTEGRATA||!U)return false;
+    var adesso=new Date();tData=new Date(adesso);tOra=oraLocale(adesso);
+    tNumero=String(numero||"").replace(/\D/g,"").slice(0,3);
+    disegnaRicercaTreno();mostra("treno");registraPagina("treno","replace");
+    return Boolean(tNumero);
+  };
   window.__impostaTemaRuotaIntegrata=function(tema){
     if(!MODALITA_INTEGRATA)return false;
     applicaTema(tema,U&&U.mat?U.mat:matricolaTema(),false);
@@ -2312,6 +2398,11 @@
         cData=new Date();cTarget=null;cPrimoTarget=null;cRicercaQuale="";
         $("cRicercaInput").value="";$("cRicercaRisultati").innerHTML="";$("cRicercaErrore").textContent="";
         disegnaConfronto();mostra("confronta");registraPagina("confronta","push");
+      }
+      if(v==="treno"){
+        var adesso=new Date();tData=new Date(adesso);tOra=oraLocale(adesso);tNumero="";
+        disegnaRicercaTreno();mostra("treno");registraPagina("treno","push");
+        if(!dispositivoTouch())$("tNumero").focus();
       }
       if(v==="ruota"){
         rLun = lunediDi(new Date());rData=new Date();rModo="giorno";rGiornoInizializzato=true; $("cerca").value = ""; rDep = U.dep;tuttiDepositiAttivita=true;
@@ -2712,6 +2803,18 @@
   $("cRicercaConferma").onclick=avviaRicercaConfronto;
   $("cRicercaInput").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();avviaRicercaConfronto();this.blur();}});
 
+  $("tNumero").oninput=function(){var pulito=this.value.replace(/\D/g,"").slice(0,3);if(this.value!==pulito)this.value=pulito;};
+  $("tForm").onsubmit=function(e){
+    e.preventDefault();tNumero=$("tNumero").value.replace(/\D/g,"").slice(0,3);
+    if(!tNumero){$("tErrore").textContent="Inserisci il numero del treno.";$("tNumero").focus();return;}
+    $("tNumero").blur();disegnaRicercaTreno();
+  };
+  $("tPrec").onclick=function(){tData=spostaGiorni(tData,-1);disegnaRicercaTreno();};
+  $("tSucc").onclick=function(){tData=spostaGiorni(tData,1);disegnaRicercaTreno();};
+  $("tApriCalendario").onclick=function(){var campo=$("tCalendario");if(typeof campo.showPicker==="function"){try{campo.showPicker();return;}catch(e){}}campo.click();};
+  $("tCalendario").onchange=function(){if(this.value){tData=daISO(this.value);disegnaRicercaTreno();}};
+  $("tOra").onchange=function(){if(/^\d{2}:\d{2}$/.test(this.value)){tOra=this.value;disegnaRicercaTreno();}};
+
   function disegnaDepositi(){
     var html = '<button data-dep="*" class="tutti '+(tuttiDepositiAttivita?"on":"")+'">TUTTI</button>',ordine=ordineDepositiAttivita();
     for(var oi=0;oi<ordine.length;oi++){
@@ -2779,6 +2882,143 @@
       }
     }
     return {occ:voce && voce.stato==="lavoro"?titolare:null,posSurrogante:null,posEseguita:p,ruolo:"titolare",stato:voce?voce.stato:""};
+  }
+
+  function segmentoTrenoDaRiga(riga,numero,offsetGiorno,dep,servizio,esecutore){
+    var m=String(riga||"").trim().match(/^(\d{1,3})(?:\*+)?\s+.+?\s+(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})\s+.+$/);
+    if(!m||m[1]!==numero)return null;
+    var inizio=minutiOra(m[2])+offsetGiorno*1440,fine=minutiOra(m[3])+offsetGiorno*1440;
+    if(fine<=inizio)fine+=1440;
+    if(offsetGiorno<0&&fine<=0)return null;
+    return {numero:numero,inizio:inizio,fine:fine,oraDa:m[2],oraA:m[3],
+      nome:esecutore&&esecutore.occ?nomePersona(esecutore.occ):"Turno scoperto",
+      matricola:esecutore&&esecutore.occ?String(esecutore.occ[1]||""):"",
+      posizione:codDi(dep,servizio.codice||servizio.pos),deposito:dep.sigla};
+  }
+  function segmentiTrenoExtra(numero,data,offsetGiorno){
+    var giorno=(data.getDay()+6)%7,variante=giorno<5?"fer":(giorno===5?"sab":"fes");
+    var info=programmaInfoPerData(data,variante),programma=info.programma;
+    if(programma==="specFes"||programma==="specSabMancante")return [];
+    var foglio=info.foglio||foglioPerData(data),blocco=foglio&&TURNI_PRECISI[foglio];
+    var extra=blocco&&blocco._extra,out=[];
+    if(!extra)return out;
+    Object.keys(DEPOSITI).forEach(function(sig){
+      var dep=DEPOSITI[sig];
+      (extra[sig]||[]).forEach(function(turno){
+        var righe=turno.programmi&&turno.programmi[programma];
+        (righe||[]).forEach(function(riga){
+          var segmento=segmentoTrenoDaRiga(riga,numero,offsetGiorno,dep,{codice:0,pos:0},null);
+          if(!segmento)return;
+          segmento.nome="Conducente non disponibile";
+          segmento.matricola="";
+          segmento.posizione=turno.turno;
+          segmento.categoria=turno.categoria||"Turno non in rotazione";
+          segmento.extra=true;
+          out.push(segmento);
+        });
+      });
+    });
+    return out;
+  }
+  function segmentiTreno(numero,data){
+    numero=String(numero||"").replace(/\D/g,"").slice(0,3);
+    if(!numero||codiceAttivitaFissa(numero))return [];
+    var out=[],visti={};
+    [-1,0].forEach(function(offset){
+      var dataServizio=spostaGiorni(data,offset);
+      Object.keys(DEPOSITI).forEach(function(sig){
+        var dep=DEPOSITI[sig];
+        posizioniDi(dep).forEach(function(pos){
+          var servizio=servizioEffettivo(dep,pos,dataServizio);
+          if(!servizio.disponibile||!servizio.righe||!servizio.righe.length)return;
+          var esecutore=esecutorePosizione(dep,pos,dataServizio);
+          servizio.righe.forEach(function(riga){
+            var segmento=segmentoTrenoDaRiga(riga,numero,offset,dep,servizio,esecutore);
+            if(!segmento)return;
+            var firma=[segmento.inizio,segmento.fine,segmento.matricola,segmento.nome].join("|");
+            if(!visti[firma]){visti[firma]=true;out.push(segmento);}
+          });
+        });
+      });
+      segmentiTrenoExtra(numero,dataServizio,offset).forEach(function(segmento){
+        var firma=[segmento.inizio,segmento.fine,"extra",segmento.posizione].join("|");
+        if(!visti[firma]){visti[firma]=true;out.push(segmento);}
+      });
+    });
+    out.sort(function(a,b){return a.inizio-b.inizio||a.fine-b.fine||a.nome.localeCompare(b.nome,"it");});
+    return out;
+  }
+  function analizzaTreno(numero,data,ora){
+    var segmenti=segmentiTreno(numero,data),riferimento=minutiOra(ora||"00:00");
+    var attuali=segmenti.filter(function(s){return s.inizio<=riferimento&&riferimento<s.fine;});
+    var precedenti=segmenti.filter(function(s){return attuali.indexOf(s)<0&&s.fine<=riferimento;});
+    var successivi=segmenti.filter(function(s){return attuali.indexOf(s)<0&&s.inizio>=riferimento;});
+    precedenti.sort(function(a,b){return a.fine-b.fine||a.inizio-b.inizio;});
+    successivi.sort(function(a,b){return a.inizio-b.inizio||a.fine-b.fine;});
+    return {numero:String(numero),data:isoLocale(data),ora:ora,riferimento:riferimento,segmenti:segmenti,
+      attuali:attuali,prima:precedenti.length?precedenti[precedenti.length-1]:null,dopo:successivi.length?successivi[0]:null};
+  }
+  function intervalloTreno(segmento){return segmento?segmento.oraDa+"–"+segmento.oraA:"";}
+  function passaggioTrenoHTML(tipo,segmento){
+    var prima=tipo==="Prima";
+    if(!segmento)return '<div class="treno-passaggio manca"><span>'+tipo+'</span><strong>Nessun turno '+(prima?'precedente':'successivo')+'</strong></div>';
+    if(segmento.extra)return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>Turno '+esc(segmento.posizione)+' · conducente non disponibile</strong><small>'+esc(intervalloTreno(segmento))+' · '+esc(segmento.categoria)+'</small></div>';
+    if(!segmento.matricola)return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>Turno scoperto</strong><small>'+esc(intervalloTreno(segmento))+' · '+esc(segmento.posizione)+'</small></div>';
+    return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>'+(prima?'Guidava ':'Guiderà ')+esc(segmento.nome)+'</strong><small>'+esc(intervalloTreno(segmento))+'</small></div>';
+  }
+  function riferimentoAttuale(data,ora){
+    var adesso=new Date();if(!stessoGiorno(data,adesso))return false;
+    return Math.abs(minutiOra(ora)-adesso.getHours()*60-adesso.getMinutes())<=2;
+  }
+  function vuotoTrenoHTML(titolo,testo){
+    return '<div class="treno-vuoto"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="13" height="15" rx="3"/><path d="M7 7h7M7 11h7M7 18l-2 3M15 18l2 3"/><circle cx="8" cy="15" r="1"/><circle cx="13" cy="15" r="1"/></svg><b>'+esc(titolo)+'</b>'+esc(testo)+'</div>';
+  }
+  function disegnaRicercaTreno(){
+    tData=new Date(tData.getFullYear(),tData.getMonth(),tData.getDate());
+    var giorno=(tData.getDay()+6)%7,nomeGiorno=GIORNI_EST[giorno];
+    $("tQuando").textContent=nomeGiorno.charAt(0).toUpperCase()+nomeGiorno.slice(1)+" "+fmtConAnno(tData);
+    $("tCalendario").value=isoLocale(tData);$("tOra").value=tOra;$("tNumero").value=tNumero;
+    $("tErrore").textContent="";
+    if(!tNumero){$("tEsito").innerHTML=vuotoTrenoHTML("Inserisci un numero","La ricerca usa i turni della data e dell’ora selezionate.");salvaStato();return;}
+    if(codiceAttivitaFissa(tNumero)){
+      $("tErrore").textContent=tNumero+" è un’attività di servizio, non un treno.";
+      $("tEsito").innerHTML=vuotoTrenoHTML("Numero non ricercabile","Inserisci il numero di una tabella di guida.");salvaStato();return;
+    }
+    var risultato=analizzaTreno(tNumero,tData,tOra),attuali=risultato.attuali;
+    if(!risultato.segmenti.length){
+      $("tEsito").innerHTML=vuotoTrenoHTML("Nessuna assegnazione trovata","Il treno "+tNumero+" non compare nei turni di questa giornata.");salvaStato();return;
+    }
+    var dalVivo=riferimentoAttuale(tData,tOra),etichetta=dalVivo?"In questo momento":"Alle "+tOra;
+    var titolo,nota;
+    if(attuali.length===1){
+      var attuale=attuali[0];
+      if(attuale.extra){
+        titolo="Conducente non identificabile";
+        nota="Il "+tNumero+" risulta nel turno "+attuale.posizione+" · "+attuale.categoria+", "+intervalloTreno(attuale)+". I nominativi di questo gruppo non sono presenti nella Ruota.";
+      }else if(!attuale.matricola){
+        titolo="Turno scoperto";
+        nota="La tabella "+tNumero+" è nel turno "+attuale.posizione+", "+intervalloTreno(attuale)+", ma la posizione risulta scoperta nella Ruota.";
+      }else{
+        titolo="Guida "+attuale.nome;nota="Tabella "+tNumero+" · "+intervalloTreno(attuale)+" · "+attuale.posizione;
+      }
+    }
+    else if(attuali.length>1){
+      titolo="Più turni coprono questo momento";
+      nota=attuali.map(function(s){return s.extra?s.posizione+" (conducente non disponibile)":s.nome+" · "+s.posizione;}).join("; ")+". Gli intervalli del foglio si sovrappongono, spesso per il passaggio di consegne.";
+    }
+    else{
+      titolo="Nessuna copertura registrata";
+      nota="Nei fogli disponibili non compare un turno per il "+tNumero+" alle "+tOra+". Il treno può essere fermo oppure coperto da un gruppo non ancora censito; il conducente non può essere determinato.";
+    }
+    var html='<section class="treno-adesso"><p class="etichetta"><i></i>'+esc(etichetta)+'</p><h3>'+esc(titolo)+'</h3><p>'+esc(nota)+'</p></section>'+
+      '<div class="treno-passaggi">'+passaggioTrenoHTML("Prima",risultato.prima)+passaggioTrenoHTML("Dopo",risultato.dopo)+'</div>'+
+      '<section class="treno-cronologia"><h3>Chi guida il '+esc(tNumero)+' nella giornata</h3><div class="treno-lista">'+risultato.segmenti.map(function(s){
+        var attivo=s.inizio<=risultato.riferimento&&risultato.riferimento<s.fine;
+        var nome=s.extra?'Turno '+s.posizione+' · conducente non disponibile':s.nome;
+        var dettaglio=s.extra?s.categoria:s.posizione;
+        return '<div class="treno-riga'+(attivo?' on':'')+'"><span class="treno-riga-ora">'+esc(intervalloTreno(s))+'</span><span><strong>'+esc(nome)+'</strong><small>'+esc(dettaglio)+'</small></span></div>';
+      }).join("")+'</div></section><p class="treno-nota">Indicazione calcolata dalla Ruota. Eventuali cambi o sostituzioni non registrati non possono essere mostrati.</p>';
+    $("tEsito").innerHTML=html;salvaStato();
   }
 
   function surroganteSettimanaHTML(dep,p,lun){
