@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.75" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.76" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <script>
   /* Tema prima del primo disegno: usa l'ultima matricola nota e non mostra
@@ -737,7 +737,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.75" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.76" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -952,12 +952,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.75</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.76</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.75", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.76", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -972,12 +972,12 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.75"></script>
-<script src="turni-precisi.js?v=0.75"></script>
-<script src="attivita-turni.js?v=0.75"></script>
-<script src="alias-nomi.js?v=0.75"></script>
-<script src="gestore-config.js?v=0.75"></script>
-<script src="calendario-turni.js?v=0.75"></script>
+<script src="schedule-config.js?v=0.76"></script>
+<script src="turni-precisi.js?v=0.76"></script>
+<script src="attivita-turni.js?v=0.76"></script>
+<script src="alias-nomi.js?v=0.76"></script>
+<script src="gestore-config.js?v=0.76"></script>
+<script src="calendario-turni.js?v=0.76"></script>
 
 <script>
 (function(){
@@ -1008,6 +1008,10 @@
         return settimanaDiDeposito(DEPOSITI[sig],+pos,lun)[g];
       },
       ricercaTreno:function(numero,data,ora){return analizzaTreno(String(numero),daISO(data),ora);},
+      speciale:function(codice,categoria,data){
+        var giorno=daISO(data),persona=specialePerTurno(codice,categoria,giorno);
+        return persona?{nome:persona.nome,servizio:righeTurnoSpeciale(persona,giorno)}:null;
+      },
       avvisoBozza:function(data){return avvisoBozzaHTML(daISO(data));}
     };
   }
@@ -1112,6 +1116,19 @@
       if(Array.isArray(window.RUOTA_M1_ROSTERS[sigla])) DEPOSITI[sigla].ruota=window.RUOTA_M1_ROSTERS[sigla];
     });
   }
+
+  /* Posizioni speciali comunicate per il gruppo in rotazione. L'ordine degli
+     occupanti corrisponde ai codici 01..N (oppure 31..N) della settimana base. */
+  var GRUPPI_SPECIALI = [
+    {sig:"PR",categoria:"Anziani",primo:1,persone:[["Sangiorgi","67026"],["Rosatti","64504"],["Coppola","59749"],["Verna","66710"],["Nerucci","67000"]]},
+    {sig:"GAL",categoria:"Anziani",primo:1,persone:[["Carparelli","66703"],["Meazza","64981"],["Bardugoni","59745"],["Baion","65628"],["D'Angelo","66270"]]},
+    {sig:"SFS",categoria:"Anziani",primo:1,persone:[["Primiterra","66277"],["Paratore","66152"],["Capelli","65696"],["Motta","66264"]]},
+    {sig:"BIS",categoria:"Anziani",primo:1,persone:[["Moschella","64573"],["Iaccarino","66970"],["Ruggeri","67169"],["Carlisi","67337"]]},
+    {sig:"SFS",categoria:"Fissi notte",primo:31,persone:[["D'Errico","68122"],["D'Angelo","68166"],["Bosatra","65126"],["Pulvirenti","68170"],["Stillittano","70834"]]},
+    {sig:"GAL",categoria:"Fissi notte",primo:31,persone:[["Boetto","70662"]]},
+    {sig:"BIS",categoria:"Fissi notte",primo:31,persone:[["Meda","66513"]]}
+  ];
+  var INIZIO_SPECIALI = new Date(2026,8,21);
 
   /* ==========================================================
      2. SCHEMA DEI SETTE GIORNI (uguale per tutti i depositi)
@@ -1975,9 +1992,93 @@
     if(!occ) return "";
     if(/\b[A-Z]\.$/.test(occ[0])) return occ[0];
     var iniziale=INIZIALI_MATRICOLA[occ[1]];
+    if(!iniziale&&typeof NOMI_COMPLETI_MATRICOLA!=="undefined"){
+      var completo=NOMI_COMPLETI_MATRICOLA[occ[1]]||"",prefisso=occ[0]+" ";
+      if(completo.indexOf(prefisso)===0)iniziale=completo.slice(prefisso.length).charAt(0);
+    }
     return occ[0]+(iniziale?" "+iniziale+".":"");
   }
+  function specialePerTurno(codice,categoria,data){
+    var lun=lunediDi(data),settimane=CalendarioTurni.settimaneTra(INIZIO_SPECIALI,lun);
+    if(settimane<0)return null;
+    for(var i=0;i<GRUPPI_SPECIALI.length;i++){
+      var gruppo=GRUPPI_SPECIALI[i],numero=+String(codice).slice(gruppo.sig.length);
+      if(gruppo.categoria!==categoria||String(codice).slice(0,gruppo.sig.length)!==gruppo.sig)continue;
+      var indice=numero-gruppo.primo,tot=gruppo.persone.length;
+      if(indice<0||indice>=tot)return null;
+      var occupante=gruppo.persone[((indice-settimane)%tot+tot)%tot];
+      return {codice:codice,categoria:categoria,occupante:occupante,nome:nomePersona(occupante),gruppo:gruppo};
+    }
+    return null;
+  }
+  function specialePerMatricola(mat,data){
+    if(lunediDi(data)<INIZIO_SPECIALI)return null;
+    for(var i=0;i<GRUPPI_SPECIALI.length;i++){
+      var gruppo=GRUPPI_SPECIALI[i];
+      for(var j=0;j<gruppo.persone.length;j++)if(gruppo.persone[j][1]===mat){
+        var passi=CalendarioTurni.settimaneTra(INIZIO_SPECIALI,lunediDi(data));
+        var numero=gruppo.primo+(j+passi)%gruppo.persone.length;
+        return specialePerTurno(gruppo.sig+String(numero).padStart(2,"0"),gruppo.categoria,data);
+      }
+    }
+    return null;
+  }
+  function turniSpecialiDelDeposito(sig,data){
+    var risultati=[];
+    GRUPPI_SPECIALI.forEach(function(gruppo){
+      if(gruppo.sig!==sig)return;
+      for(var i=0;i<gruppo.persone.length;i++){
+        var codice=gruppo.sig+String(gruppo.primo+i).padStart(2,"0");
+        var info=specialePerTurno(codice,gruppo.categoria,data);
+        if(info)risultati.push(info);
+      }
+    });
+    return risultati;
+  }
+  function righeTurnoSpeciale(info,data){
+    var giorno=(data.getDay()+6)%7;
+    if(info.categoria==="Anziani"&&giorno===6)return {righe:["RIPOSO"],incerto:false};
+    var variante=giorno<5?"fer":(giorno===5?"sab":"fes");
+    var programmaInfo=programmaInfoPerData(data,variante);
+    var foglio=programmaInfo.foglio||foglioPerData(data);
+    var extra=foglio&&TURNI_PRECISI[foglio]&&TURNI_PRECISI[foglio]._extra;
+    var righe=null;
+    if(extra&&extra[info.gruppo.sig]){
+      var turno=extra[info.gruppo.sig].find(function(x){return x.turno===info.codice&&x.categoria===info.categoria;});
+      righe=turno&&turno.programmi&&turno.programmi[programmaInfo.programma];
+    }
+    var primaSettimana=CalendarioTurni.settimaneTra(INIZIO_SPECIALI,lunediDi(data))===0;
+    if(!righe&&foglio==="inv"&&["fer","sab","fes"].indexOf(programmaInfo.programma)>=0){
+      if(info.categoria==="Fissi notte"&&info.gruppo.sig==="SFS")righe=["DISP"];
+      else if(info.categoria==="Anziani"&&giorno===5&&primaSettimana)righe=["RIPOSO"];
+    }
+    return {righe:righe||[],incerto:info.categoria==="Anziani"&&giorno===5&&(!primaSettimana||!righe||!righe.length)};
+  }
+  function dettaglioTurnoSpecialeHTML(info,data){
+    var i=(data.getDay()+6)%7,servizio=righeTurnoSpeciale(info,data);
+    var titolo=GIORNI_EST[i].charAt(0).toUpperCase()+GIORNI_EST[i].slice(1)+" "+fmtConAnno(data);
+    var contenuto=servizio.righe.length
+      ?servizio.righe.map(function(riga){return '<div>'+esc(riga)+'</div>';}).join("")
+      :'<div>'+(info.categoria==="Fissi notte"?"Disponibilità o riposo: verifica il turno assegnato.":"Turno o riposo da verificare.")+'</div>';
+    var nota=servizio.incerto?'Il riposo personale del sabato può cambiare questa indicazione.'
+      :(info.categoria==="Fissi notte"?'Riposi personali e sostituzioni da verificare.':'Assegnazione e sostituzioni da verificare.');
+    return '<div class="turno-probabile"><p class="tp-titolo">'+esc(info.categoria)+' · indicazione probabile</p>'
+      +'<p class="tp-variante">'+esc(titolo)+'</p><div class="tp-servizio">'+contenuto+'</div>'
+      +'<p class="tp-origine">'+esc(nota)+'</p></div>';
+  }
+  function rigaTurnoSpecialeHTML(info,data){
+    var date=rModo==="giorno"?[data]:[0,1,2,3,4,5,6].map(function(i){return spostaGiorni(lunediDi(data),i);});
+    var dettaglio=date.map(function(d){return dettaglioTurnoSpecialeHTML(info,d);}).join("");
+    return '<li class="con-dettaglio turno-speciale"><div class="riga-testa"><span class="pos">'+esc(info.codice)+'</span>'
+      +'<span class="nome">Probabilmente '+esc(info.nome)+'<em>'+esc(info.categoria)+'</em></span>'
+      +'<span class="rip"><span class="apri">Mostra turno</span></span></div>'
+      +'<div class="dettaglio-turno">'+dettaglio+'</div></li>';
+  }
   function posizioneDi(base, lun){
+    if(U.speciale){
+      var prevista=specialePerMatricola(U.mat,lun);
+      return prevista?+prevista.codice.slice(U.sigla.length):null;
+    }
     return U.posizioni[ ((base + settimaneDa(lun)) % U.tot + U.tot) % U.tot ];
   }
 
@@ -2022,7 +2123,7 @@
   }
   function aggiornaConfigMattoRuota(){
     var box=$("configMattoRuota");if(!box)return;
-    if(MODALITA_INTEGRATA){box.style.display="none";return;}
+    if(MODALITA_INTEGRATA||(U&&U.speciale)){box.style.display="none";return;}
     var s=situazioneMattoRuota();
     if(!s.idoneo){box.style.display="none";return;}
     box.style.display="block";
@@ -2213,7 +2314,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.75");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.76");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -2274,20 +2375,28 @@
     var v = $("matricola").value.replace(/\D/g,""), err = $("erroreMatricola");
     if(v.length < 4){ err.textContent = "Servono almeno quattro cifre."; $("segnalaMatricola").style.display="none"; if(MODALITA_INTEGRATA)$("integrataCaricamento").textContent="Matricola non disponibile. Torna ai Turni e completa l’accesso."; return; }
 
-    var trovato = null;
-    for(var sig in DEPOSITI){
-      var dep = DEPOSITI[sig];
-      for(var i=0;i<dep.ruota.length;i++){
-        if(dep.ruota[i] && dep.ruota[i][1]===v){ trovato = {sig:sig, dep:dep, i:i}; break; }
+    var speciale=specialePerMatricola(v,new Date()),trovato = null;
+    if(!speciale){
+      for(var sig in DEPOSITI){
+        var dep = DEPOSITI[sig];
+        for(var i=0;i<dep.ruota.length;i++){
+          if(dep.ruota[i] && dep.ruota[i][1]===v){ trovato = {sig:sig, dep:dep, i:i}; break; }
+        }
+        if(trovato) break;
       }
-      if(trovato) break;
     }
-    if(!trovato){ matricolaNonTrovata=v; err.textContent = "Matricola non trovata nelle ruote caricate."; $("segnalaMatricola").style.display="block"; if(MODALITA_INTEGRATA)$("integrataCaricamento").textContent="La tua matricola non è ancora presente nella Ruota Virtuale."; return; }
+    if(!speciale&&!trovato){ matricolaNonTrovata=v; err.textContent = "Matricola non trovata nelle ruote caricate."; $("segnalaMatricola").style.display="block"; if(MODALITA_INTEGRATA)$("integrataCaricamento").textContent="La tua matricola non è ancora presente nella Ruota Virtuale."; return; }
 
     matricolaNonTrovata=""; $("segnalaMatricola").style.display="none"; err.textContent = "";
-    var pos = posizioniDi(trovato.dep);
-    U = {dep:trovato.dep, sigla:trovato.dep.sigla, nome:nomePersona(trovato.dep.ruota[trovato.i]),
-         base:trovato.i, mat:v, posizioni:pos, tot:pos.length};
+    if(speciale){
+      var depSpeciale=DEPOSITI[speciale.gruppo.sig];
+      U={dep:depSpeciale,sigla:depSpeciale.sigla,nome:speciale.nome,mat:v,speciale:true,
+        posizioni:[],base:0,tot:speciale.gruppo.persone.length};
+    }else{
+      var pos = posizioniDi(trovato.dep);
+      U = {dep:trovato.dep, sigla:trovato.dep.sigla, nome:nomePersona(trovato.dep.ruota[trovato.i]),
+           base:trovato.i, mat:v, posizioni:pos, tot:pos.length};
+    }
     if(!MODALITA_INTEGRATA)RIPOSO_MATTO_PERSONALE=leggiRiposoMattoRuota();
     applicaTema(null,v,false);
     salvaMatricolaRicordata(v);
@@ -2296,7 +2405,8 @@
     $("saluto").innerHTML = U.nome + " · " + U.dep.nome;
     $("menuNome").textContent = U.nome;
     $("menuDeposito").textContent = U.dep.nome + " · scegli cosa vuoi consultare";
-    $("cerca").placeholder = "Es. un cognome · oppure " + U.posizioni[20];
+    $("cerca").placeholder = U.speciale?"Es. un cognome · oppure "+speciale.codice:"Es. un cognome · oppure " + U.posizioni[20];
+    $("menu").querySelector('[data-vai="confronta"]').closest("li").style.display=U.speciale?"none":"";
     rDep = U.dep;
     tuttiDepositiAttivita = true;
     mostra("menu");
@@ -2334,7 +2444,7 @@
     return true;
   };
   window.__apriConfrontoRuotaIntegrata=function(codice,dataIso){
-    if(!MODALITA_INTEGRATA||!U)return false;
+    if(!MODALITA_INTEGRATA||!U||U.speciale)return false;
     var m=String(codice||"").replace(/\s+/g,"").toUpperCase().match(/^(PR|GAL|SFS|BIS)([123]\d{2})$/);
     cData=/^\d{4}-\d{2}-\d{2}$/.test(String(dataIso||""))?daISO(dataIso):new Date();
     cTarget=null;cPrimoTarget=null;cRicercaQuale="";
@@ -2438,7 +2548,43 @@
     return testo || "Nessun riposo indicato";
   }
 
+  function strisciaSpecialeHTML(info,lun,evidenzia){
+    var giorni=[];
+    for(var i=0;i<7;i++){
+      var data=spostaGiorni(lun,i),servizio=righeTurnoSpeciale(info,data);
+      var riposo=info.categoria==="Anziani"&&i===6;
+      giorni.push({stato:riposo?"riposo":"",testo:riposo?"Rip.":(servizio.incerto||!servizio.righe.length?"?":"Prev.")});
+    }
+    return strisciaHTML(giorni,evidenzia);
+  }
+  function dettaglioSettimanaSpecialeHTML(info,lun){
+    var html="";
+    for(var i=0;i<7;i++)html+=dettaglioTurnoSpecialeHTML(info,spostaGiorni(lun,i));
+    return html;
+  }
+  function notaPersonaleSpeciale(info){
+    return info.categoria==="Anziani"
+      ?"Turno anziani previsto. <b>Domenica</b> riposo; <b>sabato</b> da verificare."
+      :"Turno notte previsto. Riposi personali e sostituzioni da verificare.";
+  }
+  function disegnaQuestaSpeciale(){
+    var oggi=new Date(),lun=qLun,dom=spostaGiorni(lun,6),corrente=lun.getTime()===lunediDi(oggi).getTime();
+    var info=specialePerMatricola(U.mat,lun),gi=corrente?(oggi.getDay()+6)%7:-1;
+    $("qIdentita").textContent=U.dep.nome+(info?" · "+info.codice:"");
+    $("qQuando").innerHTML="<span>Dal "+fmtConAnno(lun)+"</span><span>Al "+fmtConAnno(dom)+"</span>";
+    $("qCodice").textContent=info?info.codice:"—";
+    $("qOggiPersonale").style.display="grid";
+    $("qNota").innerHTML=info?notaPersonaleSpeciale(info):"Nessuna previsione disponibile per questa settimana.";
+    if(!info){$("qBollo").innerHTML="";$("qGiorno").innerHTML="";$("qTurno").innerHTML="";$("qGiorni").innerHTML="";return;}
+    var riposo=gi===6&&info.categoria==="Anziani";
+    $("qBollo").innerHTML=gi<0?"":'<span class="bollo '+(riposo?"riposo":"lavoro")+'">'+(riposo?"Oggi riposo":"Turno probabile")+'</span>';
+    $("qGiorno").innerHTML=gi<0?"":'<div class="turno-giorno-mio"><p class="turno-giorno-titolo">Turno del giorno</p>'
+      +dettaglioTurnoSpecialeHTML(info,spostaGiorni(lun,gi))+'</div>';
+    $("qTurno").innerHTML=dettaglioSettimanaSpecialeHTML(info,lun);
+    $("qGiorni").innerHTML=strisciaSpecialeHTML(info,lun,gi);
+  }
   function disegnaQuesta(){
+    if(U.speciale){disegnaQuestaSpeciale();return;}
     var oggi = new Date(), lun = qLun, corrente=lun.getTime()===lunediDi(oggi).getTime();
     var gi = corrente ? (oggi.getDay()+6)%7 : -1;
     var dom = spostaGiorni(lun,6);
@@ -2505,6 +2651,15 @@
   function disegnaSettimana(){
     var dom = spostaGiorni(sLun,6);
     $("sQuando").textContent = "Settimana da lunedì "+fmtConAnno(sLun)+" a domenica "+fmtConAnno(dom);
+    if(U.speciale){
+      var info=specialePerMatricola(U.mat,sLun);
+      $("sCodice").textContent=info?info.codice:"—";
+      $("sNota").innerHTML=info?notaPersonaleSpeciale(info):"Nessuna previsione disponibile per questa settimana.";
+      $("sIndizio").innerHTML="";$("sIndizio").style.display="none";
+      $("sTurno").innerHTML=info?dettaglioSettimanaSpecialeHTML(info,sLun):"";
+      $("sGiorni").innerHTML=info?strisciaSpecialeHTML(info,sLun,-1):"";
+      return;
+    }
     var pos = posizioneDi(U.base, sLun), sett = settimanaDiDeposito(U.dep,pos,sLun);
     $("sCodice").textContent = cod(pos);
 
@@ -2861,7 +3016,8 @@
 
   function occupantePosizione(dep,p,lun){
     var posizioni=posizioniDi(dep), indice=posizioni.indexOf(p), n=posizioni.length, k=settimaneDa(lun);
-    return indice<0 ? null : dep.ruota[((indice-k)%n+n)%n];
+    var occupante=indice<0 ? null : dep.ruota[((indice-k)%n+n)%n];
+    return occupante&&specialePerMatricola(occupante[1],lun)?null:occupante;
   }
 
   /* Restituisce chi svolge davvero quella posizione nel giorno scelto.
@@ -2914,6 +3070,8 @@
           segmento.posizione=turno.turno;
           segmento.categoria=turno.categoria||"Turno non in rotazione";
           segmento.extra=true;
+          var persona=specialePerTurno(turno.turno,turno.categoria,data);
+          if(persona){segmento.nome=persona.nome;segmento.matricola=persona.occupante[1];segmento.probabile=true;}
           out.push(segmento);
         });
       });
@@ -2962,7 +3120,7 @@
   function passaggioTrenoHTML(tipo,segmento){
     var prima=tipo==="Prima";
     if(!segmento)return '<div class="treno-passaggio manca"><span>'+tipo+'</span><strong>Nessun turno '+(prima?'precedente':'successivo')+'</strong></div>';
-    if(segmento.extra)return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>Turno '+esc(segmento.posizione)+' · conducente non disponibile</strong><small>'+esc(intervalloTreno(segmento))+' · '+esc(segmento.categoria)+'</small></div>';
+    if(segmento.extra)return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>Turno '+esc(segmento.posizione)+' · '+(segmento.probabile?'probabilmente '+esc(segmento.nome):'conducente non disponibile')+'</strong><small>'+esc(intervalloTreno(segmento))+' · '+esc(segmento.categoria)+'</small></div>';
     if(!segmento.matricola)return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>Turno scoperto</strong><small>'+esc(intervalloTreno(segmento))+' · '+esc(segmento.posizione)+'</small></div>';
     return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>'+(prima?'Guidava ':'Guiderà ')+esc(segmento.nome)+'</strong><small>'+esc(intervalloTreno(segmento))+'</small></div>';
   }
@@ -2993,8 +3151,9 @@
     if(attuali.length===1){
       var attuale=attuali[0];
       if(attuale.extra){
-        titolo="Conducente non identificabile";
-        nota="Il "+tNumero+" risulta nel turno "+attuale.posizione+" · "+attuale.categoria+", "+intervalloTreno(attuale)+". I nominativi di questo gruppo non sono presenti nella Ruota.";
+        titolo=attuale.probabile?"Probabilmente guida "+attuale.nome:"Conducente non identificabile";
+        nota="Il "+tNumero+" risulta nel turno "+attuale.posizione+" · "+attuale.categoria+", "+intervalloTreno(attuale)+". "
+          +(attuale.probabile?"Nominativo previsto dalla rotazione; riposi personali e sostituzioni da verificare.":"Il nominativo di questo turno non è disponibile.");
       }else if(!attuale.matricola){
         titolo="Turno scoperto";
         nota="La tabella "+tNumero+" è nel turno "+attuale.posizione+", "+intervalloTreno(attuale)+", ma la posizione risulta scoperta nella Ruota.";
@@ -3004,7 +3163,7 @@
     }
     else if(attuali.length>1){
       titolo="Più turni coprono questo momento";
-      nota=attuali.map(function(s){return s.extra?s.posizione+" (conducente non disponibile)":s.nome+" · "+s.posizione;}).join("; ")+". Gli intervalli del foglio si sovrappongono, spesso per il passaggio di consegne.";
+      nota=attuali.map(function(s){return s.extra?s.posizione+" ("+(s.probabile?"probabilmente "+s.nome:"conducente non disponibile")+")":s.nome+" · "+s.posizione;}).join("; ")+". Gli intervalli del foglio si sovrappongono, spesso per il passaggio di consegne.";
     }
     else{
       titolo="Nessuna copertura registrata";
@@ -3014,7 +3173,7 @@
       '<div class="treno-passaggi">'+passaggioTrenoHTML("Prima",risultato.prima)+passaggioTrenoHTML("Dopo",risultato.dopo)+'</div>'+
       '<section class="treno-cronologia"><h3>Chi guida il '+esc(tNumero)+' nella giornata</h3><div class="treno-lista">'+risultato.segmenti.map(function(s){
         var attivo=s.inizio<=risultato.riferimento&&risultato.riferimento<s.fine;
-        var nome=s.extra?'Turno '+s.posizione+' · conducente non disponibile':s.nome;
+        var nome=s.extra?'Turno '+s.posizione+' · '+(s.probabile?'probabilmente '+s.nome:'conducente non disponibile'):s.nome;
         var dettaglio=s.extra?s.categoria:s.posizione;
         return '<div class="treno-riga'+(attivo?' on':'')+'"><span class="treno-riga-ora">'+esc(intervalloTreno(s))+'</span><span><strong>'+esc(nome)+'</strong><small>'+esc(dettaglio)+'</small></span></div>';
       }).join("")+'</div></section><p class="treno-nota">Indicazione calcolata dalla Ruota. Eventuali cambi o sostituzioni non registrati non possono essere mostrati.</p>';
@@ -3124,7 +3283,7 @@
     function risultatiDeposito(d,mostraDep){
       var html="", numero=0, ps=posizioniDi(d), tot=ps.length;
       for(var i=0;i<ps.length;i++){
-        var occ=d.ruota[((i-k)%tot+tot)%tot];
+        var occ=occupantePosizione(d,ps[i],rLun);
         var nome=occ?nomePersona(occ):"turno scoperto o collega non presente in ruota";
         var alias=occ&&NOMI_COMPLETI_MATRICOLA[occ[1]]?NOMI_COMPLETI_MATRICOLA[occ[1]]:"";
         var esitoFiltro=corrispondenzePosizione(d,ps[i]);
@@ -3140,6 +3299,14 @@
           var avvisoSurrogante=rModo==="settimana"?surroganteSettimanaHTML(d,ps[i],rLun):"";
           if(avvisoSurrogante){html+=avvisoSurrogante;noteSurroganti+=(avvisoSurrogante.match(/risultato-surrogante/g)||[]).length;}
         }
+      }
+      if(filtro&&!filtroAttivita&&!filtroFascia){
+        turniSpecialiDelDeposito(d.sigla,dataRiferimento).forEach(function(info){
+          var completo=NOMI_COMPLETI_MATRICOLA[info.occupante[1]]||"";
+          var testo=normalizzaRicerca(info.codice+" "+info.nome+" "+completo+" "+info.occupante[1]+" "+info.categoria);
+          if(testo.indexOf(filtro)<0)return;
+          html+=rigaTurnoSpecialeHTML(info,dataRiferimento);numero++;
+        });
       }
       return {html:html,numero:numero};
     }
