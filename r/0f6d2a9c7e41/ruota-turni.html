@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.82" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.83" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <script>
   /* Tema prima del primo disegno: usa l'ultima matricola nota e non mostra
@@ -680,7 +680,7 @@
   .treno-adesso .etichetta i{width:8px;height:8px;border-radius:50%;background:var(--rossa);box-shadow:0 0 0 5px rgba(255,138,61,.13)}
   .treno-adesso h3{position:relative;z-index:1;margin:0;font-size:25px;line-height:1.18}
   .treno-adesso p{position:relative;z-index:1;margin:7px 0 0;color:var(--soft);font-size:14px}
-  .treno-passaggi{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .treno-sequenza{display:grid;gap:10px}
   .treno-passaggio{padding:14px;border:1px solid var(--linea);border-radius:16px;background:var(--carta)}
   .treno-passaggio>span{display:block;margin-bottom:5px;color:var(--soft);font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
   .treno-passaggio strong{display:block;font-size:16px;line-height:1.25}
@@ -748,7 +748,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.82" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.83" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -955,12 +955,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.82</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.83</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.82", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.83", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -975,12 +975,12 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.82"></script>
-<script src="turni-precisi.js?v=0.82"></script>
-<script src="attivita-turni.js?v=0.82"></script>
-<script src="alias-nomi.js?v=0.82"></script>
-<script src="gestore-config.js?v=0.82"></script>
-<script src="calendario-turni.js?v=0.82"></script>
+<script src="schedule-config.js?v=0.83"></script>
+<script src="turni-precisi.js?v=0.83"></script>
+<script src="attivita-turni.js?v=0.83"></script>
+<script src="alias-nomi.js?v=0.83"></script>
+<script src="gestore-config.js?v=0.83"></script>
+<script src="calendario-turni.js?v=0.83"></script>
 
 <script>
 (function(){
@@ -2316,7 +2316,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.82");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.83");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -3246,8 +3246,9 @@
       titolo="Nessuna copertura registrata";
       nota="Nei fogli disponibili non compare un turno per il "+tNumero+" alle "+tOra+". Il treno può essere fermo oppure coperto da un gruppo non ancora censito; il conducente non può essere determinato.";
     }
-    var html='<section class="treno-adesso"><p class="etichetta"><i></i>'+esc(etichetta)+'</p><h3>'+esc(titolo)+'</h3><p>'+esc(nota)+'</p></section>'+
-      '<div class="treno-passaggi">'+passaggioTrenoHTML("Prima",risultato.prima)+passaggioTrenoHTML("Dopo",risultato.dopo)+'</div>'+
+    var html='<div class="treno-sequenza">'+passaggioTrenoHTML("Prima",risultato.prima)+
+      '<section class="treno-adesso"><p class="etichetta"><i></i>'+esc(etichetta)+'</p><h3>'+esc(titolo)+'</h3><p>'+esc(nota)+'</p></section>'+
+      passaggioTrenoHTML("Dopo",risultato.dopo)+'</div>'+
       '<section class="treno-cronologia"><h3>Chi guida il '+esc(tNumero)+' nella giornata</h3><div class="treno-lista">'+risultato.segmenti.map(function(s){
         var attivo=s.inizio<=risultato.riferimento&&risultato.riferimento<s.fine;
         var nome=s.extra?(s.probabile?s.nome:"Conducente non identificabile"):s.nome;
