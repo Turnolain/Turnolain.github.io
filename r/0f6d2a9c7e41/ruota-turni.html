@@ -10,7 +10,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="icon" href="favicon.svg?v=0.76" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=0.82" type="image/svg+xml">
 <title>Ruota Virtuale</title>
 <script>
   /* Tema prima del primo disegno: usa l'ultima matricola nota e non mostra
@@ -110,7 +110,7 @@
   .indizio .val{font-size:21px;font-weight:800;margin:0;line-height:1.25}
   .indizio .nb{font-size:14px;color:var(--soft);margin:6px 0 0;font-weight:500;line-height:1.45}
   .turno-giorno-mio{margin:16px 0 0}
-  .turno-giorno-titolo{margin:0 0 8px;font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--rossa)}
+  .turno-giorno-titolo{margin:0 0 8px;font-size:16px;font-weight:700;letter-spacing:0;color:var(--rossa)}
   .turno-giorno-mio>.turno-probabile{margin-top:0;border:2px solid var(--rossa);box-shadow:0 8px 24px rgba(255,138,61,.16)}
   .turno-probabile{margin:16px 0 0;background:#CDD2D6;color:#202326;border:1px solid #70777E;border-radius:4px;
                    padding:15px 16px;text-align:left;box-shadow:0 2px 7px rgba(0,0,0,.12)}
@@ -452,7 +452,7 @@
   }
   body{max-width:680px;font-size:17px;line-height:1.45}
   .schermata{padding:18px 18px 64px}
-  .barra{min-height:68px;margin:0 auto;padding:11px 18px;background:rgba(11,17,25,.96);border-bottom:1px solid var(--linea);backdrop-filter:blur(14px)}
+  .barra{position:sticky;top:0;min-height:68px;margin:0 auto;padding:11px 18px;background:rgba(11,17,25,.96);border-bottom:1px solid var(--linea);backdrop-filter:blur(14px)}
   .barra-marchio{display:none;align-items:center;gap:9px;margin-right:auto;font-size:15px;font-weight:700;white-space:nowrap}
   .barra-logo{display:grid;width:38px;height:38px;place-items:center;border-radius:11px;background:var(--rossa);color:#17110D}
   .barra-logo svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -532,7 +532,6 @@
   :root[data-theme="light"] .scelta,
   :root[data-theme="light"] .riquadro,
   :root[data-theme="light"] .oggi-personale,
-  :root[data-theme="light"] .settimana-breve,
   :root[data-theme="light"] ol li.con-dettaglio{background:linear-gradient(145deg,#FFFFFF,#EEF3F7)}
   :root[data-theme="light"] .oggi-personale,
   :root[data-theme="light"] .turno-giorno-mio>.turno-probabile{background:linear-gradient(145deg,#FFFFFF,#FFF3EA)}
@@ -578,12 +577,8 @@
   #menu .pagina-titolo .occhiello{margin-bottom:7px;color:var(--rossa)}
   #menu .pagina-titolo h2{margin-bottom:0}
   .integrata-caricamento,.integrata-utili{display:none}
-  body.integrata .barra{display:flex;min-height:0;padding:10px 14px 0;border:0;background:transparent;backdrop-filter:none}
-  body.integrata .barra>*{display:none!important}
-  body.integrata .barra .casa{display:flex!important;flex:0 0 46px;width:46px;height:42px;border:1px solid #FFAA70;border-radius:12px;background:var(--rossa);box-shadow:0 6px 16px rgba(255,138,61,.2)}
-  body.integrata .barra .casa svg{display:none}
-  body.integrata .barra .casa::before{content:"←";color:var(--azzurro-ink);font:800 23px/1 Arial,sans-serif;transform:none}
-  body.integrata[data-schermata="accesso"] .barra,body.integrata[data-schermata="menu"] .barra{display:none}
+  /* Nella WebView integrata il ritorno sta nelle schede persistenti di Attilio Smart. */
+  body.integrata .barra{display:none!important}
   body.integrata .schermata{padding-top:10px}
   body.integrata #accesso>*:not(.integrata-caricamento){display:none!important}
   body.integrata #accesso{padding-top:34px}
@@ -604,21 +599,23 @@
   .scelta .scelta-testo small{display:block;color:var(--soft);font-size:14px;font-weight:400;line-height:1.35}
   .scelta .scelta-freccia{display:block;margin:0;color:var(--soft);font-size:30px;line-height:1;text-align:center}
   #questa>.sett-label{margin-top:0}
-  .oggi-personale,.settimana-breve{display:grid;gap:12px;margin-top:14px;padding:15px;border:1px solid var(--linea);border-radius:19px;background:linear-gradient(145deg,var(--carta),#121D29);box-shadow:0 10px 28px rgba(0,0,0,.18)}
-  .oggi-personale{border-color:var(--rossa);background:linear-gradient(145deg,var(--carta),#2A211D)}
+  .oggi-personale{display:grid;gap:12px;margin-top:14px;padding:15px;border:1px solid var(--rossa);border-radius:19px;background:linear-gradient(145deg,var(--carta),#2A211D);box-shadow:0 10px 28px rgba(0,0,0,.18)}
   .oggi-personale .riquadro{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;text-align:left}
   .oggi-personale .riquadro .chi{margin-bottom:6px;color:var(--rossa)}
   .oggi-personale .riquadro .grande{display:inline;font-size:38px;line-height:1}
-  .oggi-personale .riquadro #qBollo{display:inline;margin-left:8px;vertical-align:5px}
-  .oggi-personale .riquadro .bollo{margin:0;padding:6px 10px;font-size:11px;letter-spacing:.04em}
+  .oggi-personale .riquadro .tipo-settimana{display:inline;margin-left:9px;color:var(--ink);font-size:19px;font-weight:750;vertical-align:4px}
   .oggi-personale .riquadro .sotto{margin-top:10px;font-size:15px}
+  .oggi-personale .riquadro .sotto:empty{display:none}
+  ol li.gruppo-speciale{display:block;margin:13px 3px 3px;padding:4px 6px;border:0;color:var(--soft);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+  ol li.turno-speciale .pos{flex-basis:68px}
+  ol li.turno-speciale .rip{flex-basis:78px}
+  ol li.turno-speciale .nome em{margin-top:3px;color:var(--soft);font-size:12px;font-weight:600;line-height:1.25;letter-spacing:0;text-transform:none}
+  #notaRuota:empty{display:none}
+  #ruota footer{margin-top:24px;padding-top:12px;font-size:12px;line-height:1.45}
+  #ruota footer details summary{color:var(--soft);font-weight:700;cursor:pointer}
+  #ruota footer details p{margin:8px 0 0}
   .oggi-personale .turno-giorno-mio{margin-top:0}
   .oggi-personale .turno-giorno-mio>.turno-probabile{margin-top:0;background:var(--elevata)}
-  .settimana-breve h3{margin:0;font-size:20px}
-  .settimana-breve .giorni{margin-top:0}
-  .settimana-breve .legenda{gap:10px 14px;margin-top:0;font-size:13px}
-  .dettaglio-settimana-mia{padding-top:3px;border-top:1px solid var(--linea)}
-  .dettaglio-settimana-mia #qTurno>.turno-probabile{margin-top:12px}
   .campo-ricerca{position:relative}
   .campo-ricerca>svg{position:absolute;left:17px;top:50%;z-index:1;width:22px;height:22px;transform:translateY(-50%);fill:none;stroke:var(--soft);stroke-width:2;stroke-linecap:round;pointer-events:none}
   .campo-ricerca #cerca{padding-left:50px}
@@ -644,6 +641,20 @@
   .confronto-selettori button{min-height:72px;padding:11px 12px}
   .confronto-card{margin-top:12px;padding:14px}
   .confronto-card .turno-probabile{background:var(--elevata)}
+  .confronto-suggeriti{margin:16px 0 14px}
+  .confronto-suggeriti h3{margin:0 0 9px;font-size:18px;line-height:1.2}
+  .confronto-suggeriti-lista{display:grid;gap:8px}
+  .confronto-suggerito{display:grid;grid-template-columns:48px minmax(0,1fr) 12px;align-items:center;gap:10px;width:100%;min-height:67px;padding:10px 12px;text-align:left;border:1px solid var(--linea);border-radius:14px;background:var(--carta);color:var(--ink);cursor:pointer}
+  .confronto-suggerito:active{border-color:var(--rossa)}
+  .confronto-suggerito:focus-visible{outline:2px solid var(--rossa);outline-offset:2px}
+  .confronto-suggerito .ora{color:var(--rossa);font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
+  .confronto-suggerito .collega{min-width:0}
+  .confronto-suggerito strong,.confronto-suggerito small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .confronto-suggerito strong{font-size:16px;line-height:1.2}
+  .confronto-suggerito small{margin-top:3px;color:var(--soft);font-size:12px}
+  .confronto-suggerito .freccia{color:var(--soft);font-size:20px}
+  .confronto-suggeriti-vuoto{margin:0;padding:12px 14px;border:1px dashed var(--linea);border-radius:12px;color:var(--soft);font-size:14px}
+  .confronto-suggeriti-altro{margin-top:8px;padding:8px 0;border:0;background:transparent;color:var(--rossa);font-size:14px;font-weight:700;cursor:pointer}
   #settimana>h2{margin-top:4px}
   .treno-cerca{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;margin:0 0 18px}
   .treno-campo{position:relative;min-width:0}
@@ -687,7 +698,7 @@
   @media(max-width:420px){
     .scelta{grid-template-columns:42px minmax(0,1fr) 18px;gap:11px}.scelta .scelta-icona{width:42px;height:42px}
     .scelta .scelta-testo b{font-size:18px}.scelta .scelta-testo small{font-size:13px}
-    .oggi-personale,.settimana-breve{padding:13px}.oggi-personale .riquadro .grande{font-size:34px}
+    .oggi-personale{padding:13px}.oggi-personale .riquadro .grande{font-size:34px}
     .tempo-nav.vista-settimana{padding:8px;gap:5px}
     .tempo-nav.vista-settimana>button{flex-basis:38px;width:38px;height:38px}
     .tempo-nav.vista-settimana .data-calendario-riga{gap:5px}
@@ -737,7 +748,7 @@
     <p class="link-utili-titolo">Link utili</p>
     <div class="link-utili-griglia">
       <a class="link-utile" href="https://attilio23.atm.it/" target="_blank" rel="noopener noreferrer">
-        <img class="icona-attilio" src="icona-attilio.webp?v=0.76" alt="Attilio">
+        <img class="icona-attilio" src="icona-attilio.webp?v=0.82" alt="Attilio">
       </a>
       <a class="link-utile" href="https://portaledipendente.atm.it/Amministrazione/Cedolini" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3h12l5 5v21H8z"/><path d="M20 3v6h5M12 15h9M12 20h9M12 25h6"/><circle cx="11" cy="9" r="3"/></svg>
@@ -757,35 +768,34 @@
   <ul class="scelte">
     <li><button class="scelta" data-vai="questa">
       <span class="scelta-icona" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span>
-      <span class="scelta-testo"><b>In che posizione mi trovo</b><small>Visualizza la tua posizione in Ruota e il tuo foglio turni per qualsiasi settimana</small></span>
+      <span class="scelta-testo"><b>La mia posizione</b><small>Posizione e turni della settimana</small></span>
       <span class="scelta-freccia" aria-hidden="true">›</span>
     </button></li>
     <li><button class="scelta" data-vai="ruota">
       <span class="scelta-icona" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-      <span class="scelta-testo"><b>Ricerca colleghi</b><small>Nome, matricola o posizione in ruota</small></span>
+      <span class="scelta-testo"><b>Ricerca colleghi</b><small>Nome o posizione</small></span>
       <span class="scelta-freccia" aria-hidden="true">›</span>
     </button></li>
     <li><button class="scelta" data-vai="confronta">
       <span class="scelta-icona" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m16 3 4 4-4 4M20 7H4M8 21l-4-4 4-4M4 17h16"/></svg></span>
-      <span class="scelta-testo"><b>Confronta turni</b><small>Orari e possibili punti d’incontro</small></span>
+      <span class="scelta-testo"><b>Confronta turni</b><small>Orari e incontri</small></span>
       <span class="scelta-freccia" aria-hidden="true">›</span>
     </button></li>
     <li><button class="scelta" data-vai="treno">
       <span class="scelta-icona" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="13" height="15" rx="3"/><path d="M7 7h7M7 11h7M7 18l-2 3M15 18l2 3"/><circle cx="8" cy="15" r="1"/><circle cx="13" cy="15" r="1"/><circle cx="18.5" cy="8.5" r="3.5"/><path d="m21 11 2 2"/></svg></span>
-      <span class="scelta-testo"><b>Ricerca treno</b><small>Chi lo guida adesso, prima e dopo</small></span>
+      <span class="scelta-testo"><b>Ricerca treno</b><small>Chi lo guida</small></span>
       <span class="scelta-freccia" aria-hidden="true">›</span>
     </button></li>
   </ul>
 </div>
 
 <div class="schermata" id="treno">
-  <div class="pagina-titolo"><p class="occhiello">Ricerca treno</p><h2>Che treno stai cercando?</h2><p class="guida">Inserisci il numero della tabella per vedere chi risulta alla guida secondo la Ruota.</p></div>
+  <div class="pagina-titolo"><h2>Ricerca treno</h2><p class="guida">Inserisci il numero della tabella.</p></div>
   <form class="treno-cerca" id="tForm">
     <label class="treno-campo" for="tNumero"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="13" height="15" rx="3"/><path d="M6 7h7M6 11h7M6 18l-2 3M14 18l2 3"/><circle cx="7" cy="15" r="1"/><circle cx="12" cy="15" r="1"/><circle cx="18" cy="8" r="3"/><path d="m20.2 10.2 2.3 2.3"/></svg><input id="tNumero" type="search" inputmode="numeric" pattern="[0-9]*" maxlength="3" placeholder="Es. 63" autocomplete="off" aria-label="Numero del treno"></label>
     <button type="submit">Cerca</button>
   </form>
   <p class="treno-errore" id="tErrore" aria-live="polite"></p>
-  <p class="sett-label">Giorno e ora</p>
   <div class="treno-tempo">
     <div class="giornoNav">
       <button id="tPrec" type="button" aria-label="Giorno precedente">‹</button>
@@ -794,12 +804,10 @@
     </div>
     <label class="treno-ora" for="tOra"><span>Ora</span><input id="tOra" type="time" step="60" aria-label="Ora di riferimento"></label>
   </div>
-  <div id="tEsito" aria-live="polite"><div class="treno-vuoto"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="13" height="15" rx="3"/><path d="M7 7h7M7 11h7M7 18l-2 3M15 18l2 3"/><circle cx="8" cy="15" r="1"/><circle cx="13" cy="15" r="1"/></svg><b>Inserisci un numero</b>La ricerca usa i turni della data e dell’ora selezionate.</div></div>
+  <div id="tEsito" aria-live="polite"></div>
 </div>
 
 <div class="schermata" id="questa">
-  <div class="pagina-titolo"><h2>In che posizione mi trovo</h2><p class="guida" id="qIdentita"></p></div>
-  <p class="sett-label">Settimana</p>
   <div class="settNav" style="margin:0 0 18px">
     <button id="qPrec" aria-label="Settimana precedente">‹</button>
     <div class="tempo-centro">
@@ -814,27 +822,19 @@
     <div class="riquadro">
       <p class="chi">Posizione della settimana</p>
       <p class="grande" id="qCodice"></p>
-      <div id="qBollo"></div>
+      <span class="tipo-settimana" id="qTipo"></span>
       <p class="sotto" id="qNota"></p>
     </div>
     <div id="qGiorno"></div>
   </section>
-  <section class="settimana-breve">
-    <h3>Settimana in breve</h3>
-    <div class="giorni" id="qGiorni"></div>
-    <div class="legenda">
-      <span><i style="background:var(--carta);box-shadow:inset 0 0 0 1px var(--linea)"></i>Lavoro</span>
-      <span><i style="background:var(--ink)"></i>Riposo</span>
-      <span><i style="background:var(--ottone)"></i>Scomputo</span>
-      <span><i style="background:var(--rossa)"></i>Surrogante</span>
-    </div>
-    <div class="dettaglio-settimana-mia"><div id="qTurno"></div></div>
+  <section class="dettaglio-settimana-mia" aria-label="Turni effettivi della settimana">
+    <div id="qTurno"></div>
   </section>
 </div>
 
 <div class="schermata" id="settimana">
   <h2>Calendario dei miei turni</h2>
-  <p class="guida">Tocca un giorno qualsiasi della settimana che ti interessa.</p>
+  <p class="guida">Scegli una settimana dal calendario.</p>
   <div class="mese">
     <button id="mPrec" aria-label="Mese precedente">‹</button>
     <span class="nome" id="mNome"></span>
@@ -863,7 +863,6 @@
 
 <div class="schermata" id="confronta">
   <h2>Confronta turni</h2>
-  <p class="sett-label">Giorno</p>
   <div class="giornoNav">
     <button id="cPrec" aria-label="Giorno precedente">‹</button>
     <div class="tempo-centro">
@@ -900,6 +899,11 @@
     <p class="confronto-card-nome" id="cCollegaNome"></p>
     <div id="cCollegaTurno"></div>
   </section>
+  <section class="confronto-suggeriti" id="cSuggeriti" aria-label="Incontri probabili">
+    <h3>Incontri probabili</h3>
+    <div class="confronto-suggeriti-lista" id="cSuggeritiLista"></div>
+    <button class="confronto-suggeriti-altro" id="cMostraTutti" type="button" style="display:none"></button>
+  </section>
 </div>
 
 <div class="schermata" id="ruota">
@@ -921,7 +925,6 @@
     </div>
   </div>
   <p class="avviso" id="avviso" style="display:none"></p>
-  <p class="sett-label" id="rEtichettaTempo">Giorno specifico</p>
   <div class="settNav tempo-nav">
       <button id="rPrec" aria-label="Settimana precedente">‹</button>
     <div class="tempo-centro">
@@ -937,7 +940,7 @@
   <ol id="elenco"></ol>
   <footer>
     <p id="notaRuota"></p>
-    <p>La descrizione probabile e il dettaglio sono ricavati dai fogli turni attivi e dallo schema di rotazione. Le comunicazioni speciali prevalgono sul programma ordinario.</p>
+    <details><summary>Come vengono calcolati i turni</summary><p>Le indicazioni derivano dai fogli turni e dalla rotazione. Le comunicazioni speciali prevalgono sul programma ordinario.</p></details>
   </footer>
 </div>
 
@@ -952,12 +955,12 @@
 <div class="segnala-overlay" id="segnalaOverlay" aria-hidden="true"><div class="segnala-card" role="dialog" aria-modal="true" aria-labelledby="segnalaTitolo"><button class="segnala-chiudi" id="chiudiSegnala" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="segnalaTitolo">Come possiamo aiutarti?</h2><button class="segnala-scelta" data-segnala-tipo="matricola"><b>Matricola mancante</b><span>Scrivi matricola e deposito: provvederemo ad aggiungerti.</span></button><button class="segnala-scelta" data-segnala-tipo="errore"><b>Segnala un errore</b><span>Raccontaci la problematica riscontrata.</span></button><button class="segnala-scelta" data-segnala-tipo="scoperta"><b>Riempi una posizione scoperta</b><span>Indica chi ricopre una casella vuota.</span></button></div></div>
 <div class="messaggio-overlay" id="messaggioOverlay" aria-hidden="true"><div class="messaggio-card" role="dialog" aria-modal="true" aria-labelledby="messaggioTitolo"><button class="segnala-chiudi" id="chiudiMessaggio" aria-label="Chiudi"></button><p class="occhiello">Assistenza</p><h2 id="messaggioTitolo">Prepara la segnalazione</h2><p id="messaggioGuida">Compila ciò che sai: nessun campo è obbligatorio.</p><span class="assistenza-email">assistenzaruotavirtuale@gmail.com</span><div class="campi-segnalazione" id="campiSegnalazione"></div><textarea class="messaggio-testo" id="messaggioTesto" readonly aria-label="Messaggio pronto da copiare"></textarea><div class="messaggio-azioni"><button class="bottone messaggio-copia" id="copiaMessaggio">Copia messaggio</button></div></div></div>
 <div class="copia-conferma" id="copiaConferma" role="status" aria-live="polite">Messaggio copiato. Ora apri il tuo programma di posta, incolla il testo e invialo a <b>assistenzaruotavirtuale@gmail.com</b>.</div>
-<div class="versione-app" aria-label="Versione applicazione">v0.76</div>
+<div class="versione-app" aria-label="Versione applicazione">v0.82</div>
 
 <script>
 (function(){
   if(location.protocol!=="http:" && location.protocol!=="https:") return;
-  var versioneLocale="0.76", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
+  var versioneLocale="0.82", interazione=false, controller=typeof AbortController!=="undefined"?new AbortController():null;
   function usaApp(){interazione=true;}
   addEventListener("pointerdown",usaApp,{once:true,capture:true});addEventListener("keydown",usaApp,{once:true,capture:true});
   var limite=setTimeout(function(){if(controller)controller.abort();},4000);
@@ -972,12 +975,12 @@
   }).catch(function(){clearTimeout(limite);});
 })();
 </script>
-<script src="schedule-config.js?v=0.76"></script>
-<script src="turni-precisi.js?v=0.76"></script>
-<script src="attivita-turni.js?v=0.76"></script>
-<script src="alias-nomi.js?v=0.76"></script>
-<script src="gestore-config.js?v=0.76"></script>
-<script src="calendario-turni.js?v=0.76"></script>
+<script src="schedule-config.js?v=0.82"></script>
+<script src="turni-precisi.js?v=0.82"></script>
+<script src="attivita-turni.js?v=0.82"></script>
+<script src="alias-nomi.js?v=0.82"></script>
+<script src="gestore-config.js?v=0.82"></script>
+<script src="calendario-turni.js?v=0.82"></script>
 
 <script>
 (function(){
@@ -1825,6 +1828,7 @@
   function daISO(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
   function fmt(d){ return d.getDate()+" "+MESI[d.getMonth()]; }
   function fmtConAnno(d){ return fmt(d)+" "+d.getFullYear(); }
+  function fmtDataBreve(d){return GIORNI[(d.getDay()+6)%7]+" "+String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear();}
   function fmtIntervalloSettimana(lun,dom){
     return lun.getFullYear()===dom.getFullYear()
       ? fmt(lun)+" – "+fmt(dom)+" "+dom.getFullYear()
@@ -1879,7 +1883,7 @@
   function focusMatricolaDesktop(){if(!dispositivoTouch())$("matricola").focus();}
   var qLun = lunediDi(new Date()), sLun = lunediDi(new Date()), calMese = new Date(), rLun = lunediDi(new Date());
   var rModo="giorno", rData=new Date(), rGiornoInizializzato=true;
-  var cData = new Date(), cTarget = null, cPrimoTarget = null, cRicercaQuale = "";
+  var cData = new Date(), cTarget = null, cPrimoTarget = null, cRicercaQuale = "", cIncontriEspansi = false;
   var tData = new Date(), tOra = oraLocale(new Date()), tNumero = "";
   var rDep = null;   // deposito mostrato nella schermata di ricerca
   var filtroAttivita="", sottofiltroAttivita="", filtroFascia="", filtriAttivitaAperti=false, tuttiDepositiAttivita=true;
@@ -1891,7 +1895,7 @@
     $("cRicercaRisultati").innerHTML="";
     $("cRicercaErrore").textContent="";
     tNumero="";$("tNumero").value="";$("tErrore").textContent="";
-    cTarget=null;cPrimoTarget=null;cRicercaQuale="";
+    cTarget=null;cPrimoTarget=null;cRicercaQuale="";cIncontriEspansi=false;
     filtroAttivita="";
     sottofiltroAttivita="";
     filtroFascia="";
@@ -2060,17 +2064,15 @@
     var contenuto=servizio.righe.length
       ?servizio.righe.map(function(riga){return '<div>'+esc(riga)+'</div>';}).join("")
       :'<div>'+(info.categoria==="Fissi notte"?"Disponibilità o riposo: verifica il turno assegnato.":"Turno o riposo da verificare.")+'</div>';
-    var nota=servizio.incerto?'Il riposo personale del sabato può cambiare questa indicazione.'
-      :(info.categoria==="Fissi notte"?'Riposi personali e sostituzioni da verificare.':'Assegnazione e sostituzioni da verificare.');
-    return '<div class="turno-probabile"><p class="tp-titolo">'+esc(info.categoria)+' · indicazione probabile</p>'
-      +'<p class="tp-variante">'+esc(titolo)+'</p><div class="tp-servizio">'+contenuto+'</div>'
-      +'<p class="tp-origine">'+esc(nota)+'</p></div>';
+    var nota=servizio.incerto?'Il riposo del sabato è da verificare.':'';
+    return '<div class="turno-probabile"><p class="tp-variante">'+esc(titolo)+'</p><div class="tp-servizio">'+contenuto+'</div>'
+      +(nota?'<p class="tp-origine">'+esc(nota)+'</p>':'')+'</div>';
   }
   function rigaTurnoSpecialeHTML(info,data){
     var date=rModo==="giorno"?[data]:[0,1,2,3,4,5,6].map(function(i){return spostaGiorni(lunediDi(data),i);});
     var dettaglio=date.map(function(d){return dettaglioTurnoSpecialeHTML(info,d);}).join("");
-    return '<li class="con-dettaglio turno-speciale"><div class="riga-testa"><span class="pos">'+esc(info.codice)+'</span>'
-      +'<span class="nome">Probabilmente '+esc(info.nome)+'<em>'+esc(info.categoria)+'</em></span>'
+    return '<li class="con-dettaglio turno-speciale" data-dep="'+esc(info.gruppo.sig)+'"><div class="riga-testa"><span class="pos">'+esc(info.codice)+'</span>'
+      +'<span class="nome">'+esc(info.nome)+'<em>'+esc(info.categoria==="Anziani"?"Turno anziani · indicazione probabile":"Notte fissa · indicazione probabile")+'</em></span>'
       +'<span class="rip"><span class="apri">Mostra turno</span></span></div>'
       +'<div class="dettaglio-turno">'+dettaglio+'</div></li>';
   }
@@ -2314,7 +2316,7 @@
     var da=mittente(); if(da) righe.push("Segnalato da: "+da);
     var campi=$("campiSegnalazione").querySelectorAll("[data-seg-label]");
     for(var i=0;i<campi.length;i++) if(campi[i].value.trim()) righe.push(campi[i].getAttribute("data-seg-label")+": "+campi[i].value.trim());
-    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.76");
+    righe.push("Settimana visualizzata: "+contestoSettimana(),"Versione app: 0.82");
     $("messaggioTesto").value=righe.join("\n");
   }
   function apriSegnala(){ $("segnalaOverlay").classList.add("on"); $("segnalaOverlay").setAttribute("aria-hidden","false");salvaStato(); }
@@ -2447,7 +2449,7 @@
     if(!MODALITA_INTEGRATA||!U||U.speciale)return false;
     var m=String(codice||"").replace(/\s+/g,"").toUpperCase().match(/^(PR|GAL|SFS|BIS)([123]\d{2})$/);
     cData=/^\d{4}-\d{2}-\d{2}$/.test(String(dataIso||""))?daISO(dataIso):new Date();
-    cTarget=null;cPrimoTarget=null;cRicercaQuale="";
+    cTarget=null;cPrimoTarget=null;cRicercaQuale="";cIncontriEspansi=false;
     $("cRicercaInput").value="";$("cRicercaRisultati").innerHTML="";$("cRicercaErrore").textContent="";
     if(m&&DEPOSITI[m[1]]&&posizioniDi(DEPOSITI[m[1]]).indexOf(+m[2])>=0)
       cPrimoTarget={tipo:"servizio",dep:m[1],codice:+m[2]};
@@ -2505,7 +2507,7 @@
         disegnaCalendario(); disegnaSettimana(); mostra("settimana"); registraPagina("settimana","push");
       }
       if(v==="confronta"){
-        cData=new Date();cTarget=null;cPrimoTarget=null;cRicercaQuale="";
+        cData=new Date();cTarget=null;cPrimoTarget=null;cRicercaQuale="";cIncontriEspansi=false;
         $("cRicercaInput").value="";$("cRicercaRisultati").innerHTML="";$("cRicercaErrore").textContent="";
         disegnaConfronto();mostra("confronta");registraPagina("confronta","push");
       }
@@ -2564,53 +2566,58 @@
   }
   function notaPersonaleSpeciale(info){
     return info.categoria==="Anziani"
-      ?"Turno anziani previsto. <b>Domenica</b> riposo; <b>sabato</b> da verificare."
-      :"Turno notte previsto. Riposi personali e sostituzioni da verificare.";
+      ?"Indicazione probabile · sabato da verificare."
+      :"Indicazione probabile · riposi da verificare.";
+  }
+  function tipoPosizioneSettimana(dep,pos,lun){
+    if(SCHEMI[pos%100]==="surroga")return "SURROGANTE";
+    var tipi=[],sconosciuti=false;
+    for(var i=0;i<5;i++){
+      var servizio=servizioEffettivo(dep,pos,spostaGiorni(lun,i));
+      if(servizio.stato==="riposo"||servizio.stato==="sco")continue;
+      if(!servizio.disponibile){sconosciuti=true;continue;}
+      var fascia=servizio.fascia;
+      if(!fascia){sconosciuti=true;continue;}
+      if(tipi.indexOf(fascia)<0)tipi.push(fascia);
+    }
+    return sconosciuti?"DA VERIFICARE":tipi.length>1?"VARIABILE":tipi.length?tipi[0].toUpperCase():"";
   }
   function disegnaQuestaSpeciale(){
     var oggi=new Date(),lun=qLun,dom=spostaGiorni(lun,6),corrente=lun.getTime()===lunediDi(oggi).getTime();
     var info=specialePerMatricola(U.mat,lun),gi=corrente?(oggi.getDay()+6)%7:-1;
-    $("qIdentita").textContent=U.dep.nome+(info?" · "+info.codice:"");
     $("qQuando").innerHTML="<span>Dal "+fmtConAnno(lun)+"</span><span>Al "+fmtConAnno(dom)+"</span>";
-    $("qCodice").textContent=info?info.codice:"—";
+    $("qCodice").textContent=info?info.codice:"-";
+    $("qTipo").textContent=info?(info.categoria==="Anziani"?"ANZIANI":"NOTTE FISSA"):"";
     $("qOggiPersonale").style.display="grid";
     $("qNota").innerHTML=info?notaPersonaleSpeciale(info):"Nessuna previsione disponibile per questa settimana.";
-    if(!info){$("qBollo").innerHTML="";$("qGiorno").innerHTML="";$("qTurno").innerHTML="";$("qGiorni").innerHTML="";return;}
-    var riposo=gi===6&&info.categoria==="Anziani";
-    $("qBollo").innerHTML=gi<0?"":'<span class="bollo '+(riposo?"riposo":"lavoro")+'">'+(riposo?"Oggi riposo":"Turno probabile")+'</span>';
-    $("qGiorno").innerHTML=gi<0?"":'<div class="turno-giorno-mio"><p class="turno-giorno-titolo">Turno del giorno</p>'
+    if(!info){$("qGiorno").innerHTML="";$("qTurno").innerHTML="";return;}
+    $("qGiorno").innerHTML=gi<0?"":'<div class="turno-giorno-mio"><p class="turno-giorno-titolo">Oggi:</p>'
       +dettaglioTurnoSpecialeHTML(info,spostaGiorni(lun,gi))+'</div>';
     $("qTurno").innerHTML=dettaglioSettimanaSpecialeHTML(info,lun);
-    $("qGiorni").innerHTML=strisciaSpecialeHTML(info,lun,gi);
   }
   function disegnaQuesta(){
     if(U.speciale){disegnaQuestaSpeciale();return;}
     var oggi = new Date(), lun = qLun, corrente=lun.getTime()===lunediDi(oggi).getTime();
-    var gi = corrente ? (oggi.getDay()+6)%7 : -1;
     var dom = spostaGiorni(lun,6);
-    var pos = posizioneDi(U.base, lun), sett = settimanaDiDeposito(U.dep,pos,lun), g = gi>=0 ? sett[gi] : null;
+    var pos = posizioneDi(U.base, lun), sett = settimanaDiDeposito(U.dep,pos,lun);
 
-    $("qIdentita").textContent = U.dep.nome + " · " + cod(pos);
     $("qQuando").innerHTML = "<span>Dal "+fmtConAnno(lun)+"</span><span>Al "+fmtConAnno(dom)+"</span>";
     $("qCodice").textContent = cod(pos);
+    $("qTipo").textContent = tipoPosizioneSettimana(U.dep,pos,lun);
     /* La posizione appartiene alla settimana selezionata e resta sempre visibile.
        Solo il turno del giorno ha senso esclusivamente nella settimana corrente. */
     $("qOggiPersonale").style.display = "grid";
 
-    var et = {lavoro:"Oggi in turno", riposo:"Oggi riposo", sco:"Oggi scomputo", surroga:"Oggi surroga", matto:"Possibile riposo matto"};
-    $("qBollo").innerHTML = corrente ? '<span class="bollo '+g.stato+'">'+et[g.stato]+'</span>' : '';
-
-    if(SCHEMI[pos%100]==="surroga") $("qNota").innerHTML = "Surrogante da martedì a sabato · <b>Lunedì</b> riposo e <b>Domenica</b> riposo.";
-    else $("qNota").innerHTML = riepilogoSettimana(sett,true)+".";
+    $("qNota").textContent = sett.some(function(giorno){return giorno.stato==="matto";})
+      ?"Riposo matto da verificare su Attilio.":"";
 
     var indiceGiorno=(oggi.getDay()+6)%7;
     if(corrente){
       var dataGiorno=spostaGiorni(lun,indiceGiorno);
-      $("qGiorno").innerHTML='<div class="turno-giorno-mio"><p class="turno-giorno-titolo">Turno del giorno · '+esc(GIORNI_EST[indiceGiorno]+' '+dataGiorno.getDate()+' '+MESI[dataGiorno.getMonth()])+'</p>'
+      $("qGiorno").innerHTML='<div class="turno-giorno-mio"><p class="turno-giorno-titolo">Oggi:</p>'
         +turnoConfrontoHTML(servizioEffettivo(U.dep,pos,dataGiorno))+'</div>';
     }else $("qGiorno").innerHTML='';
-    $("qTurno").innerHTML = turniSettimanaHTML(U.dep,pos,lun);
-    $("qGiorni").innerHTML = strisciaHTML(sett, gi);
+    $("qTurno").innerHTML=turniSettimanaHTML(U.dep,pos,lun);
   }
   $("qPrec").onclick=function(){qLun=spostaSettimane(qLun,-1);disegnaQuesta();};
   $("qSucc").onclick=function(){qLun=spostaSettimane(qLun,1);disegnaQuesta();};
@@ -2650,7 +2657,7 @@
 
   function disegnaSettimana(){
     var dom = spostaGiorni(sLun,6);
-    $("sQuando").textContent = "Settimana da lunedì "+fmtConAnno(sLun)+" a domenica "+fmtConAnno(dom);
+    $("sQuando").textContent = fmtIntervalloSettimana(sLun,dom);
     if(U.speciale){
       var info=specialePerMatricola(U.mat,sLun);
       $("sCodice").textContent=info?info.codice:"—";
@@ -2820,6 +2827,57 @@
     var titolo=incontri.length===1?'Possibile incontro':'Possibili incontri · '+incontri.length;
     return '<div class="confronto-avviso verde"><strong class="incontro-titolo">'+titolo+'</strong>'+righe+'</div>';
   }
+  function incontriProbabiliDelGiorno(mio,primoScelto){
+    if(!mio||!mio.disponibile||!presenzeTurno(mio.righe).length)return [];
+    var lun=lunediDi(cData),risultati=[],visti={};
+    Object.keys(DEPOSITI).forEach(function(sig){
+      var dep=DEPOSITI[sig];
+      posizioniDi(dep).forEach(function(pos){
+        if(primoScelto&&dep===primoScelto.dep&&pos===primoScelto.pos)return;
+        var occ=occupantePosizione(dep,pos,lun);
+        if(!occ||occ[1]===U.mat)return;
+        var altro=datiTurnoConfronto(dep,pos,cData);
+        if(!altro.disponibile||!altro.righe)return;
+        incontriTurni(mio.righe,altro.righe).forEach(function(incontro){
+          var chiave=occ[1]+"|"+incontro.luogo+"|"+incontro.inizio+"|"+incontro.fine;
+          if(visti[chiave])return;
+          visti[chiave]=true;
+          risultati.push({mat:occ[1],nome:nomePersona(occ),codice:codDi(dep,pos),
+            luogo:incontro.luogo,inizio:incontro.inizio,fine:incontro.fine});
+        });
+      });
+    });
+    risultati.sort(function(a,b){
+      var oraA=Math.round(((a.inizio+a.fine)/2)/5)*5,oraB=Math.round(((b.inizio+b.fine)/2)/5)*5;
+      return oraA-oraB||a.nome.localeCompare(b.nome);
+    });
+    return risultati;
+  }
+  function disegnaIncontriProbabili(mio,primoScelto,scelto){
+    var box=$("cSuggeriti"),lista=$("cSuggeritiLista"),altro=$("cMostraTutti");
+    if(scelto||cRicercaQuale){box.style.display="none";return;}
+    box.style.display="block";
+    var incontri=incontriProbabiliDelGiorno(mio,primoScelto);
+    if(!incontri.length){
+      lista.innerHTML='<p class="confronto-suggeriti-vuoto">Nessun incontro probabile nei turni disponibili.</p>';
+      altro.style.display="none";return;
+    }
+    var visibili=cIncontriEspansi?incontri:incontri.slice(0,4);
+    lista.innerHTML=visibili.map(function(item,i){
+      var ora=oraMinuti(Math.round(((item.inizio+item.fine)/2)/5)*5),luogo=nomeLocalita(item.luogo);
+      return '<button type="button" class="confronto-suggerito" data-incontro-suggerito="'+i+'" aria-label="Confronta con '+esc(item.nome)+' alle '+esc(ora)+' a '+esc(luogo)+'">'
+        +'<span class="ora">'+esc(ora)+'</span><span class="collega"><strong>'+esc(item.nome)+'</strong><small>'+esc(luogo+' · '+item.codice)+'</small></span><span class="freccia" aria-hidden="true">›</span></button>';
+    }).join("");
+    Array.prototype.forEach.call(lista.querySelectorAll("button"),function(button){
+      button.onclick=function(){
+        cTarget={tipo:"persona",mat:visibili[+this.getAttribute("data-incontro-suggerito")].mat};
+        cRicercaQuale="";disegnaConfronto();
+      };
+    });
+    altro.style.display=incontri.length>4?"inline-block":"none";
+    altro.textContent=cIncontriEspansi?"Mostra meno":"Mostra tutti ("+incontri.length+")";
+    altro.setAttribute("aria-expanded",cIncontriEspansi?"true":"false");
+  }
   function posizionePersonaAllaData(mat,data){
     var lun=lunediDi(data);
     for(var sig in DEPOSITI){
@@ -2940,16 +2998,18 @@
       $("cCollegaNome").textContent=cognomeConfronto(scelto.occ?nomePersona(scelto.occ):"Turno scoperto");
       $("cCollegaTurno").innerHTML=turnoConfrontoHTML(altro);card.style.display="block";
     }else card.style.display="none";
+    disegnaIncontriProbabili(mio,primoScelto,scelto);
     $("cEsito").innerHTML=mio&&altro?esitoIncontroHTML(mio,altro):"";salvaStato();
   }
-  $("cPrec").onclick=function(){cData=spostaGiorni(cData,-1);disegnaConfronto();};
-  $("cSucc").onclick=function(){cData=spostaGiorni(cData,1);disegnaConfronto();};
+  $("cPrec").onclick=function(){cData=spostaGiorni(cData,-1);cIncontriEspansi=false;disegnaConfronto();};
+  $("cSucc").onclick=function(){cData=spostaGiorni(cData,1);cIncontriEspansi=false;disegnaConfronto();};
   $("cApriCalendario").onclick=function(){
     var campo=$("cCalendario");
     if(typeof campo.showPicker==="function"){try{campo.showPicker();return;}catch(e){}}
     campo.click();
   };
-  $("cCalendario").onchange=function(){if(this.value){cData=daISO(this.value);disegnaConfronto();}};
+  $("cCalendario").onchange=function(){if(this.value){cData=daISO(this.value);cIncontriEspansi=false;disegnaConfronto();}};
+  $("cMostraTutti").onclick=function(){cIncontriEspansi=!cIncontriEspansi;disegnaConfronto();};
   $("cSelettorePrimo").onclick=function(){
     if(cPrimoTarget||cRicercaQuale==="primo"){cPrimoTarget=null;cRicercaQuale="";disegnaConfronto();}
     else apriRicercaConfronto("primo");
@@ -3043,10 +3103,13 @@
   function segmentoTrenoDaRiga(riga,numero,offsetGiorno,dep,servizio,esecutore){
     var m=String(riga||"").trim().match(/^(\d{1,3})(?:\*+)?\s+.+?\s+(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})\s+.+$/);
     if(!m||m[1]!==numero)return null;
-    var inizio=minutiOra(m[2])+offsetGiorno*1440,fine=minutiOra(m[3])+offsetGiorno*1440;
-    if(fine<=inizio)fine+=1440;
-    if(offsetGiorno<0&&fine<=0)return null;
-    return {numero:numero,inizio:inizio,fine:fine,oraDa:m[2],oraA:m[3],
+    var inizio=minutiOra(m[2])+offsetGiorno*1440,fineStampata=minutiOra(m[3])+offsetGiorno*1440;
+    if(fineStampata<=inizio)fineStampata+=1440;
+    /* Qui entrano solo tabelle di guida: la fine operativa precede di 10 minuti
+       l'ora stampata. Le attivita' di non guida non passano dalla ricerca treno. */
+    var fine=fineStampata-10;
+    if(fine<=inizio||(offsetGiorno<0&&fine<=0))return null;
+    return {numero:numero,inizio:inizio,fine:fine,fineStampata:fineStampata,oraDa:m[2],oraA:m[3],oraFineEffettiva:oraMinuti(fine),
       nome:esecutore&&esecutore.occ?nomePersona(esecutore.occ):"Turno scoperto",
       matricola:esecutore&&esecutore.occ?String(esecutore.occ[1]||""):"",
       posizione:codDi(dep,servizio.codice||servizio.pos),deposito:dep.sigla};
@@ -3104,6 +3167,15 @@
       });
     });
     out.sort(function(a,b){return a.inizio-b.inizio||a.fine-b.fine||a.nome.localeCompare(b.nome,"it");});
+    /* L'inizio del successivo e' effettivo: se il foglio lascia un residuo di
+       sovrapposizione anche dopo i 10 minuti, il precedente termina al cambio. */
+    for(var i=0;i<out.length-1;i++){
+      var precedente=out[i],successivo=out[i+1];
+      if(successivo.inizio>precedente.inizio&&successivo.inizio<precedente.fine){
+        precedente.fine=successivo.inizio;
+        precedente.oraFineEffettiva=oraMinuti(precedente.fine);
+      }
+    }
     return out;
   }
   function analizzaTreno(numero,data,ora){
@@ -3116,11 +3188,14 @@
     return {numero:String(numero),data:isoLocale(data),ora:ora,riferimento:riferimento,segmenti:segmenti,
       attuali:attuali,prima:precedenti.length?precedenti[precedenti.length-1]:null,dopo:successivi.length?successivi[0]:null};
   }
-  function intervalloTreno(segmento){return segmento?segmento.oraDa+"–"+segmento.oraA:"";}
+  function intervalloTreno(segmento){return segmento?segmento.oraDa+"-"+segmento.oraFineEffettiva:"";}
+  function etichettaTurnoExtra(segmento){
+    return (segmento.categoria==="Anziani"?"Turno anziani":"Notte fissa")+" · indicazione probabile";
+  }
   function passaggioTrenoHTML(tipo,segmento){
     var prima=tipo==="Prima";
     if(!segmento)return '<div class="treno-passaggio manca"><span>'+tipo+'</span><strong>Nessun turno '+(prima?'precedente':'successivo')+'</strong></div>';
-    if(segmento.extra)return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>Turno '+esc(segmento.posizione)+' · '+(segmento.probabile?'probabilmente '+esc(segmento.nome):'conducente non disponibile')+'</strong><small>'+esc(intervalloTreno(segmento))+' · '+esc(segmento.categoria)+'</small></div>';
+    if(segmento.extra)return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>'+(segmento.probabile?esc(segmento.nome):'Conducente non identificabile')+'</strong><small>'+esc(intervalloTreno(segmento))+' · '+esc(segmento.probabile?etichettaTurnoExtra(segmento):"Turno "+segmento.posizione+" · "+segmento.categoria)+'</small></div>';
     if(!segmento.matricola)return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>Turno scoperto</strong><small>'+esc(intervalloTreno(segmento))+' · '+esc(segmento.posizione)+'</small></div>';
     return '<div class="treno-passaggio"><span>'+tipo+'</span><strong>'+(prima?'Guidava ':'Guiderà ')+esc(segmento.nome)+'</strong><small>'+esc(intervalloTreno(segmento))+'</small></div>';
   }
@@ -3134,10 +3209,11 @@
   function disegnaRicercaTreno(){
     tData=new Date(tData.getFullYear(),tData.getMonth(),tData.getDate());
     var giorno=(tData.getDay()+6)%7,nomeGiorno=GIORNI_EST[giorno];
-    $("tQuando").textContent=nomeGiorno.charAt(0).toUpperCase()+nomeGiorno.slice(1)+" "+fmtConAnno(tData);
+    $("tQuando").textContent=fmtDataBreve(tData);
+    $("tQuando").setAttribute("aria-label",nomeGiorno.charAt(0).toUpperCase()+nomeGiorno.slice(1)+" "+fmtConAnno(tData));
     $("tCalendario").value=isoLocale(tData);$("tOra").value=tOra;$("tNumero").value=tNumero;
     $("tErrore").textContent="";
-    if(!tNumero){$("tEsito").innerHTML=vuotoTrenoHTML("Inserisci un numero","La ricerca usa i turni della data e dell’ora selezionate.");salvaStato();return;}
+    if(!tNumero){$("tEsito").innerHTML="";salvaStato();return;}
     if(codiceAttivitaFissa(tNumero)){
       $("tErrore").textContent=tNumero+" è un’attività di servizio, non un treno.";
       $("tEsito").innerHTML=vuotoTrenoHTML("Numero non ricercabile","Inserisci il numero di una tabella di guida.");salvaStato();return;
@@ -3151,9 +3227,10 @@
     if(attuali.length===1){
       var attuale=attuali[0];
       if(attuale.extra){
-        titolo=attuale.probabile?"Probabilmente guida "+attuale.nome:"Conducente non identificabile";
-        nota="Il "+tNumero+" risulta nel turno "+attuale.posizione+" · "+attuale.categoria+", "+intervalloTreno(attuale)+". "
-          +(attuale.probabile?"Nominativo previsto dalla rotazione; riposi personali e sostituzioni da verificare.":"Il nominativo di questo turno non è disponibile.");
+        titolo=attuale.probabile?attuale.nome:"Conducente non identificabile";
+        nota=attuale.probabile
+          ?intervalloTreno(attuale)+" · "+etichettaTurnoExtra(attuale)
+          :"Turno "+attuale.posizione+" · "+attuale.categoria+" · "+intervalloTreno(attuale)+". Nominativo non disponibile.";
       }else if(!attuale.matricola){
         titolo="Turno scoperto";
         nota="La tabella "+tNumero+" è nel turno "+attuale.posizione+", "+intervalloTreno(attuale)+", ma la posizione risulta scoperta nella Ruota.";
@@ -3163,7 +3240,7 @@
     }
     else if(attuali.length>1){
       titolo="Più turni coprono questo momento";
-      nota=attuali.map(function(s){return s.extra?s.posizione+" ("+(s.probabile?"probabilmente "+s.nome:"conducente non disponibile")+")":s.nome+" · "+s.posizione;}).join("; ")+". Gli intervalli del foglio si sovrappongono, spesso per il passaggio di consegne.";
+      nota=attuali.map(function(s){return s.extra?(s.probabile?s.nome+" ("+etichettaTurnoExtra(s)+")":"Turno "+s.posizione+" (conducente non identificabile)"):s.nome+" · "+s.posizione;}).join("; ")+". Gli intervalli del foglio si sovrappongono.";
     }
     else{
       titolo="Nessuna copertura registrata";
@@ -3173,10 +3250,10 @@
       '<div class="treno-passaggi">'+passaggioTrenoHTML("Prima",risultato.prima)+passaggioTrenoHTML("Dopo",risultato.dopo)+'</div>'+
       '<section class="treno-cronologia"><h3>Chi guida il '+esc(tNumero)+' nella giornata</h3><div class="treno-lista">'+risultato.segmenti.map(function(s){
         var attivo=s.inizio<=risultato.riferimento&&risultato.riferimento<s.fine;
-        var nome=s.extra?'Turno '+s.posizione+' · '+(s.probabile?'probabilmente '+s.nome:'conducente non disponibile'):s.nome;
-        var dettaglio=s.extra?s.categoria:s.posizione;
+        var nome=s.extra?(s.probabile?s.nome:"Conducente non identificabile"):s.nome;
+        var dettaglio=s.extra?(s.probabile?etichettaTurnoExtra(s):"Turno "+s.posizione+" · "+s.categoria):s.posizione;
         return '<div class="treno-riga'+(attivo?' on':'')+'"><span class="treno-riga-ora">'+esc(intervalloTreno(s))+'</span><span><strong>'+esc(nome)+'</strong><small>'+esc(dettaglio)+'</small></span></div>';
-      }).join("")+'</div></section><p class="treno-nota">Indicazione calcolata dalla Ruota. Eventuali cambi o sostituzioni non registrati non possono essere mostrati.</p>';
+      }).join("")+'</div></section><p class="treno-nota">Turni ricavati dalla Ruota; cambi e sostituzioni non registrati possono mancare.</p>';
     $("tEsito").innerHTML=html;salvaStato();
   }
 
@@ -3266,9 +3343,9 @@
 
   function disegnaRuota(){
     var dom = spostaGiorni(rLun,6), dataRiferimento=rModo==="giorno"?rData:spostaGiorni(rLun,2);
-    $("rQuando").textContent = rModo==="giorno"?fmtConAnno(rData):fmtIntervalloCompatto(rLun,dom);
+    $("rQuando").textContent = rModo==="giorno"?fmtDataBreve(rData):fmtIntervalloCompatto(rLun,dom);
+    $("rQuando").setAttribute("aria-label",rModo==="giorno"?"Scegli un altro giorno: "+fmtConAnno(rData):fmtIntervalloCompatto(rLun,dom));
     document.querySelector("#ruota .tempo-nav").classList.toggle("vista-settimana",rModo==="settimana");
-    $("rEtichettaTempo").textContent=rModo==="giorno"?"Giorno":"Settimana";
     $("toggleModoRicerca").setAttribute("aria-label",rModo==="giorno"?"Passa alla vista settimana":"Passa alla vista giorno");
     $("rPrec").setAttribute("aria-label",rModo==="giorno"?"Giorno precedente":"Settimana precedente");
     $("rSucc").setAttribute("aria-label",rModo==="giorno"?"Giorno successivo":"Settimana successiva");
@@ -3300,18 +3377,21 @@
           if(avvisoSurrogante){html+=avvisoSurrogante;noteSurroganti+=(avvisoSurrogante.match(/risultato-surrogante/g)||[]).length;}
         }
       }
-      if(filtro&&!filtroAttivita&&!filtroFascia){
-        turniSpecialiDelDeposito(d.sigla,dataRiferimento).forEach(function(info){
+      if(!filtroAttivita&&!filtroFascia){
+        var speciali=turniSpecialiDelDeposito(d.sigla,dataRiferimento).filter(function(info){
           var completo=NOMI_COMPLETI_MATRICOLA[info.occupante[1]]||"";
           var testo=normalizzaRicerca(info.codice+" "+info.nome+" "+completo+" "+info.occupante[1]+" "+info.categoria);
-          if(testo.indexOf(filtro)<0)return;
+          return !filtro||testo.indexOf(filtro)>=0;
+        });
+        if(speciali.length&&!filtro)html+='<li class="gruppo-speciale">Turni speciali</li>';
+        speciali.forEach(function(info){
           html+=rigaTurnoSpecialeHTML(info,dataRiferimento);numero++;
         });
       }
       return {html:html,numero:numero};
     }
     function intestazioneDeposito(dep,numero){
-      return '<li class="gruppo-deposito"><span>'+esc(dep.nome)+'</span><small>'+numero+' '+(numero===1?"risultato":"risultati")+'</small></li>';
+      return '<li class="gruppo-deposito"><span>'+esc(dep.nome)+'</span>'+(filtro||filtriAttivi?'':'<small>'+numero+' '+(numero===1?"risultato":"risultati")+'</small>')+'</li>';
     }
 
     var filtriAttivi=!!(filtroAttivita||filtroFascia);
@@ -3327,12 +3407,12 @@
       var mostraConteggio=!!(filtro||filtriAttivi);
       $("avviso").style.display=mostraConteggio?"block":"none";
       if(mostraConteggio) $("avviso").textContent=quanti
-        ?"Trovati "+quanti+(quanti===1?" risultato":" risultati")
-          +(filtriAttivi?" per "+testoFiltroAttivo():"")+" in tutti i depositi."
-        :"Nessun risultato"+(filtriAttivi?" per "+testoFiltroAttivo():"")+" in nessun deposito.";
+        ?quanti+(quanti===1?" risultato":" risultati")
+          +(filtriAttivi?" per "+testoFiltroAttivo():"")+"."
+        :"Nessun risultato"+(filtriAttivi?" per "+testoFiltroAttivo():"")+".";
       $("notaRuota").textContent=filtriAttivi
-        ?"I risultati sono raggruppati a partire dal tuo deposito, poi mostrano gli altri gruppi."
-        :"La ricerca guarda in tutte le ruote caricate.";
+        ?"I risultati partono dal tuo deposito, poi mostrano gli altri."
+        :"";
     }else{
       var dep=rDep, gruppoSingolo=risultatiDeposito(dep,false);
       righe=gruppoSingolo.html;quanti=gruppoSingolo.numero;
@@ -3342,8 +3422,8 @@
           +(filtriAttivi?" per "+testoFiltroAttivo():"")+" in "+dep.nome+"."
         :"Nessun risultato"+(filtriAttivi?" per "+testoFiltroAttivo():"")+" in "+dep.nome+".";
       $("notaRuota").textContent=filtriAttivi
-        ?"Il filtro considera le attività della settimana visualizzata nella ruota di "+dep.nome+"."
-        :"Ruota di "+dep.nome+": "+posizioniDi(dep).length+" posizioni. Ogni settimana tutti avanzano di una.";
+        ?"Filtro applicato alla settimana visualizzata."
+        :"";
     }
 
     if(!quanti&&filtriAttivi&&datiInsufficienti) $("avviso").textContent="Dati insufficienti per verificare completamente "+testoFiltroAttivo()+" nel periodo selezionato.";
